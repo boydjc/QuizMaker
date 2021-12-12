@@ -29,6 +29,12 @@ class DbConnection {
 	}
 
 	public void executeStatement(String stmtIn) {
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(stmtIn);
+		} catch(SQLException e) {
+			System.out.println("SQLException: " + e.getMessage());
+		}
 	}
 
 	public ResultSet getResultSet() {
