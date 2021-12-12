@@ -25,6 +25,8 @@ public class Main {
 				System.out.println(rs.getString(1));
 				System.out.println(rs.getString(2));
 				System.out.println(rs.getString(3));
+				System.out.println(rs.getString(4));
+				System.out.println(rs.getString(5));
 			}
 		} catch (SQLException e) {
 			System.out.println("SQLException: " + e.getMessage());
