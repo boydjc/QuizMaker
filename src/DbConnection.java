@@ -1,17 +1,37 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 class DbConnection {
 
+	private Connection con;
+	private Statement stmt;
+	private ResultSet rs;
+
 	DbConnection() {
+		stmt = null;
+		rs = null;
 	}
 
-	public void makeConnection() {
+	public void makeConnection(String dbName,
+							   String port,
+							   String username,
+							   String password) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/javaquiz", "s7341", "wtfomglol123");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:" + port + "/" + dbName, username, password);
 			System.out.println("Connection Successful.");
 		} catch(Exception e) {
 			System.out.println(e);
 		}	
+	}
+
+	public void executeStatement(String stmtIn) {
+	}
+
+	public ResultSet getResultSet() {
+		return rs;
 	}
 }

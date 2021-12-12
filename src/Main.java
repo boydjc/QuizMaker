@@ -4,6 +4,13 @@ public class Main {
 
 		DbConnection dbConn = new DbConnection();
 
-		dbConn.makeConnection();
+		// args[0] = database name
+		// args[1] = port
+		// args[2] = username
+		// args[3] = password
+		dbConn.makeConnection(args[0],
+							  args[1],
+							  args[2],
+							  args[3]);
 	}
 }
