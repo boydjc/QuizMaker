@@ -1,3 +1,6 @@
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("Testing");
@@ -12,5 +15,19 @@ public class Main {
 							  args[1],
 							  args[2],
 							  args[3]);
+
+		dbConn.executeStatement("SELECT * FROM SecPlus");
+
+		ResultSet rs = dbConn.getResultSet();
+
+		try {
+			while(rs.next()) {
+				System.out.println(rs.getString(1));
+				System.out.println(rs.getString(2));
+				System.out.println(rs.getString(3));
+			}
+		} catch (SQLException e) {
+			System.out.println("SQLException: " + e.getMessage());
+		}
 	}
 }
