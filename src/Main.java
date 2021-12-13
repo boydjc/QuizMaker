@@ -20,7 +20,7 @@ public class Main {
 							  args[2],
 							  args[3]);
 
-		dbConn.executeStatement("SELECT * FROM SecPlus");
+		dbConn.executeStatement("SELECT * FROM chapterOne");
 
 		ResultSet rs = dbConn.getResultSet();
 
@@ -50,29 +50,40 @@ public class Main {
 				/ rs.getString(21) ansEight
 				/ rs.getString(22) ansNine
 				/ rs.getString(23) ansTen	*/
+
+				ArrayList<String> choices = new ArrayList<String>();
 			
 				ArrayList<String> answers = new ArrayList<String>();
 
-				// go through the answers and only add them if they are not blank
+				// go through the choices  and only add them if they are not blank
 				for(int i=4; i<=13; i++) {
-					if(!(rs.getString(i).equals(""))) {
+					if(rs.getString(i) != null) {
+						choices.add(rs.getString(i));
+					}
+				}
+
+				// same with the answers
+				for(int i=14; i<=23; i++) {
+					if(rs.getString(i) != null) {
 						answers.add(rs.getString(i));
 					}
 				}
+
 
 				// create new question
 
 				Question testQ = new Question(rs.getInt(1),
 											  rs.getInt(2),
 											  rs.getString(3),
+											  choices,
 											  answers);
 
 				System.out.println("Question Created Successfully");
 
 				System.out.println(testQ.getQuesText());
 
-				for(int i=0; i<testQ.getQuesAns().size(); i++){
-					System.out.println(testQ.getQuesAns().get(i));
+				for(int i=0; i<testQ.getChoices().size(); i++){
+					System.out.println(testQ.getChoices().get(i));
 				}
 
 			}
