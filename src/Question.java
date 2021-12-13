@@ -4,17 +4,19 @@ class Question {
 	private int qId;
 	private int qType;
 	private String quesText;
-	private ArrayList<String> quesAns = new ArrayList<String>();
+	private ArrayList<String> choices = new ArrayList<String>();
+	private ArrayList<String> answers = new ArrayList<String>();
 
 	Question() {
 
 	}
 
-	Question(int qIdIn, int qTypeIn, String quesTxtIn, ArrayList<String> quesAnsIn) {	
+	Question(int qIdIn, int qTypeIn, String quesTxtIn, ArrayList<String> choicesIn, ArrayList<String> ansIn) {	
 		this.qId = qIdIn;
 		this.qType = qTypeIn;
 		this.quesText = quesTxtIn;
-		this.quesAns = quesAnsIn;
+		this.choices = choicesIn;
+		this.answers = ansIn;
 	}
 
 	public void setQId(int qIdIn) {
@@ -41,11 +43,19 @@ class Question {
 		return this.quesText;
 	}
 
-	public void setQuesAns(ArrayList<String> quesAnsIn) {
-		this.quesAns = quesAnsIn;
+	public void setChoices(ArrayList<String> choicesIn) {
+		this.choices = choicesIn;
 	}
 
-	public ArrayList<String> getQuesAns() {
-		return this.quesAns;
+	public ArrayList<String> getChoices() {
+		return this.choices;
+	}
+
+	public void setAnswers(ArrayList<String> ansIn) {
+		this.answers = ansIn;
+	}
+
+	public ArrayList<String> getAnswers() {
+		return this.answers;
 	}	
 }
