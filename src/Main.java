@@ -7,6 +7,8 @@ public class Main {
 		
 		System.out.println("Running...");
 
+		QuizEngine qEng = new QuizEngine();
+
 		ArrayList<Question> questionSet = new ArrayList<Question>();
 
 		DbConnection dbConn = new DbConnection();
@@ -82,13 +84,16 @@ public class Main {
 
 				System.out.println(testQ.getQuesText());
 
-				for(int i=0; i<testQ.getChoices().size(); i++){
+				/*for(int i=0; i<testQ.getChoices().size(); i++){
 					System.out.println(testQ.getChoices().get(i));
-				}
+				}*/
 
 			}
 		} catch (SQLException e) {
 			System.out.println("SQLException: " + e.getMessage());
 		}
+
+		qEng.getRandQuesSeq(10);
+
 	}
 }
