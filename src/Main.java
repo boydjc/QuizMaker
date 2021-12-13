@@ -26,14 +26,31 @@ public class Main {
 
 		try {
 			while(rs.next()) {
-				// rs.getString(1) question id		rs.getString(2) type number
-				// rs.getString(3) Question text	rs.getString(4) Ans One
-				// rs.getString(5) Ans Two			rs.getString(6) Ans Three
-				// rs.getString(7) Ans Four			rs.getString(8) Ans Five
-				// rs.getString(9) Ans Six			rs.getString(10) Ans Seven
-				// rs.getString(11) Ans Eight		rs.getString(12) Ans Nine
-				// rs.getString(13) Ans Ten
 
+				/* rs.getString(1) qId
+				/ rs.getString(2) qType
+				/ rs.getString(3) qText
+				/ rs.getString(4) choiceOne
+				/ rs.getString(5) choiceTwo
+				/ rs.getString(6) choiceThree
+				/ rs.getString(7) choiceFour
+				/ rs.getString(8) choiceFive
+				/ rs.getString(9) choiceSix
+				/ rs.getString(10) choiceSeven
+				/ rs.getString(11) choiceEight
+				/ rs.getString(12) choiceNine
+				/ rs.getString(13) choiceTen
+				/ rs.getString(14) ansOne
+				/ rs.getString(15) ansTwo
+				/ rs.getString(16) ansThree
+				/ rs.getString(17) ansFour
+				/ rs.getString(18) ansFive
+				/ rs.getString(19) ansSix
+				/ rs.getString(20) ansSeven
+				/ rs.getString(21) ansEight
+				/ rs.getString(22) ansNine
+				/ rs.getString(23) ansTen	*/
+			
 				ArrayList<String> answers = new ArrayList<String>();
 
 				// go through the answers and only add them if they are not blank
