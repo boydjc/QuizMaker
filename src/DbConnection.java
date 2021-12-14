@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
-class DbConnection {
+public class DbConnection {
 
 	private String dbName;
 	private String dbPort;

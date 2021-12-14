@@ -3,7 +3,7 @@ import java.util.Random;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-class QuizEngine {
+public class QuizEngine {
 	
 	private DbConnection dbConn;
 
