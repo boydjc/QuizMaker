@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Question {
+public class Question {
 	private int qId;
 	private int qType;
 	private String quesText;
