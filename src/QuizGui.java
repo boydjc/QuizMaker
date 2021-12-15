@@ -106,16 +106,21 @@ public class QuizGui extends JFrame {
 		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(25, 0)));
 		qSelectDetailPanel.add(qDetailPanel);
 
+
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
 		mainPanel.add(qSelectDetailPanel);
 
-		previewScrollPane.setPreferredSize(new Dimension(200, 125));
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+
+		previewScrollPane.setPreferredSize(new Dimension(175, 100));
 		previewPanel.add(previewScrollPane);
 
 		mainPanel.add(previewPanel);
 
 		add(mainPanel);
 
-		setSize(800, 480);
+		setSize(500, 310);
 	}
 
 	public void display() {
