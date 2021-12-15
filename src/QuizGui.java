@@ -22,6 +22,8 @@ public class QuizGui extends JFrame {
 
 	private JTable qBankTable = new JTable(testTableData, testTableColNames);
 
+	private JScrollPane qBankTablePane = new JScrollPane(qBankTable);
+
 	private JPanel qSelectSubPanelTwo = new JPanel(); // contains q bank buttons
 
 	private JButton qSelectStartButton = new JButton("Start");
@@ -35,6 +37,19 @@ public class QuizGui extends JFrame {
 	private JLabel qBankAveGradeLabel = new JLabel("Average Grade: 60%");
 
 	private JPanel previewPanel = new JPanel();
+
+	private String[] previewTestTableColNames = {"Preview"};
+
+	private Object[][] previewTestTableData = {
+		{"Who likes question?"},
+		{"What is your favorite color?"},
+		{"Who is the President of the United States?"},
+		{"Where is Waldo?"},
+		{"Coffee or Tea?"}
+	};
+
+	private JTable previewTable = new JTable(previewTestTableData, previewTestTableColNames);
+	private JScrollPane previewScrollPane = new JScrollPane(previewTable);
 
 
 	QuizGui() {
@@ -62,14 +77,16 @@ public class QuizGui extends JFrame {
 		// qSelectDetailPanel and subpanels
 
 		// qSelectPanel
-		qBankTable.setFillsViewportHeight(true);
-		qSelectSubPanelOne.add(new JScrollPane(qBankTable));
+		qBankTablePane.setPreferredSize(new Dimension(200, 75));
+		qSelectSubPanelOne.add(qBankTablePane);
 		qSelectPanel.add(qSelectSubPanelOne);
 
 		qSelectSubPanelTwo.add(qSelectStartButton);
 		// spacing between 'start' and 'create new' buttons 
 		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(25, 0)));
 		qSelectSubPanelTwo.add(qSelectCreateButton);
+
+		qSelectPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		qSelectPanel.add(qSelectSubPanelTwo);
 
 		// qDetailPanel
@@ -90,6 +107,9 @@ public class QuizGui extends JFrame {
 		qSelectDetailPanel.add(qDetailPanel);
 
 		mainPanel.add(qSelectDetailPanel);
+
+		previewScrollPane.setPreferredSize(new Dimension(200, 125));
+		previewPanel.add(previewScrollPane);
 
 		mainPanel.add(previewPanel);
 
