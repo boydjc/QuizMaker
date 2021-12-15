@@ -24,7 +24,8 @@ public class QuizGui extends JFrame {
 
 	private JPanel qSelectSubPanelTwo = new JPanel(); // contains q bank buttons
 
-	private JButton qSelectButton = new JButton("Start");
+	private JButton qSelectStartButton = new JButton("Start");
+	private JButton qSelectCreateButton = new JButton("Create New");
 
 	private JPanel qDetailPanel = new JPanel();
 
@@ -47,7 +48,7 @@ public class QuizGui extends JFrame {
 
 		qSelectPanel.setLayout(new BoxLayout(qSelectPanel, BoxLayout.PAGE_AXIS));
 		qSelectSubPanelOne.setLayout(new BoxLayout(qSelectSubPanelOne, BoxLayout.PAGE_AXIS));
-		qSelectSubPanelTwo.setLayout(new BoxLayout(qSelectSubPanelTwo, BoxLayout.PAGE_AXIS));
+		qSelectSubPanelTwo.setLayout(new BoxLayout(qSelectSubPanelTwo, BoxLayout.LINE_AXIS));
 		
 		previewPanel.setLayout(new BoxLayout(previewPanel, BoxLayout.PAGE_AXIS));
 
@@ -57,7 +58,9 @@ public class QuizGui extends JFrame {
 		qSelectSubPanelOne.add(new JScrollPane(qBankTable));
 		qSelectPanel.add(qSelectSubPanelOne);
 
-		qSelectSubPanelTwo.add(qSelectButton);
+		qSelectSubPanelTwo.add(qSelectStartButton);
+		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(25, 0)));
+		qSelectSubPanelTwo.add(qSelectCreateButton);
 		qSelectPanel.add(qSelectSubPanelTwo);
 
 		qSelectDetailPanel.add(qSelectPanel);
