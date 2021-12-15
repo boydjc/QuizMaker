@@ -1,7 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class QuizGui extends JFrame {
+public class QuizGui extends JFrame implements ActionListener{
 
 	private JPanel mainPanel = new JPanel();
 
@@ -81,9 +82,12 @@ public class QuizGui extends JFrame {
 		qSelectSubPanelOne.add(qBankTablePane);
 		qSelectPanel.add(qSelectSubPanelOne);
 
+		qSelectStartButton.addActionListener(this);
 		qSelectSubPanelTwo.add(qSelectStartButton);
 		// spacing between 'start' and 'create new' buttons 
 		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(25, 0)));
+
+		qSelectCreateButton.addActionListener(this);
 		qSelectSubPanelTwo.add(qSelectCreateButton);
 
 		qSelectPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -121,6 +125,18 @@ public class QuizGui extends JFrame {
 		add(mainPanel);
 
 		setSize(500, 310);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+
+		if(source instanceof JButton) {
+			if(((JButton) source).getText().equals("Start")) {
+				System.out.println("Start button clicked.");
+			}else if(((JButton) source).getText().equals("Create New")) {
+				System.out.println("Create new button clicked.");
+			}
+		}
 	}
 
 	public void display() {
