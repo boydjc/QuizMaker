@@ -28,6 +28,11 @@ public class QuizGui extends JFrame {
 	private JButton qSelectCreateButton = new JButton("Create New");
 
 	private JPanel qDetailPanel = new JPanel();
+	private JLabel qBankNameLabel = new JLabel("Name: Random Questions");
+	private JLabel qBankCreatedLabel = new JLabel("Created: 2021-12-14 12:05:45");
+	private JLabel qBankQNumLabel = new JLabel("Number of Questions: 20");
+	private JLabel qBankLastGradeLabel = new JLabel("Last Grade: 95%");
+	private JLabel qBankAveGradeLabel = new JLabel("Average Grade: 60%");
 
 	private JPanel previewPanel = new JPanel();
 
@@ -49,21 +54,40 @@ public class QuizGui extends JFrame {
 		qSelectPanel.setLayout(new BoxLayout(qSelectPanel, BoxLayout.PAGE_AXIS));
 		qSelectSubPanelOne.setLayout(new BoxLayout(qSelectSubPanelOne, BoxLayout.PAGE_AXIS));
 		qSelectSubPanelTwo.setLayout(new BoxLayout(qSelectSubPanelTwo, BoxLayout.LINE_AXIS));
+
+		qDetailPanel.setLayout(new BoxLayout(qDetailPanel, BoxLayout.PAGE_AXIS));
 		
 		previewPanel.setLayout(new BoxLayout(previewPanel, BoxLayout.PAGE_AXIS));
 
 		// qSelectDetailPanel and subpanels
 
+		// qSelectPanel
 		qBankTable.setFillsViewportHeight(true);
 		qSelectSubPanelOne.add(new JScrollPane(qBankTable));
 		qSelectPanel.add(qSelectSubPanelOne);
 
 		qSelectSubPanelTwo.add(qSelectStartButton);
+		// spacing between 'start' and 'create new' buttons 
 		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(25, 0)));
 		qSelectSubPanelTwo.add(qSelectCreateButton);
 		qSelectPanel.add(qSelectSubPanelTwo);
 
+		// qDetailPanel
+		// add a little bit of spacing between each of the labels
+		qDetailPanel.add(qBankNameLabel);
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(qBankCreatedLabel);
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(qBankQNumLabel);
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(qBankLastGradeLabel);
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(qBankAveGradeLabel);
+
 		qSelectDetailPanel.add(qSelectPanel);
+		// spacing between the question bank panel and the details panel
+		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(25, 0)));
+		qSelectDetailPanel.add(qDetailPanel);
 
 		mainPanel.add(qSelectDetailPanel);
 
@@ -71,7 +95,7 @@ public class QuizGui extends JFrame {
 
 		add(mainPanel);
 
-		setSize(600, 480);
+		setSize(800, 480);
 	}
 
 	public void display() {
