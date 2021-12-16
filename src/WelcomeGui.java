@@ -110,13 +110,13 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		// qDetailPanel
 		// add a little bit of spacing between each of the labels	
 		qDetailPanel.add(qBankNameLabel);
-		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		qDetailPanel.add(qBankCreatedLabel);
-		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		qDetailPanel.add(qBankQNumLabel);
-		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		qDetailPanel.add(qBankLastGradeLabel);
-		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		qDetailPanel.add(qBankAveGradeLabel);
 		qDetailPanel.add(Box.createVerticalGlue());
 	
