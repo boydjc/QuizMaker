@@ -28,10 +28,16 @@ public class WelcomeGui extends JFrame implements ActionListener {
 
 	private JScrollPane qBankTablePane = new JScrollPane(qBankTable);
 
-	private JPanel qSelectSubPanelTwo = new JPanel(); // contains q bank buttons
+	private JPanel qSelectSubPanelTwo = new JPanel(); // contains q bank start edit and delete
 
 	private JButton qSelectStartButton = new JButton("Start");
+	private JButton qSelectEditButton = new JButton("Edit");
+	private JButton qSelectDeleteButton = new JButton("Delete");
+	
+	private JPanel qSelectSubPanelThree = new JPanel(); // contains q bank create new button
+
 	private JButton qSelectCreateButton = new JButton("Create New");
+
 
 	private JPanel qDetailPanel = new JPanel();
 	private JLabel qBankNameLabel = new JLabel("Name: Random Questions");
@@ -73,6 +79,7 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		qSelectPanel.setLayout(new BoxLayout(qSelectPanel, BoxLayout.PAGE_AXIS));
 		qSelectSubPanelOne.setLayout(new BoxLayout(qSelectSubPanelOne, BoxLayout.PAGE_AXIS));
 		qSelectSubPanelTwo.setLayout(new BoxLayout(qSelectSubPanelTwo, BoxLayout.LINE_AXIS));
+		qSelectSubPanelThree.setLayout(new BoxLayout(qSelectSubPanelThree, BoxLayout.LINE_AXIS));
 
 		qDetailPanel.setLayout(new BoxLayout(qDetailPanel, BoxLayout.PAGE_AXIS));
 		
@@ -81,23 +88,27 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		// qSelectDetailPanel and subpanels
 
 		// qSelectPanel
-		qBankTablePane.setPreferredSize(new Dimension(200, 75));
+		qBankTablePane.setPreferredSize(new Dimension(200, 125));
 		qSelectSubPanelOne.add(qBankTablePane);
 		qSelectPanel.add(qSelectSubPanelOne);
 
 		qSelectStartButton.addActionListener(this);
 		qSelectSubPanelTwo.add(qSelectStartButton);
-		// spacing between 'start' and 'create new' buttons 
-		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(25, 0)));
-
-		qSelectCreateButton.addActionListener(this);
-		qSelectSubPanelTwo.add(qSelectCreateButton);
+		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(5, 0)));
+		qSelectSubPanelTwo.add(qSelectEditButton);
+		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(5, 0)));
+		qSelectSubPanelTwo.add(qSelectDeleteButton);
 
 		qSelectPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		qSelectPanel.add(qSelectSubPanelTwo);
 
+		qSelectCreateButton.addActionListener(this);
+		qSelectSubPanelThree.add(qSelectCreateButton);
+		qSelectPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		qSelectPanel.add(qSelectSubPanelThree);
+
 		// qDetailPanel
-		// add a little bit of spacing between each of the labels
+		// add a little bit of spacing between each of the labels	
 		qDetailPanel.add(qBankNameLabel);
 		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		qDetailPanel.add(qBankCreatedLabel);
@@ -107,7 +118,8 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		qDetailPanel.add(qBankLastGradeLabel);
 		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		qDetailPanel.add(qBankAveGradeLabel);
-
+		qDetailPanel.add(Box.createVerticalGlue());
+	
 		qSelectDetailPanel.add(qSelectPanel);
 		// spacing between the question bank panel and the details panel
 		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(25, 0)));
@@ -118,16 +130,16 @@ public class WelcomeGui extends JFrame implements ActionListener {
 
 		mainPanel.add(qSelectDetailPanel);
 
-		mainPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-		previewScrollPane.setPreferredSize(new Dimension(175, 100));
+		previewScrollPane.setPreferredSize(new Dimension(175, 150));
 		previewPanel.add(previewScrollPane);
 
 		mainPanel.add(previewPanel);
 
 		add(mainPanel);
 
-		setSize(500, 310);
+		setSize(500, 420);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -161,10 +173,12 @@ public class WelcomeGui extends JFrame implements ActionListener {
 			out.writeObject(qSet);
 			out.close();
 			fileOut.close();
-			System.out.println("Quiz Set Serialized successfully");
+
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}
+
+		JOptionPane.showMessageDialog(this, "Quiz Set Created Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public void display() {
