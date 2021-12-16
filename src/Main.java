@@ -49,7 +49,7 @@ public class Main {
 		//								 args[2],
 		//								 args[3]);
 
-		QuizGui qGui = new QuizGui();
+		WelcomeGui qGui = new WelcomeGui();
 
 		//qEng.getAllQuestions("chapterOne");
 		//qEng.generateQuiz(10);

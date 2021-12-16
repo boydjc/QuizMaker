@@ -56,7 +56,7 @@ public class WelcomeGui extends JFrame implements ActionListener {
 	private JScrollPane previewScrollPane = new JScrollPane(previewTable);
 
 
-	QuizGui() {
+	WelcomeGui() {
 
 		// JFrame configuration
 		super("QuizMaker");
@@ -151,7 +151,12 @@ public class WelcomeGui extends JFrame implements ActionListener {
 	// serializes the QuizSet object and saves it 
 	public void saveQuizSet(QuizSet qSet) {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("./data/" + qSet.getName());
+
+			// make a filename out of the set name 
+			// replace spaces with dash
+			String fileName = qSet.getName().replace(' ', '-');
+
+			FileOutputStream fileOut = new FileOutputStream("./data/" + fileName + ".ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(qSet);
 			out.close();
