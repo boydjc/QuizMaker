@@ -28,18 +28,9 @@ public class WelcomeGui extends JFrame implements ActionListener {
 
 	private JPanel qSelectSubPanelOne = new JPanel(); // contains q bank table
 
-	private String[] testTableColNames = {"Quiz Banks"};
+	private JTable qBankTable;
 
-	private Object[][] testTableData = {
-		{"Apple"},
-		{"Banana"},
-		{"Grape"},
-		{"Orange"}
-	};
-
-	private JTable qBankTable = new JTable(testTableData, testTableColNames);
-
-	private JScrollPane qBankTablePane = new JScrollPane(qBankTable);
+	private JScrollPane qBankTablePane = new JScrollPane();
 
 	private JPanel qSelectSubPanelTwo = new JPanel(); // contains q bank start edit and delete
 
@@ -88,7 +79,6 @@ public class WelcomeGui extends JFrame implements ActionListener {
 
 		// deserialize each filename
 		for(String pathname : pathnames) {
-			System.out.print(pathname);
 			this.loadQuizSet(savedQSetPath + pathname);
 		}
 
@@ -124,8 +114,12 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		qSelectStartButton.addActionListener(this);
 		qSelectSubPanelTwo.add(qSelectStartButton);
 		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(5, 0)));
+
+		qSelectEditButton.addActionListener(this);
 		qSelectSubPanelTwo.add(qSelectEditButton);
 		qSelectSubPanelTwo.add(Box.createRigidArea(new Dimension(5, 0)));
+
+		qSelectDeleteButton.addActionListener(this);
 		qSelectSubPanelTwo.add(qSelectDeleteButton);
 
 		qSelectPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -177,6 +171,15 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		if(source instanceof JButton) {
 			if(((JButton) source).getText().equals("Start")) {
 				System.out.println("Start button clicked.");
+
+			}else if(((JButton) source).getText().equals("Edit")) {
+	
+				System.out.println("Edit button clicked");
+
+			}else if(((JButton) source).getText().equals("Delete")) {
+
+				System.out.println("Delete button clicked");
+
 			}else if(((JButton) source).getText().equals("Create New")) {
 				String newSetName = JOptionPane.showInputDialog(this, "New Quiz Bank Name?", null);
 
