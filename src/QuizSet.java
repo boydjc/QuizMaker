@@ -1,23 +1,19 @@
 import java.util.ArrayList;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class QuizSet implements java.io.Serializable {
 	
 	private String name;
 	private int qNum;
-	private LocalDateTime createdDate;
+	private String createdDate;
 
-	private ArrayList<Question> qSet;
-
-	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	private ArrayList<Question> qSet;	
 
 	private int lastGrade;
 	private ArrayList<Integer> allGrades = new ArrayList<Integer>();
 
-	QuizSet(String nameIn) {
+	QuizSet(String nameIn, String createDateIn) {
 		this.name = nameIn;
-		this.setCreatedDate();
+		this.createdDate = createDateIn;
 	}
 
 	public String getName() {
@@ -35,12 +31,11 @@ public class QuizSet implements java.io.Serializable {
 
 	// returns the formatted version of the created date
 	public String getCreatedDate() {
-		String formattedDate = this.createdDate.format(this.dtFormat);
-		return formattedDate;
+		return this.createdDate;	
 	}
 
-	public void setCreatedDate() {
-		this.createdDate = LocalDateTime.now();
+	public void setCreatedDate(String createDateIn) {
+		this.createdDate = createDateIn;
 	}
 
 	public void addQuestion(Question q) {
