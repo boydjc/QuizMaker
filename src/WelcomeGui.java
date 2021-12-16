@@ -1,8 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
 
-public class QuizGui extends JFrame implements ActionListener{
+public class WelcomeGui extends JFrame implements ActionListener {
 
 	private JPanel mainPanel = new JPanel();
 
@@ -53,7 +56,7 @@ public class QuizGui extends JFrame implements ActionListener{
 	private JScrollPane previewScrollPane = new JScrollPane(previewTable);
 
 
-	QuizGui() {
+	WelcomeGui() {
 
 		// JFrame configuration
 		super("QuizMaker");
@@ -134,8 +137,33 @@ public class QuizGui extends JFrame implements ActionListener{
 			if(((JButton) source).getText().equals("Start")) {
 				System.out.println("Start button clicked.");
 			}else if(((JButton) source).getText().equals("Create New")) {
-				System.out.println("Create new button clicked.");
+				String newSetName = JOptionPane.showInputDialog(this, "New Quiz Bank Name?", null);
+
+				// create the new quiz set with the name
+				QuizSet newQSet = new QuizSet(newSetName);
+
+				// go ahead and save the set
+				this.saveQuizSet(newQSet);
 			}
+		}
+	}
+
+	// serializes the QuizSet object and saves it 
+	public void saveQuizSet(QuizSet qSet) {
+		try {
+
+			// make a filename out of the set name 
+			// replace spaces with dash
+			String fileName = qSet.getName().replace(' ', '-');
+
+			FileOutputStream fileOut = new FileOutputStream("./data/" + fileName + ".ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(qSet);
+			out.close();
+			fileOut.close();
+			System.out.println("Quiz Set Serialized successfully");
+		}catch(IOException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 
