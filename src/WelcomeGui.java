@@ -18,6 +18,8 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 	private ArrayList<QuizSet> savedQSets = new ArrayList<QuizSet>();
 
+	private QuizSet selectedSet;
+
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	private JPanel mainPanel = new JPanel();
@@ -221,14 +223,22 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 			JTable tableClicked = (JTable) source;
 
+			// get the name of the selected bank
 			if(tableClicked.getColumnName(0).equals("Quiz Banks")) {
 				
 				int rowSelected = tableClicked.getSelectedRow();
 
 				String bankName = tableClicked.getValueAt(rowSelected, 0).toString();
 
-				System.out.println(bankName);
-			}
+				// go through the saved quiz bank sets and get the correct one
+				for(int i=0; i<savedQSets.size(); i++) {
+					if(savedQSets.get(i).getName().equals(bankName)) {
+						selectedSet = savedQSets.get(i);
+					}
+				}
+			}		
+
+			System.out.println("Quiz Set " + selectedSet.getName() + " selected.");
 		}	
 	}
 
