@@ -46,11 +46,11 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 
 	private JPanel qDetailPanel = new JPanel();
-	private JLabel qBankNameLabel = new JLabel("Name: Random Questions");
-	private JLabel qBankCreatedLabel = new JLabel("Created: 2021-12-14 12:05:45");
-	private JLabel qBankQNumLabel = new JLabel("Number of Questions: 20");
-	private JLabel qBankLastGradeLabel = new JLabel("Last Grade: 95%");
-	private JLabel qBankAveGradeLabel = new JLabel("Average Grade: 60%");
+	private JLabel qBankNameLabel = new JLabel("Name: ");
+	private JLabel qBankCreatedLabel = new JLabel("Created: ");
+	private JLabel qBankQNumLabel = new JLabel("Number of Questions: ");
+	private JLabel qBankLastGradeLabel = new JLabel("Last Grade: ");
+	private JLabel qBankAveGradeLabel = new JLabel("Average Grade: ");
 
 	private JPanel previewPanel = new JPanel();
 
@@ -236,9 +236,15 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 						selectedSet = savedQSets.get(i);
 					}
 				}
-			}		
 
-			System.out.println("Quiz Set " + selectedSet.getName() + " selected.");
+				// change all of the detail labels to information for the selected set
+				qBankNameLabel.setText("Name: " + selectedSet.getName());
+				qBankCreatedLabel.setText("Created: " + selectedSet.getCreatedDate());
+				qBankQNumLabel.setText("Number of Questions: " + String.valueOf(selectedSet.getQNum()));
+				qBankLastGradeLabel.setText("Last Grade: " + String.valueOf(selectedSet.getLastGrade()));
+				qBankAveGradeLabel.setText("Average Grade: " + String.valueOf(selectedSet.getAveGrade()));
+
+			}		
 		}	
 	}
 

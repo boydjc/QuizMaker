@@ -3,10 +3,10 @@ import java.util.ArrayList;
 public class QuizSet implements java.io.Serializable {
 	
 	private String name;
-	private int qNum;
+	private int qNum = 0;
 	private String createdDate;
 
-	private ArrayList<Question> qSet;	
+	private ArrayList<Question> qSet = new ArrayList<Question>();	
 
 	private int lastGrade = 0;
 	private ArrayList<Integer> allGrades = new ArrayList<Integer>();
@@ -61,12 +61,16 @@ public class QuizSet implements java.io.Serializable {
 	public int getAveGrade() {
 		int aveGrade = 0;
 
-		for(int i=0; i<this.allGrades.size(); i++) {
-			aveGrade += allGrades.get(i);
+		if(allGrades.size() > 0 ) {
+			for(int i=0; i<this.allGrades.size(); i++) {
+				aveGrade += allGrades.get(i);
+			}
+
+			aveGrade /= allGrades.size();
+
+			return aveGrade;
 		}
 
-		aveGrade /= allGrades.size();
-
-		return aveGrade;
+		return 0;
 	}
 }
