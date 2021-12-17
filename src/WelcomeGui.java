@@ -88,7 +88,7 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocation(60, 60);
-		setLayout(new FlowLayout());
+		setLayout(new CardLayout(30, 15));
 		
 		// set layouts for panels
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
