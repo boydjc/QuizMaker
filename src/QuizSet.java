@@ -8,7 +8,7 @@ public class QuizSet implements java.io.Serializable {
 
 	private ArrayList<Question> qSet;	
 
-	private int lastGrade;
+	private int lastGrade = 0;
 	private ArrayList<Integer> allGrades = new ArrayList<Integer>();
 
 	QuizSet(String nameIn, String createDateIn) {

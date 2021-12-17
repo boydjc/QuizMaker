@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class WelcomeGui extends JFrame implements ActionListener {
+public class WelcomeGui extends JFrame implements ActionListener, MouseListener {
 
 	private String savedQSetPath = "./data/";
 
 	private ArrayList<QuizSet> savedQSets = new ArrayList<QuizSet>();
+
+	private QuizSet selectedSet;
 
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -85,6 +87,9 @@ public class WelcomeGui extends JFrame implements ActionListener {
 		// create table for Quiz Banks
 		this.createTable(this.savedQSets, "set");
 
+		qBankTable.addMouseListener(this);
+
+		// settings for the JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocation(60, 60);
@@ -192,6 +197,49 @@ public class WelcomeGui extends JFrame implements ActionListener {
 				this.saveQuizSet(newQSet);
 			}
 		}
+	}
+
+	public void mousePressed(MouseEvent e) {
+		// not used
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		// not used
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		// not used
+	}
+
+	public void mouseExited(MouseEvent e) {
+		// not used
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		
+		Object source = e.getSource();
+
+		if(source instanceof JTable) {
+
+			JTable tableClicked = (JTable) source;
+
+			// get the name of the selected bank
+			if(tableClicked.getColumnName(0).equals("Quiz Banks")) {
+				
+				int rowSelected = tableClicked.getSelectedRow();
+
+				String bankName = tableClicked.getValueAt(rowSelected, 0).toString();
+
+				// go through the saved quiz bank sets and get the correct one
+				for(int i=0; i<savedQSets.size(); i++) {
+					if(savedQSets.get(i).getName().equals(bankName)) {
+						selectedSet = savedQSets.get(i);
+					}
+				}
+			}		
+
+			System.out.println("Quiz Set " + selectedSet.getName() + " selected.");
+		}	
 	}
 
 	// serializes the QuizSet object and saves it 
