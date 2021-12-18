@@ -16,7 +16,7 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 	private String savedQSetPath = "./data/";
 
-	private ArrayList<QuizSet> savedQSets = new ArrayList<QuizSet>();
+	private ArrayList<QuizSet> savedQSets;
 
 	private QuizSet selectedSet;
 
@@ -73,19 +73,8 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 		// JFrame configuration
 		super("QuizMaker");
 
-		// get the list of saved quiz set files from the directory
-
-		File savedQSetsNames = new File(savedQSetPath);
-
-		String[] pathnames = savedQSetsNames.list();
-
-		// deserialize each filename
-		for(String pathname : pathnames) {
-			this.loadQuizSet(savedQSetPath + pathname);
-		}
-
 		// create table for Quiz Banks
-		this.createTable(this.savedQSets, "set");
+		this.createTable("set");
 
 		qBankTable.addMouseListener(this);
 
@@ -195,6 +184,10 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 				// go ahead and save the set
 				this.saveQuizSet(newQSet);
+
+				// refresh the quiz bank table to show the newly created quiz set
+				this.createTable("set");
+
 			}
 		}
 	}
@@ -242,6 +235,7 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 		}	
 	}
 
+
 	// serializes the QuizSet object and saves it 
 	private void saveQuizSet(QuizSet qSet) {
 		try {
@@ -271,7 +265,9 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 			QuizSet loadedSet = (QuizSet) in.readObject();
 
-			savedQSets.add(loadedSet);
+			if(!(savedQSets.contains(loadedSet))){
+				savedQSets.add(loadedSet);
+			}
 
 			in.close();
 			fileIn.close();
@@ -286,7 +282,7 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 	// recreates either the QuizSet bank table or the preview table with
 	// new data. if param type = 'set' we do the QuizSet table, if it is 
 	// 'preview' we do the preview table
-	private void createTable(ArrayList<QuizSet> qSets, String type) {
+	private void createTable(String type) {
 
 		// make a new table model
 		DefaultTableModel tModel = new DefaultTableModel() {
@@ -296,17 +292,33 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 		};
 
 		if(type.equals("set")) {	
+
+			// clear the saved quiz sets
+			savedQSets = new ArrayList<QuizSet>();
+
+			// get the list of saved quiz set files from the directory
+			File savedQSetsNames = new File(savedQSetPath);
+	
+			String[] pathnames = savedQSetsNames.list();
+
+			// deserialize each filename
+			for(String pathname : pathnames) {
+				this.loadQuizSet(savedQSetPath + pathname);
+			}
+
 			// set the headers
 			String[] header = {"Quiz Banks"};
 			tModel.setColumnIdentifiers(header);
 
 			// set the table rows
-			for(int i=0; i<qSets.size(); i++) {
-				String[] tableRow = {qSets.get(i).getName()};
+			for(int i=0; i<savedQSets.size(); i++) {
+				String[] tableRow = {savedQSets.get(i).getName()};
 				tModel.addRow(tableRow);
 			}
 
 			qBankTable = new JTable(tModel);
+			// readd the mouse listener to the table if refreshing
+			qBankTable.addMouseListener(this);
 			qBankTablePane.setViewportView(qBankTable);
 			qBankTablePane.repaint();
 		}
