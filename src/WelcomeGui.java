@@ -46,6 +46,9 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 
 	private JPanel qDetailPanel = new JPanel();
+
+	private Font detailLabelFont = new Font("Serif", Font.PLAIN, 17);
+
 	private JLabel qBankNameLabel = new JLabel("Name: ");
 	private JLabel qBankCreatedLabel = new JLabel("Created: ");
 	private JLabel qBankQNumLabel = new JLabel("Number of Questions: ");
@@ -126,21 +129,32 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 		// qDetailPanel
 		// add a little bit of spacing between each of the labels	
+		
+		qBankNameLabel.setFont(detailLabelFont);
 		qDetailPanel.add(qBankNameLabel);
 		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		qBankCreatedLabel.setFont(detailLabelFont);
 		qDetailPanel.add(qBankCreatedLabel);
 		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		qBankQNumLabel.setFont(detailLabelFont);
 		qDetailPanel.add(qBankQNumLabel);
 		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		qBankLastGradeLabel.setFont(detailLabelFont);
 		qDetailPanel.add(qBankLastGradeLabel);
 		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		qBankAveGradeLabel.setFont(detailLabelFont);
 		qDetailPanel.add(qBankAveGradeLabel);
 		qDetailPanel.add(Box.createVerticalGlue());
 	
 		qSelectDetailPanel.add(qSelectPanel);
 		// spacing between the question bank panel and the details panel
-		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(25, 0)));
+		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(50, 0)));
 		qSelectDetailPanel.add(qDetailPanel);
+		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(100, 0)));
 
 
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -156,7 +170,7 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 		add(mainPanel);
 
-		setSize(500, 420);
+		setSize(600, 520);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -266,11 +280,11 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 				}
 
 				// change all of the detail labels to information for the selected set
-				qBankNameLabel.setText("Name: " + selectedSet.getName());
-				qBankCreatedLabel.setText("Created: " + selectedSet.getCreatedDate());
-				qBankQNumLabel.setText("Number of Questions: " + String.valueOf(selectedSet.getQNum()));
-				qBankLastGradeLabel.setText("Last Grade: " + String.valueOf(selectedSet.getLastGrade()));
-				qBankAveGradeLabel.setText("Average Grade: " + String.valueOf(selectedSet.getAveGrade()));
+				qBankNameLabel.setText("Name:    " + selectedSet.getName());
+				qBankCreatedLabel.setText("Created:    " + selectedSet.getCreatedDate());
+				qBankQNumLabel.setText("Number of Questions:    " + String.valueOf(selectedSet.getQNum()));
+				qBankLastGradeLabel.setText("Last Grade:    " + String.valueOf(selectedSet.getLastGrade()));
+				qBankAveGradeLabel.setText("Average Grade:    " + String.valueOf(selectedSet.getAveGrade()));
 
 			}		
 		}	
@@ -356,6 +370,8 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 			}
 
 			qBankTable = new JTable(tModel);
+			qBankTable.setRowHeight(25);
+			qBankTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
 			// read the mouse listener if we are refreshing
 			qBankTable.addMouseListener(this);
 			qBankTablePane.setViewportView(qBankTable);
