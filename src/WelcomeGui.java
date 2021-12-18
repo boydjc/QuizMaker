@@ -18,7 +18,7 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 	private ArrayList<QuizSet> savedQSets = new ArrayList<QuizSet>();
 
-	private QuizSet selectedSet;
+	private QuizSet selectedSet = null;
 
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -163,16 +163,52 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 		Object source = e.getSource();
 
 		if(source instanceof JButton) {
+
 			if(((JButton) source).getText().equals("Start")) {
-				System.out.println("Start button clicked.");
+
+				if(selectedSet != null) {
+					System.out.println("Start button clicked.");
+				}else {
+					JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
 
 			}else if(((JButton) source).getText().equals("Edit")) {
-	
-				System.out.println("Edit button clicked");
+
+				if(selectedSet != null) {
+					System.out.println("Edit button clicked");
+				}else{
+					JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
 
 			}else if(((JButton) source).getText().equals("Delete")) {
 
-				System.out.println("Delete button clicked");
+				if(selectedSet != null) {
+
+					int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this set?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+					if(n == 0) {
+						File fileObj = new File(savedQSetPath + selectedSet.getFileName());
+				
+						if(fileObj.delete()) {
+							JOptionPane.showMessageDialog(this, "File Deleted Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+						}else {
+							JOptionPane.showMessageDialog(this, "Unable to delete file", "ERROR", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+
+					// recreate the table
+					this.createTable("set");
+
+					// clear the detail labels
+					qBankNameLabel.setText("Name: ");
+					qBankCreatedLabel.setText("Created: ");
+					qBankQNumLabel.setText("Number of Questions: ");
+					qBankLastGradeLabel.setText("Last Grade: ");
+					qBankAveGradeLabel.setText("Average Grade: ");
+
+				}else {
+					JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
 
 			}else if(((JButton) source).getText().equals("Create New")) {
 				String newSetName = JOptionPane.showInputDialog(this, "New Quiz Bank Name?", null);
@@ -247,6 +283,7 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 			// make a filename out of the set name 
 			// replace spaces with dash
 			String fileName = qSet.getName().replace(' ', '-');
+			qSet.setFileName(fileName + ".ser");
 
 			FileOutputStream fileOut = new FileOutputStream("./data/" + fileName + ".ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);

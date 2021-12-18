@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class QuizSet implements java.io.Serializable {
 	
 	private String name;
+	private String fileName;
 	private int qNum = 0;
 	private String createdDate;
 
@@ -22,6 +23,14 @@ public class QuizSet implements java.io.Serializable {
 
 	public void setName(String n) {
 		this.name = n;
+	}
+
+	public String getFileName() {
+		return this.fileName;
+	}
+
+	public void setFileName(String n) {
+		this.fileName = n;
 	}
 
 	// gets the number of questions in the set
