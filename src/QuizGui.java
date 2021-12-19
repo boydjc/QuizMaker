@@ -80,11 +80,19 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	// END MAIN PANEL COMPONENTS
 
-	private JPanel testPanel = new JPanel();
+	// START EDIT PANEL COMPONENTS
 
-	private JLabel testLabel = new JLabel("TEST LABEL");
+	private JPanel editPanel = new JPanel();
+
+	private JScrollPane editTablePane = new JScrollPane();
+		
+	private JTable editTable;
+
+	private JPanel editButtonPanel = new JPanel();
 
 	private JButton testBackButton = new JButton("Back");
+
+	// END EDIT PANEL COMPONENTS
 
 	QuizGui() {
 
@@ -190,20 +198,27 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		// END MAIN PANEL CONFIGURATION
 
-		testPanel.setLayout(new BoxLayout(testPanel, BoxLayout.PAGE_AXIS));
+		// START EDIT PANEL CONFIGURATION
 
-		testPanel.add(testLabel);
+		editPanel.setLayout(new BoxLayout(editPanel, BoxLayout.PAGE_AXIS));
+		editButtonPanel.setLayout(new BoxLayout(editButtonPanel, BoxLayout.LINE_AXIS));
+
+		editPanel.add(editTablePane);
+		
 		testBackButton.addActionListener(this);
-		testPanel.add(testBackButton);
+		editButtonPanel.add(testBackButton);
+		editPanel.add(editButtonPanel);
+
+		// END EDIT PANEL CONFIGURATION
 
 		mainPanel.setPreferredSize(new Dimension(500, 400));
 		mainPanel.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(mainPanel, "main");
-		containerPanel.add(testPanel, "test");
+		containerPanel.add(editPanel, "edit");
 		
 		add(containerPanel);
 
-		setSize(550, 470);
+		setSize(550, 525);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -227,8 +242,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					if(selectedSet != null) {
 						System.out.println("Edit button clicked");
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
-						currentlyShownPanel = "test";
+
+						// switch to the edit panel
+						currentlyShownPanel = "edit";
 						cl.show(containerPanel, currentlyShownPanel);
+
+						// change the title for the newly shown panel
+						setTitle(selectedSet.getName() + "(Editing)");
+
+						// draw the edit table
+						createTable("edit");
 					}else{
 						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
@@ -288,11 +311,12 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						}
 					}
 				}
-			}else if(currentlyShownPanel.equals("test")) {
+			}else if(currentlyShownPanel.equals("edit")) {
 				if(((JButton) source).getText().equals("Back")) {
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "main";
 					cl.show(containerPanel, currentlyShownPanel);
+					setTitle("QuizMaker");
 				}	
 			}
 		}
@@ -392,7 +416,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	// recreates either the QuizSet bank table or the preview table with
 	// new data. if param type = 'set' we do the QuizSet table, if it is 
 	// 'preview' we do the preview table
-	private void createTable(String type) {
+	private void createTable(String tableType) {
 
 		// make a new table model
 		DefaultTableModel tModel = new DefaultTableModel() {
@@ -401,7 +425,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 			}
 		};
 
-		if(type.equals("set")) {	
+		if(tableType.equals("set")) {	
 
 			savedQSets = new ArrayList<QuizSet>();
 
@@ -433,9 +457,27 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 			qBankTable.addMouseListener(this);
 			qBankTablePane.setViewportView(qBankTable);
 			qBankTablePane.repaint();
+		}else if(tableType.equals("edit")) {
+
+			// get all of the questions for the selected set
+			ArrayList<Question> selSetQuestions = selectedSet.getAllQuestions();
+			
+			// set the header for the table
+			String[] header = {selectedSet.getName() + " Questions"};
+			tModel.setColumnIdentifiers(header);
+
+			// set the table rows
+			for(int i=0; i<selSetQuestions.size(); i++) {
+				String[] tableRow = {selSetQuestions.get(i).getQuesText()};
+				tModel.addRow(tableRow);
+			}
+
+			editTable = new JTable(tModel);
+			editTable.setRowHeight(25);
+			editTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
+			editTablePane.setViewportView(editTable);
+			editTablePane.repaint();
 		}
-
-
 	}
 
 	public void display() {

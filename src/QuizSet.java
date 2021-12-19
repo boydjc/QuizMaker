@@ -47,6 +47,10 @@ public class QuizSet implements java.io.Serializable {
 		this.createdDate = createDateIn;
 	}
 
+	public ArrayList<Question> getAllQuestions() {
+		return this.qSet;
+	}
+
 	public void addQuestion(Question q) {
 		this.qSet.add(q);
 	}
