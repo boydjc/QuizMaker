@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class WelcomeGui extends JFrame implements ActionListener, MouseListener {
+public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	private String savedQSetPath = "./data/";
 
@@ -86,7 +86,7 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 	private JButton testBackButton = new JButton("Back");
 
-	WelcomeGui() {
+	QuizGui() {
 
 		// JFrame configuration
 		super("QuizMaker");
@@ -266,18 +266,27 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 					}
 
 				}else if(((JButton) source).getText().equals("Create New")) {
-					String newSetName = JOptionPane.showInputDialog(this, "New Quiz Bank Name?", null);
+					String newSetName = null;
 
-					String createdDate = LocalDateTime.now().format(dtFormat);
+					newSetName = JOptionPane.showInputDialog(this, "New Quiz Bank Name?", null);
+
+					if(newSetName != null) {
+						if(!(newSetName.equals(""))) {
+
+							String createdDate = LocalDateTime.now().format(dtFormat);
 			
-					// create the new quiz set with the name
-					QuizSet newQSet = new QuizSet(newSetName, createdDate);
+							// create the new quiz set with the name
+							QuizSet newQSet = new QuizSet(newSetName, createdDate);
 
-					// go ahead and save the set
-					this.saveQuizSet(newQSet);
+							// go ahead and save the set
+							this.saveQuizSet(newQSet);
 
-					// recreate the table with the new created set
-					this.createTable("set");
+							// recreate the table with the new created set
+							this.createTable("set");
+						}else if(newSetName.equals("")) {
+							JOptionPane.showMessageDialog(this, "Your quiz set must have a name.", "ERROR", JOptionPane.ERROR_MESSAGE);
+						}
+					}
 				}
 			}else if(currentlyShownPanel.equals("test")) {
 				if(((JButton) source).getText().equals("Back")) {
