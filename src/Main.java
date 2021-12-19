@@ -13,7 +13,7 @@ public class Main {
 		//								 args[2],
 		//								 args[3]);
 
-		WelcomeGui qGui = new WelcomeGui();
+		QuizGui qGui = new QuizGui();
 
 		//qEng.getAllQuestions("chapterOne");
 		//qEng.generateQuiz(10);
