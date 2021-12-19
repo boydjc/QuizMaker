@@ -22,6 +22,14 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+	private JPanel containerPanel = new JPanel(); // used for the CardLayout
+
+	// keeps track of what panel is currently being shown in the CardLayout
+	// used to control what action is taken when a button is being pressed on the shown panel
+	private String currentlyShownPanel = "main"; 
+
+	// START MAIN PANEL COMPONENTS
+
 	private JPanel mainPanel = new JPanel();
 
 	private JPanel qSelectDetailPanel = new JPanel();
@@ -70,23 +78,35 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 	private JTable previewTable = new JTable(previewTestTableData, previewTestTableColNames);
 	private JScrollPane previewScrollPane = new JScrollPane(previewTable);
 
+	// END MAIN PANEL COMPONENTS
+
+	private JPanel testPanel = new JPanel();
+
+	private JLabel testLabel = new JLabel("TEST LABEL");
+
+	private JButton testBackButton = new JButton("Back");
 
 	WelcomeGui() {
 
 		// JFrame configuration
 		super("QuizMaker");
 
-		// create table for Quiz Banks
-		this.createTable("set");
-
-		qBankTable.addMouseListener(this);
-
 		// settings for the JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setLocation(60, 60);
-		setLayout(new CardLayout(30, 15));
-		
+		setLayout(new FlowLayout());
+
+		containerPanel.setLayout(new CardLayout());
+
+
+		// START MAIN PANEL CONFIGURATION
+
+		// create table for Quiz Banks
+		this.createTable("set");
+
+		qBankTable.addMouseListener(this);
+	
 		// set layouts for panels
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
 
@@ -168,75 +188,103 @@ public class WelcomeGui extends JFrame implements ActionListener, MouseListener 
 
 		mainPanel.add(previewPanel);
 
-		add(mainPanel);
+		// END MAIN PANEL CONFIGURATION
 
-		setSize(600, 520);
+		testPanel.setLayout(new BoxLayout(testPanel, BoxLayout.PAGE_AXIS));
+
+		testPanel.add(testLabel);
+		testBackButton.addActionListener(this);
+		testPanel.add(testBackButton);
+
+		mainPanel.setPreferredSize(new Dimension(500, 400));
+		mainPanel.setMaximumSize(new Dimension(500, 400));
+		containerPanel.add(mainPanel, "main");
+		containerPanel.add(testPanel, "test");
+		
+		add(containerPanel);
+
+		setSize(550, 470);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 
+		// process JButton events
 		if(source instanceof JButton) {
 
-			if(((JButton) source).getText().equals("Start")) {
+			if(currentlyShownPanel.equals("main")) {
 
-				if(selectedSet != null) {
-					System.out.println("Start button clicked.");
-				}else {
-					JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
+				if(((JButton) source).getText().equals("Start")) {
 
-			}else if(((JButton) source).getText().equals("Edit")) {
+					if(selectedSet != null) {
+						System.out.println("Start button clicked.");
+					}else {
+						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}	
 
-				if(selectedSet != null) {
-					System.out.println("Edit button clicked");
-				}else{
-					JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
+				}else if(((JButton) source).getText().equals("Edit")) {
 
-			}else if(((JButton) source).getText().equals("Delete")) {
-
-				if(selectedSet != null) {
-
-					int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this set?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-
-					if(n == 0) {
-						File fileObj = new File(savedQSetPath + selectedSet.getFileName());
-				
-						if(fileObj.delete()) {
-							JOptionPane.showMessageDialog(this, "File Deleted Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
-						}else {
-							JOptionPane.showMessageDialog(this, "Unable to delete file", "ERROR", JOptionPane.ERROR_MESSAGE);
-						}
+					if(selectedSet != null) {
+						System.out.println("Edit button clicked");
+						CardLayout cl = (CardLayout) containerPanel.getLayout();
+						currentlyShownPanel = "test";
+						cl.show(containerPanel, currentlyShownPanel);
+					}else{
+						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 
-					// recreate the table
-					this.createTable("set");
+				}else if(((JButton) source).getText().equals("Delete")) {
 
-					// clear the detail labels
-					qBankNameLabel.setText("Name: ");
-					qBankCreatedLabel.setText("Created: ");
-					qBankQNumLabel.setText("Number of Questions: ");
-					qBankLastGradeLabel.setText("Last Grade: ");
-					qBankAveGradeLabel.setText("Average Grade: ");
+					if(selectedSet != null) {
 
-				}else {
-					JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
+						int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this set?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-			}else if(((JButton) source).getText().equals("Create New")) {
-				String newSetName = JOptionPane.showInputDialog(this, "New Quiz Bank Name?", null);
+						if(n == 0) {
+							File fileObj = new File(savedQSetPath + selectedSet.getFileName());
+				
+							if(fileObj.delete()) {
+								JOptionPane.showMessageDialog(this, "File Deleted Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+								// set the selected set back to null so the user can't click the edit/delete on a set that doesn't exist
+								selectedSet = null;
+							}else {
+								JOptionPane.showMessageDialog(this, "Unable to delete file", "ERROR", JOptionPane.ERROR_MESSAGE);
+							}
+						}
 
-				String createdDate = LocalDateTime.now().format(dtFormat);
+						// recreate the table
+						this.createTable("set");
+
+						// clear the detail labels
+						qBankNameLabel.setText("Name: ");
+						qBankCreatedLabel.setText("Created: ");
+						qBankQNumLabel.setText("Number of Questions: ");
+						qBankLastGradeLabel.setText("Last Grade: ");
+						qBankAveGradeLabel.setText("Average Grade: ");
+
+					}else {
+						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
+
+				}else if(((JButton) source).getText().equals("Create New")) {
+					String newSetName = JOptionPane.showInputDialog(this, "New Quiz Bank Name?", null);
+
+					String createdDate = LocalDateTime.now().format(dtFormat);
 			
-				// create the new quiz set with the name
-				QuizSet newQSet = new QuizSet(newSetName, createdDate);
+					// create the new quiz set with the name
+					QuizSet newQSet = new QuizSet(newSetName, createdDate);
 
-				// go ahead and save the set
-				this.saveQuizSet(newQSet);
+					// go ahead and save the set
+					this.saveQuizSet(newQSet);
 
-				// recreate the table with the new created set
-				this.createTable("set");
+					// recreate the table with the new created set
+					this.createTable("set");
+				}
+			}else if(currentlyShownPanel.equals("test")) {
+				if(((JButton) source).getText().equals("Back")) {
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+					currentlyShownPanel = "main";
+					cl.show(containerPanel, currentlyShownPanel);
+				}	
 			}
 		}
 	}
