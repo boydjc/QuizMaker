@@ -97,6 +97,62 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	// END EDIT PANEL COMPONENTS
 
+	// START NEW QUESTION PANEL COMPONENTS
+
+	private JPanel newQuestionPaneView = new JPanel();
+
+	private JScrollPane newQuestionPane = new JScrollPane(newQuestionPaneView);
+
+	// Question type panel
+	private JPanel newQuestionQTypeLabelPanel = new JPanel();
+	private JLabel newQuestionQTypeLabel = new JLabel("Question Type");
+
+	private JPanel newQuestionQTypeSelPanel = new JPanel();
+	private JRadioButton multiChoiceOneAns = new JRadioButton();
+	private JLabel multiChoiceOneAnsLabel = new JLabel("Multiple Choice");
+	private JRadioButton multiChoiceMultiAns = new JRadioButton();
+	private JLabel multiChoiceMultiAnsLabel = new JLabel("Multiple Choice");
+	private JRadioButton fillInBlank = new JRadioButton();
+	private JLabel fillInBlankLabel = new JLabel("Fill in the Blank");
+
+	private ButtonGroup qTypeButtonGroup = new ButtonGroup();
+
+	// Question text panel
+	private JPanel newQuestionQTextLabelPanel = new JPanel();
+	private JLabel newQuestionQTextLabel = new JLabel("Question Text");
+
+	private JPanel newQuestionQTextPanel = new JPanel();
+	private JTextArea newQuestionQText = new JTextArea();
+
+	// Question choice panel
+	private JPanel newQuestionQChoiceLabelPanel = new JPanel();
+	private JLabel newQuestionQChoiceLabel = new JLabel("Question Choice 1");
+
+	private JPanel newQuestionQChoicePanel = new JPanel();
+	private JTextField newQuestionQChoice = new JTextField();
+
+	private JPanel newQuestionQChoiceButtonPanel = new JPanel();
+	private JButton newQuestionQChoiceAddButton = new JButton("Add");
+	private JButton newQuestionQChoiceRemButton = new JButton("Remove");
+
+	// Question answer panel
+	private JPanel newQuestionQAnsLabelPanel = new JPanel();
+	private JLabel newQuestionQAnsLabel = new JLabel("Question Answer 1");
+
+	private JPanel newQuestionQAnsPanel = new JPanel();
+	private JTextField newQuestionQAns = new JTextField();
+
+	private JPanel newQuestionQAnsButtonPanel = new JPanel();
+	private JButton newQuestionQAnsAddButton = new JButton("Add");
+	private JButton newQuestionQAnsRemButton = new JButton("Remove");
+
+	// Question Save button panel
+	private JPanel newQuestionQSavePanel = new JPanel();
+	private JButton newQuestionQSaveButton = new JButton("Save");
+	private JButton newQuestionQExitButton = new JButton("Exit");
+
+	// END NEW QUESTION PANEL COMPONENTS
+
 	QuizGui() {
 
 		// JFrame configuration
@@ -232,10 +288,104 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		// END EDIT PANEL CONFIGURATION
 
+		// START NEW QUESTION PANEL CONFIGURATION
+
+		// set layouts
+
+		newQuestionQTypeLabelPanel.setLayout(new BoxLayout(newQuestionQTypeLabelPanel,
+											 BoxLayout.LINE_AXIS));
+		
+		newQuestionQTypeSelPanel.setLayout(new BoxLayout(newQuestionQTypeSelPanel,
+											BoxLayout.LINE_AXIS));
+
+		newQuestionQTextLabelPanel.setLayout(new BoxLayout(newQuestionQTextLabelPanel,
+											 BoxLayout.LINE_AXIS));
+
+		newQuestionQTextPanel.setLayout(new BoxLayout(newQuestionQTextPanel,
+										BoxLayout.PAGE_AXIS));
+
+		newQuestionQChoiceLabelPanel.setLayout(new BoxLayout(newQuestionQChoiceLabelPanel,
+												BoxLayout.LINE_AXIS));
+
+		newQuestionQChoicePanel.setLayout(new BoxLayout(newQuestionQChoicePanel,
+											BoxLayout.PAGE_AXIS));
+
+		newQuestionQChoiceButtonPanel.setLayout(new BoxLayout(newQuestionQChoiceButtonPanel,
+												BoxLayout.LINE_AXIS));
+
+		newQuestionQAnsLabelPanel.setLayout(new BoxLayout(newQuestionQAnsLabelPanel,
+												BoxLayout.LINE_AXIS));
+
+		newQuestionQAnsPanel.setLayout(new BoxLayout(newQuestionQAnsPanel,
+											BoxLayout.PAGE_AXIS));
+
+		newQuestionQAnsButtonPanel.setLayout(new BoxLayout(newQuestionQAnsButtonPanel,
+												BoxLayout.LINE_AXIS));
+
+		newQuestionQSavePanel.setLayout(new BoxLayout(newQuestionQSavePanel,
+										BoxLayout.LINE_AXIS));
+
+		newQuestionPaneView.setLayout(new BoxLayout(newQuestionPaneView, BoxLayout.PAGE_AXIS));
+
+		// add components
+
+		newQuestionQTypeLabelPanel.add(newQuestionQTypeLabel);
+
+		qTypeButtonGroup.add(multiChoiceOneAns);
+		qTypeButtonGroup.add(multiChoiceMultiAns);
+		qTypeButtonGroup.add(fillInBlank);
+
+		newQuestionQTypeSelPanel.add(multiChoiceOneAns);
+		newQuestionQTypeSelPanel.add(multiChoiceOneAnsLabel);
+		newQuestionQTypeSelPanel.add(multiChoiceMultiAns);
+		newQuestionQTypeSelPanel.add(multiChoiceMultiAnsLabel);
+		newQuestionQTypeSelPanel.add(fillInBlank);
+		newQuestionQTypeSelPanel.add(fillInBlankLabel);
+
+		newQuestionQTextLabelPanel.add(newQuestionQTextLabel);
+
+		newQuestionQTextPanel.add(newQuestionQText);
+
+		newQuestionQChoiceLabelPanel.add(newQuestionQChoiceLabel);
+
+		newQuestionQChoicePanel.add(newQuestionQChoice);
+
+		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceAddButton);
+		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceRemButton);
+
+		newQuestionQAnsLabelPanel.add(newQuestionQAnsLabel);
+
+		newQuestionQAnsPanel.add(newQuestionQAns);
+
+		newQuestionQAnsButtonPanel.add(newQuestionQAnsAddButton);
+		newQuestionQAnsButtonPanel.add(newQuestionQAnsRemButton);
+
+		newQuestionQSavePanel.add(newQuestionQSaveButton);
+		newQuestionQSavePanel.add(newQuestionQExitButton);
+
+		newQuestionPaneView.add(newQuestionQTypeLabelPanel);
+		newQuestionPaneView.add(newQuestionQTypeSelPanel);
+		newQuestionPaneView.add(newQuestionQTextLabelPanel);
+		newQuestionPaneView.add(newQuestionQTextPanel);
+		newQuestionPaneView.add(newQuestionQChoiceLabelPanel);
+		newQuestionPaneView.add(newQuestionQChoicePanel);
+		newQuestionPaneView.add(newQuestionQChoiceButtonPanel);
+		newQuestionPaneView.add(newQuestionQAnsLabelPanel);
+		newQuestionPaneView.add(newQuestionQAnsPanel);
+		newQuestionPaneView.add(newQuestionQAnsButtonPanel);
+		newQuestionPaneView.add(newQuestionQSavePanel);
+
+		// END NEW QUESTION PANEL CONFIGURATION
+
 		mainPanel.setPreferredSize(new Dimension(500, 400));
 		mainPanel.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(mainPanel, "main");
 		containerPanel.add(editPanel, "edit");
+
+		newQuestionPane.setPreferredSize(new Dimension(525, 400));
+		newQuestionPane.setMaximumSize(new Dimension(525, 400));
+		containerPanel.add(newQuestionPane, "newQuestion");
+
 		
 		add(containerPanel);
 
@@ -336,6 +486,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				if(((JButton) source).getText().equals("Add")) {
 
 					System.out.println("Edit Panel Add Button Pressed");
+
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+					currentlyShownPanel = "newQuestion";
+					cl.show(containerPanel, currentlyShownPanel);
+					setTitle(selectedSet.getName() + " New Question");
 
 				}else if(((JButton) source).getText().equals("Edit")) {
 
