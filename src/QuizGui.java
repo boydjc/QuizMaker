@@ -84,13 +84,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	private JPanel editPanel = new JPanel();
 
-	private JScrollPane editTablePane = new JScrollPane();
+	private JScrollPane editPanelTablePane = new JScrollPane();
 		
-	private JTable editTable;
+	private JTable editPanelTable;
 
-	private JPanel editButtonPanel = new JPanel();
+	private JPanel editPanelButtonPanel = new JPanel();
 
-	private JButton testBackButton = new JButton("Back");
+	private JButton editPanelAddButton = new JButton("Add");
+	private JButton editPanelEditButton = new JButton("Edit");
+	private JButton editPanelDeleteButton = new JButton("Delete");
+	private JButton editPanelSaveButton = new JButton("Save");
 
 	// END EDIT PANEL COMPONENTS
 
@@ -201,13 +204,31 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		// START EDIT PANEL CONFIGURATION
 
 		editPanel.setLayout(new BoxLayout(editPanel, BoxLayout.PAGE_AXIS));
-		editButtonPanel.setLayout(new BoxLayout(editButtonPanel, BoxLayout.LINE_AXIS));
+		editPanelButtonPanel.setLayout(new BoxLayout(editPanelButtonPanel, BoxLayout.LINE_AXIS));
 
-		editPanel.add(editTablePane);
+		editPanel.add(editPanelTablePane);
 		
-		testBackButton.addActionListener(this);
-		editButtonPanel.add(testBackButton);
-		editPanel.add(editButtonPanel);
+		// adding the buttons to the edit panel
+		editPanelAddButton.addActionListener(this);
+		editPanelButtonPanel.add(editPanelAddButton);
+
+		editPanelButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+		editPanelEditButton.addActionListener(this);
+		editPanelButtonPanel.add(editPanelEditButton);
+
+		editPanelButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+		editPanelDeleteButton.addActionListener(this);
+		editPanelButtonPanel.add(editPanelDeleteButton);
+
+		editPanelButtonPanel.add(Box.createRigidArea(new Dimension(180, 0)));
+
+		editPanelSaveButton.addActionListener(this);
+		editPanelButtonPanel.add(editPanelSaveButton);
+
+		editPanel.add(Box.createRigidArea(new Dimension(0, 15))); // some spacing between table and buttons
+		editPanel.add(editPanelButtonPanel);
 
 		// END EDIT PANEL CONFIGURATION
 
@@ -312,7 +333,19 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					}
 				}
 			}else if(currentlyShownPanel.equals("edit")) {
-				if(((JButton) source).getText().equals("Back")) {
+				if(((JButton) source).getText().equals("Add")) {
+
+					System.out.println("Edit Panel Add Button Pressed");
+
+				}else if(((JButton) source).getText().equals("Edit")) {
+
+					System.out.println("Edit Panel Edit Button Pressed");
+
+				}else if(((JButton) source).getText().equals("Delete")) {
+					
+					System.out.println("Edit Panel Delete Button Pressed");
+
+				}else if(((JButton) source).getText().equals("Save")) {
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "main";
 					cl.show(containerPanel, currentlyShownPanel);
@@ -472,11 +505,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				tModel.addRow(tableRow);
 			}
 
-			editTable = new JTable(tModel);
-			editTable.setRowHeight(25);
-			editTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
-			editTablePane.setViewportView(editTable);
-			editTablePane.repaint();
+			editPanelTable = new JTable(tModel);
+			editPanelTable.setRowHeight(25);
+			editPanelTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
+			editPanelTablePane.setViewportView(editPanelTable);
+			editPanelTablePane.repaint();
 		}
 	}
 
