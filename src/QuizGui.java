@@ -121,9 +121,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	private JPanel newQuestionQTextLabelPanel = new JPanel();
 	private JLabel newQuestionQTextLabel = new JLabel("Question Text");
 
-	private JPanel newQuestionQTextPanel = new JPanel();
-	private JTextArea newQuestionQText = new JTextArea();
-
+	private JTextArea newQuestionQText = new JTextArea(10, 10);
+	private JScrollPane newQuestionQTextPane = new JScrollPane(newQuestionQText);
+	
 	// Question choice panel
 	private JPanel newQuestionQChoiceLabelPanel = new JPanel();
 	private JLabel newQuestionQChoiceLabel = new JLabel("Question Choice 1");
@@ -301,9 +301,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionQTextLabelPanel.setLayout(new BoxLayout(newQuestionQTextLabelPanel,
 											 BoxLayout.LINE_AXIS));
 
-		newQuestionQTextPanel.setLayout(new BoxLayout(newQuestionQTextPanel,
-										BoxLayout.PAGE_AXIS));
-
 		newQuestionQChoiceLabelPanel.setLayout(new BoxLayout(newQuestionQChoiceLabelPanel,
 												BoxLayout.LINE_AXIS));
 
@@ -329,23 +326,30 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		// add components
 
+		newQuestionQTypeLabel.setFont(detailLabelFont);
 		newQuestionQTypeLabelPanel.add(newQuestionQTypeLabel);
 
 		qTypeButtonGroup.add(multiChoiceOneAns);
 		qTypeButtonGroup.add(multiChoiceMultiAns);
 		qTypeButtonGroup.add(fillInBlank);
 
+		multiChoiceOneAns.setSelected(true);
 		newQuestionQTypeSelPanel.add(multiChoiceOneAns);
 		newQuestionQTypeSelPanel.add(multiChoiceOneAnsLabel);
+		newQuestionQTypeSelPanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		newQuestionQTypeSelPanel.add(multiChoiceMultiAns);
 		newQuestionQTypeSelPanel.add(multiChoiceMultiAnsLabel);
+		newQuestionQTypeSelPanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		newQuestionQTypeSelPanel.add(fillInBlank);
 		newQuestionQTypeSelPanel.add(fillInBlankLabel);
 
+		newQuestionQTextLabel.setFont(detailLabelFont);
 		newQuestionQTextLabelPanel.add(newQuestionQTextLabel);
 
-		newQuestionQTextPanel.add(newQuestionQText);
+		newQuestionQText.setLineWrap(true);
+		newQuestionQText.setWrapStyleWord(true);
 
+		newQuestionQChoiceLabel.setFont(detailLabelFont);
 		newQuestionQChoiceLabelPanel.add(newQuestionQChoiceLabel);
 
 		newQuestionQChoicePanel.add(newQuestionQChoice);
@@ -353,6 +357,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceAddButton);
 		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceRemButton);
 
+		newQuestionQAnsLabel.setFont(detailLabelFont);
 		newQuestionQAnsLabelPanel.add(newQuestionQAnsLabel);
 
 		newQuestionQAnsPanel.add(newQuestionQAns);
@@ -363,10 +368,13 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionQSavePanel.add(newQuestionQSaveButton);
 		newQuestionQSavePanel.add(newQuestionQExitButton);
 
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 10)));
 		newQuestionPaneView.add(newQuestionQTypeLabelPanel);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 10)));
 		newQuestionPaneView.add(newQuestionQTypeSelPanel);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 20)));
 		newQuestionPaneView.add(newQuestionQTextLabelPanel);
-		newQuestionPaneView.add(newQuestionQTextPanel);
+		newQuestionPaneView.add(newQuestionQTextPane);
 		newQuestionPaneView.add(newQuestionQChoiceLabelPanel);
 		newQuestionPaneView.add(newQuestionQChoicePanel);
 		newQuestionPaneView.add(newQuestionQChoiceButtonPanel);
