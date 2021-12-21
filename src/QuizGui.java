@@ -126,7 +126,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	
 	// Question choice panel
 	private JPanel newQuestionQChoiceLabelPanel = new JPanel();
-	private JLabel newQuestionQChoiceLabel = new JLabel("Question Choice 1");
+	private JLabel newQuestionQChoiceLabel = new JLabel("Question Choices");
 
 	private JPanel newQuestionQChoicePanel = new JPanel();
 	private JTextField newQuestionQChoice = new JTextField(20);
@@ -137,7 +137,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	// Question answer panel
 	private JPanel newQuestionQAnsLabelPanel = new JPanel();
-	private JLabel newQuestionQAnsLabel = new JLabel("Question Answer 1");
+	private JLabel newQuestionQAnsLabel = new JLabel("Question Answers");
 
 	private JPanel newQuestionQAnsPanel = new JPanel();
 	private JTextField newQuestionQAns = new JTextField(20);
@@ -364,6 +364,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionQChoiceButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		newQuestionQChoiceRemButton.setName("Choice Remove");
 		newQuestionQChoiceRemButton.addActionListener(this);
+		newQuestionQChoiceRemButton.setEnabled(false);
 		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceRemButton);
 
 		newQuestionQAnsLabel.setFont(detailLabelFont);
@@ -378,6 +379,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionQAnsButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		newQuestionQAnsRemButton.setName("Answer Remove");
 		newQuestionQAnsRemButton.addActionListener(this);
+		newQuestionQAnsRemButton.setEnabled(false);
 		newQuestionQAnsButtonPanel.add(newQuestionQAnsRemButton);
 
 		newQuestionQSaveButton.addActionListener(this);
@@ -548,12 +550,34 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				if(((JButton) source).getText().equals("Add")){
 
 					if(((JButton) source).getName().equals("Choice Add")) {
-
+						
+						// adding a new choice text field if there is at least one already existing
 						System.out.println("Choice Add Button Pressed");
+
+						Component[] newQuesQChoicePanComponents = newQuestionQChoicePanel.getComponents();
+
+						newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+						newQuestionQChoicePanel.add(new JTextField(20));
+						newQuestionPane.validate();
+
+						if(!(newQuestionQChoiceRemButton.isEnabled())) {
+							newQuestionQChoiceRemButton.setEnabled(true);
+						}
 
 					}else if(((JButton) source).getName().equals("Answer Add")) {
 
 						System.out.println("Answer Add Button Pressed");
+
+						Component[] newQuesQAnsPanComponents = newQuestionQAnsPanel.getComponents();
+
+						newQuestionQAnsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+						newQuestionQAnsPanel.add(new JTextField(20));
+						newQuestionPane.validate();
+
+						if(!(newQuestionQAnsRemButton.isEnabled())) {
+							newQuestionQAnsRemButton.setEnabled(true);
+						}
+
 
 					}
 
@@ -562,11 +586,44 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					if(((JButton) source).getName().equals("Choice Remove")) {
 
 						System.out.println("Choice Remove Button Pressed");
+						
+						Component[] newQuesQChoicePanComponents = newQuestionQChoicePanel.getComponents();
+
+						// make sure we have at least 1 choice avaiable
+						if(newQuesQChoicePanComponents.length > 1) {
+							// remove the most recent two components
+							for(int i=0; i<2; i++) {
+								newQuestionQChoicePanel.remove(newQuesQChoicePanComponents[newQuesQChoicePanComponents.length-1]);
+								// refresh component list
+								newQuesQChoicePanComponents = newQuestionQChoicePanel.getComponents();
+								newQuestionPane.validate();
+							}
+						};
+
+						if(newQuesQChoicePanComponents.length == 1) {
+							newQuestionQChoiceRemButton.setEnabled(false);
+						}
 
 					}else if(((JButton) source).getName().equals("Answer Remove")) {
 
 						System.out.println("Answer Remove Button Pressed");
 
+						Component[] newQuesQAnsPanComponents = newQuestionQAnsPanel.getComponents();
+
+						// make sure we have at least 1 choice avaiable
+						if(newQuesQAnsPanComponents.length > 1) {
+							// remove the most recent two components
+							for(int i=0; i<2; i++) {
+								newQuestionQAnsPanel.remove(newQuesQAnsPanComponents[newQuesQAnsPanComponents.length-1]);
+								// refresh component list
+								newQuesQAnsPanComponents = newQuestionQAnsPanel.getComponents();
+								newQuestionPane.validate();
+							}
+						};
+
+						if(newQuesQAnsPanComponents.length == 1) {
+							newQuestionQAnsRemButton.setEnabled(false);
+						}
 					}
 
 				}else if(((JButton) source).getText().equals("Save")) {
