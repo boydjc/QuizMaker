@@ -111,7 +111,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	private JRadioButton multiChoiceOneAns = new JRadioButton();
 	private JLabel multiChoiceOneAnsLabel = new JLabel("Multiple Choice");
 	private JRadioButton multiChoiceMultiAns = new JRadioButton();
-	private JLabel multiChoiceMultiAnsLabel = new JLabel("Multiple Choice");
+	private JLabel multiChoiceMultiAnsLabel = new JLabel("Many Answers");
 	private JRadioButton fillInBlank = new JRadioButton();
 	private JLabel fillInBlankLabel = new JLabel("Fill in the Blank");
 
@@ -355,8 +355,15 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionQChoicePanel.add(newQuestionQChoice);
 
 		newQuestionQChoiceButtonPanel.add(Box.createRigidArea(new Dimension(300, 0)));
+
+		// we're setting the name on these so that we can target the right one in the 
+		// action listener when they are clicked
+		newQuestionQChoiceAddButton.setName("Choice Add");
+		newQuestionQChoiceAddButton.addActionListener(this);
 		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceAddButton);
 		newQuestionQChoiceButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+		newQuestionQChoiceRemButton.setName("Choice Remove");
+		newQuestionQChoiceRemButton.addActionListener(this);
 		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceRemButton);
 
 		newQuestionQAnsLabel.setFont(detailLabelFont);
@@ -365,12 +372,19 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionQAnsPanel.add(newQuestionQAns);
 
 		newQuestionQAnsButtonPanel.add(Box.createRigidArea(new Dimension(300, 0)));
+		newQuestionQAnsAddButton.setName("Answer Add");
+		newQuestionQAnsAddButton.addActionListener(this);
 		newQuestionQAnsButtonPanel.add(newQuestionQAnsAddButton);
 		newQuestionQAnsButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+		newQuestionQAnsRemButton.setName("Answer Remove");
+		newQuestionQAnsRemButton.addActionListener(this);
 		newQuestionQAnsButtonPanel.add(newQuestionQAnsRemButton);
 
+		newQuestionQSaveButton.addActionListener(this);
 		newQuestionQSavePanel.add(newQuestionQSaveButton);
 		newQuestionQSavePanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+		newQuestionQExitButton.addActionListener(this);
 		newQuestionQSavePanel.add(newQuestionQExitButton);
 		newQuestionQSavePanel.add(Box.createRigidArea(new Dimension(300, 0)));
 
@@ -529,6 +543,46 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					cl.show(containerPanel, currentlyShownPanel);
 					setTitle("QuizMaker");
 				}	
+			}else if(currentlyShownPanel.equals("newQuestion")) {
+
+				if(((JButton) source).getText().equals("Add")){
+
+					if(((JButton) source).getName().equals("Choice Add")) {
+
+						System.out.println("Choice Add Button Pressed");
+
+					}else if(((JButton) source).getName().equals("Answer Add")) {
+
+						System.out.println("Answer Add Button Pressed");
+
+					}
+
+				}else if(((JButton) source).getText().equals("Remove")) {
+
+					if(((JButton) source).getName().equals("Choice Remove")) {
+
+						System.out.println("Choice Remove Button Pressed");
+
+					}else if(((JButton) source).getName().equals("Answer Remove")) {
+
+						System.out.println("Answer Remove Button Pressed");
+
+					}
+
+				}else if(((JButton) source).getText().equals("Save")) {
+				
+					System.out.println("Add Question Save Button Pressed");
+
+				}else if(((JButton) source).getText().equals("Exit")) {
+
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+
+					currentlyShownPanel = "edit";
+
+					cl.show(containerPanel, currentlyShownPanel);
+
+					setTitle(selectedSet.getName() + "(Editing)");
+				}
 			}
 		}
 	}
