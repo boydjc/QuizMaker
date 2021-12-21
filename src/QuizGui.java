@@ -129,7 +129,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	private JLabel newQuestionQChoiceLabel = new JLabel("Question Choice 1");
 
 	private JPanel newQuestionQChoicePanel = new JPanel();
-	private JTextField newQuestionQChoice = new JTextField();
+	private JTextField newQuestionQChoice = new JTextField(20);
 
 	private JPanel newQuestionQChoiceButtonPanel = new JPanel();
 	private JButton newQuestionQChoiceAddButton = new JButton("Add");
@@ -140,7 +140,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	private JLabel newQuestionQAnsLabel = new JLabel("Question Answer 1");
 
 	private JPanel newQuestionQAnsPanel = new JPanel();
-	private JTextField newQuestionQAns = new JTextField();
+	private JTextField newQuestionQAns = new JTextField(20);
 
 	private JPanel newQuestionQAnsButtonPanel = new JPanel();
 	private JButton newQuestionQAnsAddButton = new JButton("Add");
@@ -354,7 +354,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		newQuestionQChoicePanel.add(newQuestionQChoice);
 
+		newQuestionQChoiceButtonPanel.add(Box.createRigidArea(new Dimension(300, 0)));
 		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceAddButton);
+		newQuestionQChoiceButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		newQuestionQChoiceButtonPanel.add(newQuestionQChoiceRemButton);
 
 		newQuestionQAnsLabel.setFont(detailLabelFont);
@@ -362,11 +364,15 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		newQuestionQAnsPanel.add(newQuestionQAns);
 
+		newQuestionQAnsButtonPanel.add(Box.createRigidArea(new Dimension(300, 0)));
 		newQuestionQAnsButtonPanel.add(newQuestionQAnsAddButton);
+		newQuestionQAnsButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		newQuestionQAnsButtonPanel.add(newQuestionQAnsRemButton);
 
 		newQuestionQSavePanel.add(newQuestionQSaveButton);
+		newQuestionQSavePanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		newQuestionQSavePanel.add(newQuestionQExitButton);
+		newQuestionQSavePanel.add(Box.createRigidArea(new Dimension(300, 0)));
 
 		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 10)));
 		newQuestionPaneView.add(newQuestionQTypeLabelPanel);
@@ -375,29 +381,38 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 20)));
 		newQuestionPaneView.add(newQuestionQTextLabelPanel);
 		newQuestionPaneView.add(newQuestionQTextPane);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 20)));
 		newQuestionPaneView.add(newQuestionQChoiceLabelPanel);
 		newQuestionPaneView.add(newQuestionQChoicePanel);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 10)));
 		newQuestionPaneView.add(newQuestionQChoiceButtonPanel);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 20)));
 		newQuestionPaneView.add(newQuestionQAnsLabelPanel);
 		newQuestionPaneView.add(newQuestionQAnsPanel);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 10)));
 		newQuestionPaneView.add(newQuestionQAnsButtonPanel);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 20)));
 		newQuestionPaneView.add(newQuestionQSavePanel);
+		newQuestionPaneView.add(Box.createRigidArea(new Dimension(0, 20)));
 
 		// END NEW QUESTION PANEL CONFIGURATION
 
 		mainPanel.setPreferredSize(new Dimension(500, 400));
 		mainPanel.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(mainPanel, "main");
+
+		editPanel.setPreferredSize(new Dimension(500, 400));
+		editPanel.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(editPanel, "edit");
 
-		newQuestionPane.setPreferredSize(new Dimension(525, 400));
-		newQuestionPane.setMaximumSize(new Dimension(525, 400));
+		newQuestionPane.setPreferredSize(new Dimension(500, 400));
+		newQuestionPane.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(newQuestionPane, "newQuestion");
 
 		
 		add(containerPanel);
 
-		setSize(550, 525);
+		setSize(550, 475);
 	}
 
 	public void actionPerformed(ActionEvent e) {
