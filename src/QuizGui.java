@@ -18,7 +18,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	private ArrayList<QuizSet> savedQSets = new ArrayList<QuizSet>();
 
-	private QuizSet selectedSet = null;
+	// the index in savedQSets of the currently selected quiz set
+	private int selectedSet = 0;
 
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -441,7 +442,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				if(((JButton) source).getText().equals("Start")) {
 
-					if(selectedSet != null) {
+					if(savedQSets.get(selectedSet) != null) {
 						System.out.println("Start button clicked.");
 					}else {
 						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -449,7 +450,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				}else if(((JButton) source).getText().equals("Edit")) {
 
-					if(selectedSet != null) {
+					if(savedQSets.get(selectedSet) != null) {
 						System.out.println("Edit button clicked");
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 
@@ -458,7 +459,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						cl.show(containerPanel, currentlyShownPanel);
 
 						// change the title for the newly shown panel
-						setTitle(selectedSet.getName() + "(Editing)");
+						setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 
 						// draw the edit table
 						createTable("edit");
@@ -468,17 +469,17 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				}else if(((JButton) source).getText().equals("Delete")) {
 
-					if(selectedSet != null) {
+					if(savedQSets.get(selectedSet) != null) {
 
 						int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this set?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
 						if(n == 0) {
-							File fileObj = new File(savedQSetPath + selectedSet.getFileName());
+							File fileObj = new File(savedQSetPath + savedQSets.get(selectedSet).getFileName());
 				
 							if(fileObj.delete()) {
 								JOptionPane.showMessageDialog(this, "File Deleted Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
 								// set the selected set back to null so the user can't click the edit/delete on a set that doesn't exist
-								selectedSet = null;
+								selectedSet = -1;
 							}else {
 								JOptionPane.showMessageDialog(this, "Unable to delete file", "ERROR", JOptionPane.ERROR_MESSAGE);
 							}
@@ -529,7 +530,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "newQuestion";
 					cl.show(containerPanel, currentlyShownPanel);
-					setTitle(selectedSet.getName() + " New Question");
+					setTitle(savedQSets.get(selectedSet).getName() + " New Question");
 
 				}else if(((JButton) source).getText().equals("Edit")) {
 
@@ -542,7 +543,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				}else if(((JButton) source).getText().equals("Save")) {
 
 					// save the quiz set
-					saveQuizSet(selectedSet);
+					saveQuizSet(savedQSets.get(selectedSet));
 
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "main";
@@ -707,7 +708,17 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					Question newQuestion = new Question(qType, questionText, questionChoices, questionAnswers);
 
 					// add this question to the set
-					selectedSet.addQuestion(newQuestion);
+					savedQSets.get(selectedSet).addQuestion(newQuestion);
+
+					// we are actually going to secretly save the quiz set here, reload it, and recreate both
+					// the edit panel question list table and the quiz set table back on the main screen 
+					// so that we can display the updated question list back on the edit screen and updated
+					// question numbers for the quiz set
+					
+					saveQuizSet(savedQSets.get(selectedSet));
+					loadAllQuizSets();
+					createTable("edit");
+					createTable("set");
 
 					// take us back to the edit screen
 
@@ -717,7 +728,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 					cl.show(containerPanel, currentlyShownPanel);
 
-					setTitle(selectedSet.getName() + "(Editing)");
+					setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 
 
 				}else if(((JButton) source).getText().equals("Exit")) {
@@ -728,7 +739,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 					cl.show(containerPanel, currentlyShownPanel);
 
-					setTitle(selectedSet.getName() + "(Editing)");
+					setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 				}
 			}
 		}
@@ -768,16 +779,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				// go through the saved quiz bank sets and get the correct one
 				for(int i=0; i<savedQSets.size(); i++) {
 					if(savedQSets.get(i).getName().equals(bankName)) {
-						selectedSet = savedQSets.get(i);
+						selectedSet = i;
 					}
 				}
 
 				// change all of the detail labels to information for the selected set
-				qBankNameLabel.setText("Name:    " + selectedSet.getName());
-				qBankCreatedLabel.setText("Created:    " + selectedSet.getCreatedDate());
-				qBankQNumLabel.setText("Number of Questions:    " + String.valueOf(selectedSet.getQNum()));
-				qBankLastGradeLabel.setText("Last Grade:    " + String.valueOf(selectedSet.getLastGrade()));
-				qBankAveGradeLabel.setText("Average Grade:    " + String.valueOf(selectedSet.getAveGrade()));
+				qBankNameLabel.setText("Name:    " + savedQSets.get(selectedSet).getName());
+				qBankCreatedLabel.setText("Created:    " + savedQSets.get(selectedSet).getCreatedDate());
+				qBankQNumLabel.setText("Number of Questions:    " + String.valueOf(savedQSets.get(selectedSet).getQNum()));
+				qBankLastGradeLabel.setText("Last Grade:    " + String.valueOf(savedQSets.get(selectedSet).getLastGrade()));
+				qBankAveGradeLabel.setText("Average Grade:    " + String.valueOf(savedQSets.get(selectedSet).getAveGrade()));
 
 			}		
 		}	
@@ -801,8 +812,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-
-		JOptionPane.showMessageDialog(this, "Quiz Set Saved Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+		
+		if(currentlyShownPanel.equals("Edit")) {
+			JOptionPane.showMessageDialog(this, "Quiz Set Saved Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
+		}
 	}
 
 	// deserialize the QuizSet object
@@ -825,10 +838,29 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
+	// load all quiz sets in the savedQSetPath
+	private void loadAllQuizSets() {
+
+		savedQSets = new ArrayList<QuizSet>();
+
+		// get the list of saved quiz set files from the directory
+
+		File savedQSetsNames = new File(savedQSetPath);
+
+		String[] pathnames = savedQSetsNames.list();
+
+		// deserialize each filename
+		for(String pathname : pathnames) {
+			this.loadQuizSet(savedQSetPath + pathname);
+		}
+	}
+
 	// recreates either the QuizSet bank table or the preview table with
 	// new data. if param type = 'set' we do the QuizSet table, if it is 
 	// 'preview' we do the preview table
 	private void createTable(String tableType) {
+
+		loadAllQuizSets();
 
 		// make a new table model
 		DefaultTableModel tModel = new DefaultTableModel() {
@@ -838,19 +870,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		};
 
 		if(tableType.equals("set")) {	
-
-			savedQSets = new ArrayList<QuizSet>();
-
-			// get the list of saved quiz set files from the directory
-
-			File savedQSetsNames = new File(savedQSetPath);
-
-			String[] pathnames = savedQSetsNames.list();
-
-			// deserialize each filename
-			for(String pathname : pathnames) {
-				this.loadQuizSet(savedQSetPath + pathname);
-			}
 
 			// set the headers
 			String[] header = {"Quiz Banks"};
@@ -872,10 +891,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		}else if(tableType.equals("edit")) {
 
 			// get all of the questions for the selected set
-			ArrayList<Question> selSetQuestions = selectedSet.getAllQuestions();
+			ArrayList<Question> selSetQuestions = savedQSets.get(selectedSet).getAllQuestions();
 			
 			// set the header for the table
-			String[] header = {selectedSet.getName() + " Questions"};
+			String[] header = {savedQSets.get(selectedSet).getName() + " Questions"};
 			tModel.setColumnIdentifiers(header);
 
 			// set the table rows
