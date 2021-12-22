@@ -540,6 +540,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					System.out.println("Edit Panel Delete Button Pressed");
 
 				}else if(((JButton) source).getText().equals("Save")) {
+
+					// save the quiz set
+					saveQuizSet(selectedSet);
+
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "main";
 					cl.show(containerPanel, currentlyShownPanel);
@@ -629,6 +633,92 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				}else if(((JButton) source).getText().equals("Save")) {
 				
 					System.out.println("Add Question Save Button Pressed");
+
+
+					// get all of the values to make a new question
+
+					// get which radio button is selected
+
+					String radioSelText = null;
+					int qType = 0;
+
+					Component[] newQuestionQTypeSelComps = newQuestionQTypeSelPanel.getComponents();
+
+					for(int i=0; i<newQuestionQTypeSelComps.length; i++) {
+						if(newQuestionQTypeSelComps[i] instanceof JRadioButton) {
+							if(((JRadioButton) newQuestionQTypeSelComps[i]).isSelected()) {
+								// get the next component over which will be the label for the radio button
+								radioSelText = ((JLabel) newQuestionQTypeSelComps[i+1]).getText();
+								if(radioSelText.equals("Multiple Choice")) {
+									qType = 1;
+								}else if(radioSelText.equals("Many Answers")) {
+									qType = 2;
+								}else if(radioSelText.equals("Fill in the Blank")) {
+									qType = 3;
+								}
+							}
+						}
+					}
+
+					// get question text and make sure that it is not blank
+
+					String questionText = newQuestionQText.getText();
+
+					if(questionText.trim().length() == 0) {
+						JOptionPane.showMessageDialog(this, "Question text must contain at least one alphaneumeric character.", "ERROR", JOptionPane.ERROR_MESSAGE);
+						questionText = null;
+					}
+
+					// get question choices
+
+					ArrayList<String> questionChoices = new ArrayList<String>();
+
+					Component[] newQuestionQChoiceComps = newQuestionQChoicePanel.getComponents();
+
+					for(Component comp : newQuestionQChoiceComps) {
+
+						if(comp instanceof JTextField) {
+							if(((JTextField) comp).getText().trim().length() == 0) {
+								JOptionPane.showMessageDialog(this, "One of your choices is blank or has no alphaneumeric characters", "ERROR", JOptionPane.ERROR_MESSAGE);	
+							}else {
+								questionChoices.add(((JTextField) comp).getText());
+							}
+						}
+					}
+
+					// get question answers
+
+					ArrayList<String> questionAnswers = new ArrayList<String>();
+
+					Component[] newQuestionQAnsComps = newQuestionQAnsPanel.getComponents();
+
+					for(Component comp : newQuestionQAnsComps) {
+
+						if(comp instanceof JTextField) {
+							if(((JTextField) comp).getText().trim().length() == 0) {
+								JOptionPane.showMessageDialog(this, "One of your answers is blank or has no alphaneumeric characters", "ERROR", JOptionPane.ERROR_MESSAGE);	
+							}else {
+								questionAnswers.add(((JTextField) comp).getText());
+							}
+						}
+					}
+
+					// make a new question
+					Question newQuestion = new Question(qType, questionText, questionChoices, questionAnswers);
+
+					// add this question to the set
+					selectedSet.addQuestion(newQuestion);
+
+					// take us back to the edit screen
+
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+
+					currentlyShownPanel = "edit";
+
+					cl.show(containerPanel, currentlyShownPanel);
+
+					setTitle(selectedSet.getName() + "(Editing)");
+
 
 				}else if(((JButton) source).getText().equals("Exit")) {
 
