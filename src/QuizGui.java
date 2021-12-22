@@ -445,7 +445,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				if(((JButton) source).getText().equals("Start")) {
 
-					if(savedQSets.get(selectedSet) != null) {
+					if(selectedSet != -1) {
 						System.out.println("Start button clicked.");
 					}else {
 						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -453,7 +453,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				}else if(((JButton) source).getText().equals("Edit")) {
 
-					if(savedQSets.get(selectedSet) != null) {
+					if(selectedSet != -1) {
 						System.out.println("Edit button clicked");
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 
@@ -472,7 +472,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				}else if(((JButton) source).getText().equals("Delete")) {
 
-					if(savedQSets.get(selectedSet) != null) {
+					if(selectedSet != -1) {
 
 						int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this set?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
@@ -530,6 +530,27 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 					System.out.println("Edit Panel Add Button Pressed");
 
+					// clear any text that might be in the new question components from 
+					// a previously added question
+
+					newQuestionQText.setText("");
+					
+					Component[] newQuestionQChoiceComps = newQuestionQChoicePanel.getComponents();
+
+					for(Component comp : newQuestionQChoiceComps) {
+						if(comp instanceof JTextField) {
+							((JTextField) comp).setText("");
+						}
+					}
+
+					Component[] newQuestionQAnsComps = newQuestionQAnsPanel.getComponents();
+
+					for(Component comp : newQuestionQAnsComps) {
+						if(comp instanceof JTextField) {
+							((JTextField) comp).setText("");
+						}
+					}
+
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "newQuestion";
 					cl.show(containerPanel, currentlyShownPanel);
@@ -542,6 +563,15 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				}else if(((JButton) source).getText().equals("Delete")) {
 					
 					System.out.println("Edit Panel Delete Button Pressed");
+
+					if(selectedQuestion != -1) {
+						savedQSets.get(selectedSet).remQuestion(selectedQuestion);
+						saveQuizSet(savedQSets.get(selectedSet));
+						loadAllQuizSets();
+						selectedQuestion = -1;
+						createTable("edit");
+					}
+
 
 				}else if(((JButton) source).getText().equals("Save")) {
 
