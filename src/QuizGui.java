@@ -19,7 +19,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	private ArrayList<QuizSet> savedQSets = new ArrayList<QuizSet>();
 
 	// the index in savedQSets of the currently selected quiz set
-	private int selectedSet = 0;
+	private int selectedSet = -1;
+
+	// index of the currently selected question from the selected set
+	private int selectedQuestion = -1;
 
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -769,16 +772,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 			JTable tableClicked = (JTable) source;
 
-			// get the name of the selected bank
-			if(tableClicked.getColumnName(0).equals("Quiz Banks")) {
-				
-				int rowSelected = tableClicked.getSelectedRow();
+			int rowSelected = tableClicked.getSelectedRow();
 
-				String bankName = tableClicked.getValueAt(rowSelected, 0).toString();
+			String selectedText = tableClicked.getValueAt(rowSelected, 0).toString();
+
+			// get the name of the selected bank
+			if(tableClicked.getName().equals("Main Table")) {
 
 				// go through the saved quiz bank sets and get the correct one
 				for(int i=0; i<savedQSets.size(); i++) {
-					if(savedQSets.get(i).getName().equals(bankName)) {
+					if(savedQSets.get(i).getName().equals(selectedText)) {
 						selectedSet = i;
 					}
 				}
@@ -790,7 +793,14 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				qBankLastGradeLabel.setText("Last Grade:    " + String.valueOf(savedQSets.get(selectedSet).getLastGrade()));
 				qBankAveGradeLabel.setText("Average Grade:    " + String.valueOf(savedQSets.get(selectedSet).getAveGrade()));
 
-			}		
+			}else if(tableClicked.getName().equals("Edit Table")) {
+				for(int i=0; i<savedQSets.get(selectedSet).getQNum(); i++) {
+					if(savedQSets.get(selectedSet).getQuestion(i).getQuesText().equals(selectedText)) {
+						selectedQuestion = i;
+						System.out.println(selectedQuestion);
+					}
+				}
+			}
 		}	
 	}
 
@@ -886,6 +896,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 			qBankTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
 			// read the mouse listener if we are refreshing
 			qBankTable.addMouseListener(this);
+			qBankTable.setName("Main Table");
 			qBankTablePane.setViewportView(qBankTable);
 			qBankTablePane.repaint();
 		}else if(tableType.equals("edit")) {
@@ -905,6 +916,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 			editPanelTable = new JTable(tModel);
 			editPanelTable.setRowHeight(25);
+			editPanelTable.addMouseListener(this);
+			editPanelTable.setName("Edit Table");
 			editPanelTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
 			editPanelTablePane.setViewportView(editPanelTable);
 			editPanelTablePane.repaint();
