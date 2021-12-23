@@ -560,6 +560,70 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 					System.out.println("Edit Panel Edit Button Pressed");
 
+					int qType = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQType();
+
+					Component[] radioComps = newQuestionQTypeSelPanel.getComponents();
+
+					switch(qType) {
+						case 1:
+							((JRadioButton) radioComps[0]).setSelected(true);
+							break;
+						case 2:
+							((JRadioButton) radioComps[3]).setSelected(true);
+							break;
+						case 3:
+							((JRadioButton) radioComps[6]).setSelected(true);
+							break;
+						default:
+							break;
+					}
+
+					newQuestionQText.setText(savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQuesText());
+
+					// get the number of choice fields currently on the edit panel
+					// we do this because there is a chance the user added a question with multiple 
+					// choices and then later goes back to edit it
+					Component[] choiceFields = newQuestionQChoicePanel.getComponents();
+
+					int choiceCompNum = 0;
+
+					if(choiceFields.length == 1) {
+						choiceCompNum = 1;
+					}else {
+						// choice number will equal be (number of components / 2)+1 because there is a 
+						// rigid space between each additional one
+						choiceCompNum = (choiceFields.length / 2)+1;
+					}
+
+					// the actual number of question choices we have for the selected question
+					int quesCompNum = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getChoices().size();
+
+					System.out.println("Number of choice fields: " + choiceCompNum);
+					System.out.println("Number of actual choices: " + quesCompNum);
+
+					if(choiceCompNum < quesCompNum) {
+						// if we need more choice components then add them here
+						for(int i=choiceCompNum; i<quesCompNum; i++) {
+							newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+							newQuestionQChoicePanel.add(new JTextField(20));
+							newQuestionPane.validate();
+						}
+					}else if(choiceCompNum > quesCompNum) {
+						// if we need to remove extra choice components then do so here
+						for(int i=choiceCompNum; i>=quesCompNum; i--) {
+							System.out.println(i);
+							newQuestionQChoicePanel.remove(choiceFields[choiceFields.length-1]);
+							// refresh component list
+							choiceFields = newQuestionQChoicePanel.getComponents();
+							newQuestionPane.validate();
+						}
+					}
+
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+					currentlyShownPanel = "newQuestion";
+					cl.show(containerPanel, currentlyShownPanel);
+					setTitle(savedQSets.get(selectedSet).getName() + "Edit Question");
+
 				}else if(((JButton) source).getText().equals("Delete")) {
 					
 					System.out.println("Edit Panel Delete Button Pressed");
@@ -569,6 +633,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						saveQuizSet(savedQSets.get(selectedSet));
 						loadAllQuizSets();
 						selectedQuestion = -1;
+						setQSetLabels();
 						createTable("edit");
 					}
 
@@ -669,6 +734,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					System.out.println("Add Question Save Button Pressed");
 
 
+					// only add the question if this is true once we are done checking everything
+					boolean addQuestion = false;
+
 					// get all of the values to make a new question
 
 					// get which radio button is selected
@@ -701,6 +769,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					if(questionText.trim().length() == 0) {
 						JOptionPane.showMessageDialog(this, "Question text must contain at least one alphaneumeric character.", "ERROR", JOptionPane.ERROR_MESSAGE);
 						questionText = null;
+						addQuestion = false;
+					}else {
+						addQuestion = true;
 					}
 
 					// get question choices
@@ -714,8 +785,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						if(comp instanceof JTextField) {
 							if(((JTextField) comp).getText().trim().length() == 0) {
 								JOptionPane.showMessageDialog(this, "One of your choices is blank or has no alphaneumeric characters", "ERROR", JOptionPane.ERROR_MESSAGE);	
+								addQuestion = false;
 							}else {
 								questionChoices.add(((JTextField) comp).getText());
+								addQuestion = true;
 							}
 						}
 					}
@@ -731,38 +804,45 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						if(comp instanceof JTextField) {
 							if(((JTextField) comp).getText().trim().length() == 0) {
 								JOptionPane.showMessageDialog(this, "One of your answers is blank or has no alphaneumeric characters", "ERROR", JOptionPane.ERROR_MESSAGE);	
+								addQuestion = false;
 							}else {
 								questionAnswers.add(((JTextField) comp).getText());
+								addQuestion = true;
 							}
 						}
 					}
 
-					// make a new question
-					Question newQuestion = new Question(qType, questionText, questionChoices, questionAnswers);
+					if(addQuestion) {
 
-					// add this question to the set
-					savedQSets.get(selectedSet).addQuestion(newQuestion);
+						// make a new question
+						Question newQuestion = new Question(qType, questionText, questionChoices, questionAnswers);
 
-					// we are actually going to secretly save the quiz set here, reload it, and recreate both
-					// the edit panel question list table and the quiz set table back on the main screen 
-					// so that we can display the updated question list back on the edit screen and updated
-					// question numbers for the quiz set
+						// add this question to the set
+						savedQSets.get(selectedSet).addQuestion(newQuestion);
+
+						// we are actually going to secretly save the quiz set here, reload it, and recreate both
+						// the edit panel question list table and the quiz set table back on the main screen 
+						// so that we can display the updated question list back on the edit screen and updated
+						// question numbers for the quiz set
 					
-					saveQuizSet(savedQSets.get(selectedSet));
-					loadAllQuizSets();
-					createTable("edit");
-					createTable("set");
+						saveQuizSet(savedQSets.get(selectedSet));
+						loadAllQuizSets();
+						createTable("edit");
+						createTable("set");
 
-					// take us back to the edit screen
+						// update the labels on main screen
+						setQSetLabels();
 
-					CardLayout cl = (CardLayout) containerPanel.getLayout();
+						// take us back to the edit screen
 
-					currentlyShownPanel = "edit";
+						CardLayout cl = (CardLayout) containerPanel.getLayout();
 
-					cl.show(containerPanel, currentlyShownPanel);
+						currentlyShownPanel = "edit";
 
-					setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
+						cl.show(containerPanel, currentlyShownPanel);
 
+						setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
+					}
 
 				}else if(((JButton) source).getText().equals("Exit")) {
 
@@ -816,22 +896,27 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					}
 				}
 
-				// change all of the detail labels to information for the selected set
-				qBankNameLabel.setText("Name:    " + savedQSets.get(selectedSet).getName());
-				qBankCreatedLabel.setText("Created:    " + savedQSets.get(selectedSet).getCreatedDate());
-				qBankQNumLabel.setText("Number of Questions:    " + String.valueOf(savedQSets.get(selectedSet).getQNum()));
-				qBankLastGradeLabel.setText("Last Grade:    " + String.valueOf(savedQSets.get(selectedSet).getLastGrade()));
-				qBankAveGradeLabel.setText("Average Grade:    " + String.valueOf(savedQSets.get(selectedSet).getAveGrade()));
+				setQSetLabels();
 
 			}else if(tableClicked.getName().equals("Edit Table")) {
 				for(int i=0; i<savedQSets.get(selectedSet).getQNum(); i++) {
 					if(savedQSets.get(selectedSet).getQuestion(i).getQuesText().equals(selectedText)) {
 						selectedQuestion = i;
-						System.out.println(selectedQuestion);
 					}
 				}
 			}
 		}	
+	}
+
+	private void setQSetLabels() {
+
+		// change all of the detail labels to information for the selected set
+		qBankNameLabel.setText("Name:    " + savedQSets.get(selectedSet).getName());
+		qBankCreatedLabel.setText("Created:    " + savedQSets.get(selectedSet).getCreatedDate());
+		qBankQNumLabel.setText("Number of Questions:    " + String.valueOf(savedQSets.get(selectedSet).getQNum()));
+		qBankLastGradeLabel.setText("Last Grade:    " + String.valueOf(savedQSets.get(selectedSet).getLastGrade()));
+		qBankAveGradeLabel.setText("Average Grade:    " + String.valueOf(savedQSets.get(selectedSet).getAveGrade()));
+
 	}
 
 	// serializes the QuizSet object and saves it 
