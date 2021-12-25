@@ -73,18 +73,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	private JPanel previewPanel = new JPanel();
 
-	private String[] previewTestTableColNames = {"Preview"};
-
-	private Object[][] previewTestTableData = {
-		{"Who likes question?"},
-		{"What is your favorite color?"},
-		{"Who is the President of the United States?"},
-		{"Where is Waldo?"},
-		{"Coffee or Tea?"}
-	};
-
-	private JTable previewTable = new JTable(previewTestTableData, previewTestTableColNames);
-	private JScrollPane previewScrollPane = new JScrollPane(previewTable);
+	private JTable previewTable;
+	private JScrollPane previewScrollPane = new JScrollPane();
 
 	// END MAIN PANEL COMPONENTS
 
@@ -951,6 +941,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				setQSetLabels();
 
+				createTable("preview");
+
 			}else if(tableClicked.getName().equals("Edit Table")) {
 				for(int i=0; i<savedQSets.get(selectedSet).getQNum(); i++) {
 					if(savedQSets.get(selectedSet).getQuestion(i).getQuesText().equals(selectedText)) {
@@ -1067,6 +1059,23 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 			qBankTable.setName("Main Table");
 			qBankTablePane.setViewportView(qBankTable);
 			qBankTablePane.repaint();
+		}else if(tableType.equals("preview")) {
+			
+			String[] header = {"Preview"};
+			tModel.setColumnIdentifiers(header);
+
+			for(int i=0; i<savedQSets.get(selectedSet).getQNum(); i++) {
+				String[] tableRow = {savedQSets.get(selectedSet).getQuestion(i).getQuesText()};
+				tModel.addRow(tableRow);
+			}
+
+			previewTable = new JTable(tModel);
+			previewTable.setRowHeight(25);
+			previewTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
+			previewScrollPane.setViewportView(previewTable);
+			previewScrollPane.repaint();
+
+
 		}else if(tableType.equals("edit")) {
 
 			// get all of the questions for the selected set
