@@ -585,40 +585,74 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					// choices and then later goes back to edit it
 					Component[] choiceFields = newQuestionQChoicePanel.getComponents();
 
-					int choiceCompNum = 0;
-
-					if(choiceFields.length == 1) {
-						choiceCompNum = 1;
-					}else {
-						// choice number will equal be (number of components / 2)+1 because there is a 
-						// rigid space between each additional one
-						choiceCompNum = (choiceFields.length / 2)+1;
-					}
-
 					// the actual number of question choices we have for the selected question
-					int quesCompNum = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getChoices().size();
+					ArrayList<String> quesChoice = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getChoices();
 
-					System.out.println("Number of choice fields: " + choiceCompNum);
-					System.out.println("Number of actual choices: " + quesCompNum);
-
-					if(choiceCompNum < quesCompNum) {
-						// if we need more choice components then add them here
-						for(int i=choiceCompNum; i<quesCompNum; i++) {
-							newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-							newQuestionQChoicePanel.add(new JTextField(20));
-							newQuestionPane.validate();
-						}
-					}else if(choiceCompNum > quesCompNum) {
-						// if we need to remove extra choice components then do so here
-						for(int i=choiceCompNum; i>=quesCompNum; i--) {
-							System.out.println(i);
+					// remove the components what we have right now
+					while(choiceFields.length != 0) {
+						if(choiceFields.length == 0) {
+							break;
+						}else {
 							newQuestionQChoicePanel.remove(choiceFields[choiceFields.length-1]);
-							// refresh component list
 							choiceFields = newQuestionQChoicePanel.getComponents();
-							newQuestionPane.validate();
 						}
 					}
 
+					// now that we have a clean empty panel, add the correct number of choice textfields
+					for(int i=0; i<quesChoice.size(); i++) {
+						newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+						newQuestionQChoicePanel.add(new JTextField(20));
+						newQuestionPane.validate();
+					}
+
+					// add the text from the question choice to the correct component
+
+					choiceFields = newQuestionQChoicePanel.getComponents();
+
+					int quesChoiceCount = 0;
+					for(int i=0; i<choiceFields.length; i++) {
+						if(choiceFields[i] instanceof JTextField) {
+							((JTextField) choiceFields[i]).setText(quesChoice.get((quesChoiceCount)));
+							quesChoiceCount++;
+						}
+					}
+
+					// if we have more than one choice then make sure the remove button is enabled
+					if(quesChoice.size() > 1) {
+						newQuestionQChoiceRemButton.setEnabled(true);
+					}
+
+
+					// get the number of answer fields currently on the edit panel
+					// we do this because there is a chance the user added a question with multiple 
+					// answer and then later goes back to edit it
+					Component[] answerFields = newQuestionQAnsPanel.getComponents();
+
+					// the actual number of question answer we have for the selected question
+					ArrayList<String> quesAnswer = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getAnswers();
+
+					// remove the components what we have right now
+					while(answerFields.length != 0) {
+						if(answerFields.length == 0) {
+							break;
+						}else {
+							newQuestionQAnsPanel.remove(answerFields[answerFields.length-1]);
+							answerFields = newQuestionQAnsPanel.getComponents();
+						}
+					}
+
+					// now that we have a clean empty panel, add the correct number of answer textfields
+					for(int i=0; i<quesAnswer.size(); i++) {
+						newQuestionQAnsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+						newQuestionQAnsPanel.add(new JTextField(20));
+						newQuestionPane.validate();
+					}
+
+					// if we have more than one answer then make sure the remove button is enabled
+					if(quesAnswer.size() > 1) {
+						newQuestionQAnsRemButton.setEnabled(true);
+					}
+										
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "newQuestion";
 					cl.show(containerPanel, currentlyShownPanel);
