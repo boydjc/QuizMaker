@@ -55,6 +55,14 @@ public class QuizSet implements java.io.Serializable {
 		this.qSet.add(q);
 	}
 
+	public void saveQuestion(Question qIn) {
+		for(int i=0; i<qSet.size(); i++) {
+			if(qIn.getQuesText().equals(qSet.get(i).getQuesText())) {
+				qSet.set(i, qIn);
+			}
+		}
+	}
+
 	public void remQuestion(int qIndex) {
 		this.qSet.remove(qIndex);
 	}

@@ -24,6 +24,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	// index of the currently selected question from the selected set
 	private int selectedQuestion = -1;
 
+	// if this variable is true then we aren't going to add the question as a 
+	// new one but instead we will overwrite it in the currently selected quiz set
+	private boolean editingQuestion = false;
+
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	private JPanel containerPanel = new JPanel(); // used for the CardLayout
@@ -558,6 +562,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 				}else if(((JButton) source).getText().equals("Edit")) {
 
+					editingQuestion = true;
+
 					System.out.println("Edit Panel Edit Button Pressed");
 
 					int qType = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQType();
@@ -776,7 +782,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				
 					System.out.println("Add Question Save Button Pressed");
 
-
 					// only add the question if this is true once we are done checking everything
 					boolean addQuestion = false;
 
@@ -860,8 +865,13 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						// make a new question
 						Question newQuestion = new Question(qType, questionText, questionChoices, questionAnswers);
 
-						// add this question to the set
-						savedQSets.get(selectedSet).addQuestion(newQuestion);
+						if(editingQuestion) {
+							// if we are editing then just overwrite the question
+							savedQSets.get(selectedSet).saveQuestion(newQuestion);
+						}else {
+							// add this question to the set
+							savedQSets.get(selectedSet).addQuestion(newQuestion);
+						}
 
 						// we are actually going to secretly save the quiz set here, reload it, and recreate both
 						// the edit panel question list table and the quiz set table back on the main screen 
@@ -886,17 +896,17 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 						setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 					}
-
-				}else if(((JButton) source).getText().equals("Exit")) {
-
-					CardLayout cl = (CardLayout) containerPanel.getLayout();
-
-					currentlyShownPanel = "edit";
-
-					cl.show(containerPanel, currentlyShownPanel);
-
-					setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 				}
+
+			}else if(((JButton) source).getText().equals("Exit")) {
+
+				CardLayout cl = (CardLayout) containerPanel.getLayout();
+
+				currentlyShownPanel = "edit";
+
+				cl.show(containerPanel, currentlyShownPanel);
+
+				setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 			}
 		}
 	}
