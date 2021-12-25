@@ -606,7 +606,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					}
 
 					// add the text from the question choice to the correct component
-
 					choiceFields = newQuestionQChoicePanel.getComponents();
 
 					int quesChoiceCount = 0;
@@ -646,6 +645,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						newQuestionQAnsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 						newQuestionQAnsPanel.add(new JTextField(20));
 						newQuestionPane.validate();
+					}
+
+					answerFields = newQuestionQAnsPanel.getComponents();
+
+					int quesAnsCount = 0;
+					for(int i=0; i<answerFields.length; i++) {
+						if(answerFields[i] instanceof JTextField) {
+							((JTextField) answerFields[i]).setText(quesAnswer.get((quesAnsCount)));
+							quesAnsCount++;
+						}
 					}
 
 					// if we have more than one answer then make sure the remove button is enabled
