@@ -167,6 +167,24 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 	private JTextArea quizQuestionText = new JTextArea(10, 10);
 	private JScrollPane quizQuestionPane = new JScrollPane(quizQuestionText);
 
+	private JPanel quizChoicePanel = new JPanel();
+	private JScrollPane quizChoiceScrollPane = new JScrollPane(quizChoicePanel);
+
+	private ButtonGroup quizButtonGroup = new ButtonGroup();
+	private JRadioButton radioChoiceButtonOne = new JRadioButton("Choice One");
+	private JRadioButton radioChoiceButtonTwo = new JRadioButton("Choice Two");
+	private JRadioButton radioChoiceButtonThree = new JRadioButton("Choice Three");
+	private JRadioButton radioChoiceButtonFour = new JRadioButton("Choice Four");
+	private JRadioButton radioChoiceButtonFive = new JRadioButton("Choice Five");
+	private JRadioButton radioChoiceButtonSix = new JRadioButton("Choice Six");
+	private JRadioButton radioChoiceButtonSeven = new JRadioButton("Choice Seven");
+	private JRadioButton radioChoiceButtonEight = new JRadioButton("Choice Eight");
+	private JRadioButton radioChoiceButtonNine = new JRadioButton("Choice Nine");
+
+	private JPanel quizPrevNextButtonPanel = new JPanel();
+	private JButton quizPrevButton = new JButton("Previous");
+	private JButton quizNextButton = new JButton("Next");
+
 	// END QUIZ PANEL COMPONENTS
 
 	QuizGui() {
@@ -435,7 +453,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		quizLabelPanel.setLayout(new BoxLayout(quizLabelPanel, BoxLayout.LINE_AXIS));
 		quizQuestionLabelPanel.setLayout(new BoxLayout(quizQuestionLabelPanel, BoxLayout.LINE_AXIS));
 		quizQuestionPanel.setLayout(new BoxLayout(quizQuestionPanel, BoxLayout.PAGE_AXIS));
-
+		quizChoicePanel.setLayout(new GridLayout(5, 2));
+		((GridLayout) quizChoicePanel.getLayout()).setVgap(10);
+		quizPrevNextButtonPanel.setLayout(new BoxLayout(quizPrevNextButtonPanel, BoxLayout.LINE_AXIS));
 
 		// adding components
 		quizLabel.setFont(new Font("Serif", Font.BOLD, 21));
@@ -446,11 +466,43 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		quizQuestionLabelPanel.add(Box.createRigidArea(new Dimension(400, 0)));
 		quizQuestionPanel.add(quizQuestionPane);
 
+		quizQuestionText.setLineWrap(true);
+		quizQuestionText.setWrapStyleWord(true);
+
+		// add buttons to button group
+
+		quizButtonGroup.add(radioChoiceButtonOne);
+		quizButtonGroup.add(radioChoiceButtonTwo);
+		quizButtonGroup.add(radioChoiceButtonThree);
+		quizButtonGroup.add(radioChoiceButtonFour);
+		quizButtonGroup.add(radioChoiceButtonFive);
+		quizButtonGroup.add(radioChoiceButtonSix);
+		quizButtonGroup.add(radioChoiceButtonSeven);
+		quizButtonGroup.add(radioChoiceButtonEight);
+		quizButtonGroup.add(radioChoiceButtonNine);
+
+		quizChoicePanel.add(radioChoiceButtonOne);
+		quizChoicePanel.add(radioChoiceButtonTwo);
+		quizChoicePanel.add(radioChoiceButtonThree);
+		quizChoicePanel.add(radioChoiceButtonFour);
+		quizChoicePanel.add(radioChoiceButtonFive);
+		quizChoicePanel.add(radioChoiceButtonSix);
+		quizChoicePanel.add(radioChoiceButtonSeven);
+		quizChoicePanel.add(radioChoiceButtonEight);
+		quizChoicePanel.add(radioChoiceButtonNine);
+
+		quizPrevNextButtonPanel.add(quizPrevButton);
+		quizPrevNextButtonPanel.add(quizNextButton);
+
 		quizPanel.add(quizLabelPanel);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		quizPanel.add(quizQuestionLabelPanel);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		quizPanel.add(quizQuestionPanel);
+		quizPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		quizPanel.add(quizChoicePanel);
+		quizPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		quizPanel.add(quizPrevNextButtonPanel);
 		
 
 		// END QUIZ PANEL CONFIGURATION
