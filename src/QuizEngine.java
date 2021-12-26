@@ -32,14 +32,14 @@ public class QuizEngine {
 		}
 	}
 
-	public void generateQuiz(int numOfQuestions) {
+	public void generateQuiz() {
 
 		// clear the current quiz if there is one
 		quizSet = new ArrayList<Question>();
 
-		ArrayList<Integer> qSequence = getRandQuesSeq(numOfQuestions);
+		ArrayList<Integer> qSequence = getRandQuesSeq(questionSet.size());
 		
-		for(int i=0; i<numOfQuestions; i++) {
+		for(int i=0; i<questionSet.size(); i++) {
 			quizSet.add(questionSet.get(qSequence.get(i)));
 		}
 		System.out.println("Quiz Generated Successfully");

@@ -16,6 +16,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	private String savedQSetPath = "./data/";
 
+	private QuizEngine qEng = new QuizEngine();
+
 	private ArrayList<QuizSet> savedQSets = new ArrayList<QuizSet>();
 
 	// the index in savedQSets of the currently selected quiz set
@@ -151,6 +153,22 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 	// END NEW QUESTION PANEL COMPONENTS
 
+	// START QUIZ PANEL COMPONENTS
+
+	private JPanel quizPanel = new JPanel();
+
+	private JPanel quizLabelPanel = new JPanel();
+	private JLabel quizLabel = new JLabel("Test Quiz");
+
+	private JPanel quizQuestionLabelPanel = new JPanel();
+
+	private JPanel quizQuestionPanel = new JPanel();
+	private JLabel quizQuestionLabel = new JLabel("Question 1");
+	private JTextArea quizQuestionText = new JTextArea(10, 10);
+	private JScrollPane quizQuestionPane = new JScrollPane(quizQuestionText);
+
+	// END QUIZ PANEL COMPONENTS
+
 	QuizGui() {
 
 		// JFrame configuration
@@ -280,7 +298,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		editPanelSaveButton.addActionListener(this);
 		editPanelButtonPanel.add(editPanelSaveButton);
-
 		editPanel.add(Box.createRigidArea(new Dimension(0, 15))); // some spacing between table and buttons
 		editPanel.add(editPanelButtonPanel);
 
@@ -411,6 +428,33 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		// END NEW QUESTION PANEL CONFIGURATION
 
+		// START QUIZ PANEL CONFIGURATION 
+		
+		// set layouts
+		quizPanel.setLayout(new BoxLayout(quizPanel, BoxLayout.PAGE_AXIS));
+		quizLabelPanel.setLayout(new BoxLayout(quizLabelPanel, BoxLayout.LINE_AXIS));
+		quizQuestionLabelPanel.setLayout(new BoxLayout(quizQuestionLabelPanel, BoxLayout.LINE_AXIS));
+		quizQuestionPanel.setLayout(new BoxLayout(quizQuestionPanel, BoxLayout.PAGE_AXIS));
+
+
+		// adding components
+		quizLabel.setFont(new Font("Serif", Font.BOLD, 21));
+		quizLabelPanel.add(quizLabel);
+
+		quizQuestionLabel.setFont(new Font("Serif", Font.BOLD, 17));
+		quizQuestionLabelPanel.add(quizQuestionLabel);
+		quizQuestionLabelPanel.add(Box.createRigidArea(new Dimension(400, 0)));
+		quizQuestionPanel.add(quizQuestionPane);
+
+		quizPanel.add(quizLabelPanel);
+		quizPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+		quizPanel.add(quizQuestionLabelPanel);
+		quizPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		quizPanel.add(quizQuestionPanel);
+		
+
+		// END QUIZ PANEL CONFIGURATION
+
 		mainPanel.setPreferredSize(new Dimension(500, 400));
 		mainPanel.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(mainPanel, "main");
@@ -423,6 +467,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		newQuestionPane.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(newQuestionPane, "newQuestion");
 
+		quizPanel.setPreferredSize(new Dimension(500, 400));
+		quizPanel.setMaximumSize(new Dimension(500, 400));
+		containerPanel.add(quizPanel, "quiz");
 		
 		add(containerPanel);
 
@@ -441,6 +488,19 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 					if(selectedSet != -1) {
 						System.out.println("Start button clicked.");
+
+						qEng.setQuestionSet(savedQSets.get(selectedSet).getAllQuestions());
+						qEng.generateQuiz();
+						qEng.displayQuiz();
+
+						CardLayout cl = (CardLayout) containerPanel.getLayout();
+
+						// switch to the quiz panel
+						currentlyShownPanel = "quiz";
+
+						cl.show(containerPanel, currentlyShownPanel);
+
+						setTitle(savedQSets.get(selectedSet).getName() + " Quiz");
 					}else {
 						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}	
@@ -456,7 +516,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 						cl.show(containerPanel, currentlyShownPanel);
 
 						// change the title for the newly shown panel
-						setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
+						setTitle(savedQSets.get(selectedSet).getName() + " (Editing)");
 
 						// draw the edit table
 						createTable("edit");
