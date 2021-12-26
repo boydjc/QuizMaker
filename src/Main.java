@@ -8,16 +8,7 @@ public class Main {
 		
 		System.out.println("Running...");
 
-		//QuizEngine qEng = new QuizEngine(args[0],
-		//								 args[1],
-		//								 args[2],
-		//								 args[3]);
-
 		QuizGui qGui = new QuizGui();
-
-		//qEng.getAllQuestions("chapterOne");
-		//qEng.generateQuiz(10);
-		//qEng.displayQuiz();
 
 		qGui.display();
 
