@@ -565,7 +565,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 						qEng.setQuestionSet(savedQSets.get(selectedSet).getAllQuestions());
 						qEng.generateQuiz();
-						qEng.displayQuiz();
+						
+						configureQuizComponents();
 
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 
@@ -1233,6 +1234,24 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 			editPanelTablePane.setViewportView(editPanelTable);
 			editPanelTablePane.repaint();
 		}
+	}
+
+	private void configureQuizComponents() {
+
+		// we've got three components that we need to configure
+		// 1. Question number label (quizQuestionLabel)
+		// 2. The question text (quizQuestionText)
+		// 3. The question choice (quizChoicePanel)
+
+		// get the current question from the generated quiz
+
+		// set question number label
+		quizQuestionLabel.setText("Question " + qEng.getCurQuesNum());
+
+		// set the question text
+		quizQuestionText.setText(qEng.getQuestion(qEng.getCurQuesNum()).getQuesText());
+
+
 	}
 
 	public void display() {
