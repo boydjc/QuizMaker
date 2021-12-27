@@ -508,8 +508,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		quizChoicePanel.add(radioChoiceButtonTwelve);
 
 		quizPrevNextButtonPanel.add(Box.createRigidArea(new Dimension(300, 0)));
+		quizPrevButton.addActionListener(this);
 		quizPrevNextButtonPanel.add(quizPrevButton);
 		quizPrevNextButtonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
+		quizNextButton.addActionListener(this);
 		quizPrevNextButtonPanel.add(quizNextButton);
 
 		quizPanel.add(quizLabelPanel);
@@ -1021,17 +1023,39 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 						setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 					}
+					
+				}else if(((JButton) source).getText().equals("Exit")) {
+
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+
+					currentlyShownPanel = "edit";
+
+					cl.show(containerPanel, currentlyShownPanel);
+
+					setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 				}
+			}else if(currentlyShownPanel.equals("quiz")) {
+				
+				if(((JButton) source).getText().equals("Previous")) {
 
-			}else if(((JButton) source).getText().equals("Exit")) {
+					System.out.println("Quiz Screen Previous Button Pressed.");
 
-				CardLayout cl = (CardLayout) containerPanel.getLayout();
+					if(qEng.getCurQuesNum() > 0) {
+						qEng.decrementCurQuesNum();
+						configureQuizComponents();
+					}
 
-				currentlyShownPanel = "edit";
+				}else if(((JButton) source).getText().equals("Next")) {
+			
+					System.out.println("Quiz Screen Next Button Pressed.");
 
-				cl.show(containerPanel, currentlyShownPanel);
+					if(qEng.getCurQuesNum() < qEng.getQuizSet().size()-1) {
+						qEng.incrementCurQuesNum();
+						configureQuizComponents();
+					}
 
-				setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
+				}
+				
 			}
 		}
 	}
@@ -1246,7 +1270,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		// get the current question from the generated quiz
 
 		// set question number label
-		quizQuestionLabel.setText("Question " + qEng.getCurQuesNum());
+		quizQuestionLabel.setText("Question " + (qEng.getCurQuesNum()+1));
 
 		// set the question text
 		quizQuestionText.setText(qEng.getQuestion(qEng.getCurQuesNum()).getQuesText());

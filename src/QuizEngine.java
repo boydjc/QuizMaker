@@ -11,7 +11,7 @@ public class QuizEngine {
 
 	private Random rand = new Random();
 
-	private int genQuizCurQuesNum = 1;
+	private int genQuizCurQuesNum = 0;
 
 	QuizEngine() {
 	}
@@ -65,7 +65,7 @@ public class QuizEngine {
 			generatedQuizSet.add(questionSet.get(qSequence.get(i)));
 		}
 
-		genQuizCurQuesNum = 1;
+		genQuizCurQuesNum = 0;
 		System.out.println("Quiz Generated Successfully");
 	}
 
