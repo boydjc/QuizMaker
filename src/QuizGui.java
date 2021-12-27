@@ -1269,11 +1269,70 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 
 		// get the current question from the generated quiz
 
+		Question curQuestion = qEng.getQuestion(qEng.getCurQuesNum());
+
 		// set question number label
 		quizQuestionLabel.setText("Question " + (qEng.getCurQuesNum()+1));
 
 		// set the question text
-		quizQuestionText.setText(qEng.getQuestion(qEng.getCurQuesNum()).getQuesText());
+		quizQuestionText.setText(curQuestion.getQuesText());
+
+		// remove all of the components in the quizChoicePanel
+		quizChoicePanel.removeAll();
+		quizChoicePanel.validate();
+		quizChoiceScrollPane.validate();
+
+		int questionType = curQuestion.getQType();
+
+		// question type 1 - Multiple Choice One Answer (JRadioButtons)
+		// question type 2 - Multiple Choice Many Answer (JCheckBoxes)
+		// question type 3 - Fill in the blank (JTextField)
+
+		// get the choices for the question
+		ArrayList<String> quesChoices = curQuestion.getChoices();
+
+		switch(questionType) {
+			case 1:
+				quizButtonGroup = new ButtonGroup();
+				// add the choices to the panel as JRadioButtons
+				for(int i=0; i<quesChoices.size(); i++) {
+					quizChoicePanel.add(new JRadioButton(quesChoices.get(i)));
+				}
+
+				// then add those components to the quizButtonGroup
+				Component[] radioChoiceButtons = quizChoicePanel.getComponents();
+
+				for(int i=0; i<quesChoices.size(); i++) {
+					quizButtonGroup.add((JRadioButton) radioChoiceButtons[i]);
+				}
+				
+				quizChoicePanel.validate();
+				quizChoiceScrollPane.validate();
+
+				break;
+			case 2:
+				// add JCheckBoxes
+				for(int i=0; i<quesChoices.size(); i++) {
+					quizChoicePanel.add(new JCheckBox(quesChoices.get(i)));
+				}
+
+				quizChoicePanel.validate();
+				quizChoiceScrollPane.validate();
+				break;
+			case 3:
+				// add JTextFields
+				for(int i=0; i<quesChoices.size(); i++) {
+					quizChoicePanel.add(new JTextField(10));
+				}
+
+				quizChoicePanel.validate();
+				quizChoiceScrollPane.validate();
+				break;
+			default: 
+				break;
+		}
+
+
 
 
 	}
