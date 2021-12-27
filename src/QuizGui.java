@@ -1291,6 +1291,22 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		// get the choices for the question
 		ArrayList<String> quesChoices = curQuestion.getChoices();
 
+		// set the grid layout to match the amount of choices we have
+		// the tradional layout is a x/2 layout where x is an even number of
+		// rows. Of course if we have an odd number of choices then we will not use both 
+		// column slots for the last row
+
+		if(questionType == 3) {
+			quizChoicePanel.setLayout(new FlowLayout());
+		}else {
+			int layoutRows = (int) Math.ceil(quesChoices.size() / 2);
+			quizChoicePanel.setLayout(new GridLayout(layoutRows, 2));
+		}
+		
+		quizChoicePanel.validate();
+		quizChoiceScrollPane.validate();
+		repaint();
+
 		switch(questionType) {
 			case 1:
 				quizButtonGroup = new ButtonGroup();
@@ -1322,7 +1338,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 			case 3:
 				// add JTextFields
 				for(int i=0; i<quesChoices.size(); i++) {
-					quizChoicePanel.add(new JTextField(10));
+					quizChoicePanel.add(new JTextField(20));
 				}
 
 				quizChoicePanel.validate();
