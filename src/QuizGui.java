@@ -39,6 +39,14 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 	// used to control what action is taken when a button is being pressed on the shown panel
 	private String currentlyShownPanel = "main"; 
 
+	// this holds the components dynamcially created for each quiz
+	// we hold them in here so that they will retain their values 
+	// (e.g. checked, clicked, words typed) after being removed and readded to the quiz choice panel
+	private ArrayList<ArrayList<Component>> quizChoiceComponents;
+
+	// a collection of button groups that we need for quiz JRadioButton components
+	private ArrayList<ButtonGroup> quizButtonGroups;
+
 	// START MAIN PANEL COMPONENTS
 
 	private JPanel mainPanel = new JPanel();
@@ -569,7 +577,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						System.out.println("Start button clicked.");
 
 						qEng.setQuestionSet(savedQSets.get(selectedSet).getAllQuestions());
+
 						qEng.generateQuiz();
+
+						// create the components to add and remove
+						createQuizComponents();
 						
 						configureQuizComponents();
 
@@ -1282,6 +1294,51 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		}
 	}
 
+
+	// takes the selected quiz set and iterated through the choices,
+	// creating components for the choices based on the question type
+	// and storing them inside the ArrayList
+	private void createQuizComponents() {
+		ArrayList<Question> selSetQuestions = savedQSets.get(selectedSet).getAllQuestions();
+
+		quizChoiceComponents = new ArrayList<ArrayList<Component>>();
+		quizButtonGroups = new ArrayList<ButtonGroup>();
+
+		for(Question ques : selSetQuestions) {
+
+			ArrayList<Component> compList = new ArrayList<Component>();
+
+			int quesType = ques.getQType();
+
+			ArrayList<String> questionChoices = ques.getChoices();
+
+			if(quesType == 1) {
+				ButtonGroup quizButtonGroup = new ButtonGroup();
+				for(String choice : questionChoices) {
+					// type 1 is JRadioButtons
+					JRadioButton radioChoice = new JRadioButton(choice);
+					// add the component to the component ArrayList and button group
+					compList.add(radioChoice);
+					quizButtonGroup.add(radioChoice);
+				}
+			}else if(quesType == 2) {
+				for(String choice : questionChoices) {
+					// type 2 is JCheckBoxes
+					JCheckBox checkBoxChoice = new JCheckBox(choice);
+					compList.add(checkBoxChoice);
+				}
+			}else if(quesType == 3) {
+				for(String choice : questionChoices) {
+					// type 3 is JTextFields
+					JTextField textFieldChoice = new JTextField(20);
+					compList.add(textFieldChoice);
+				}
+			}	
+			// add the ArrayList of components to the global ArrayList to retrieve later
+			quizChoiceComponents.add(compList);
+		}
+	}
+
 	private void configureQuizComponents() {
 
 		// we've got three components that we need to configure
@@ -1306,10 +1363,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 		int questionType = curQuestion.getQType();
 
-		// question type 1 - Multiple Choice One Answer (JRadioButtons)
-		// question type 2 - Multiple Choice Many Answer (JCheckBoxes)
-		// question type 3 - Fill in the blank (JTextField)
-
 		// get the choices for the question
 		ArrayList<String> quesChoices = curQuestion.getChoices();
 
@@ -1329,53 +1382,25 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizChoiceScrollPane.validate();
 		repaint();
 
-		switch(questionType) {
-			case 1:
-				quizButtonGroup = new ButtonGroup();
-				// add the choices to the panel as JRadioButtons
-				for(int i=0; i<quesChoices.size(); i++) {
-					quizChoicePanel.add(new JRadioButton(quesChoices.get(i)));
-				}
+		// get the created components for the given question and add them to the panel
 
-				// then add those components to the quizButtonGroup
-				Component[] radioChoiceButtons = quizChoicePanel.getComponents();
+		ArrayList<Component> quesComps = quizChoiceComponents.get(qEng.getCurQuesNum());
 
-				for(int i=0; i<quesChoices.size(); i++) {
-					quizButtonGroup.add((JRadioButton) radioChoiceButtons[i]);
-				}
-				
-				quizChoicePanel.validate();
-				quizChoiceScrollPane.validate();
+		for(Component comp : quesComps) {
+			if(comp instanceof JRadioButton) {
+				comp = (JRadioButton) comp;
+			}else if(comp instanceof JCheckBox) {
+				comp = (JCheckBox) comp;
+			}else if(comp instanceof JTextField) {
+				comp = (JTextField) comp;
+			}
 
-				break;
-			case 2:
-				// add JCheckBoxes
-				for(int i=0; i<quesChoices.size(); i++) {
-					quizChoicePanel.add(new JCheckBox(quesChoices.get(i)));
-				}
-
-				quizChoicePanel.validate();
-				quizChoiceScrollPane.validate();
-				break;
-			case 3:
-				
-				// add JTextFields
-				for(int i=0; i<quesChoices.size(); i++) {
-					JTextField choiceTextField = new JTextField(20);
-					choiceTextField.getDocument().addDocumentListener(this);
-					quizChoicePanel.add(choiceTextField);
-				}
-
-				quizChoicePanel.validate();
-				quizChoiceScrollPane.validate();
-				break;
-			default: 
-				break;
+			quizChoicePanel.add(comp);
 		}
 
-
-
-
+		quizChoicePanel.validate();
+		quizChoiceScrollPane.validate();
+		
 	}
 
 	public void display() {

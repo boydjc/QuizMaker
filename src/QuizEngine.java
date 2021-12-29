@@ -8,6 +8,9 @@ public class QuizEngine {
 
 	// set of questions used for the current quiz
 	private ArrayList<Question> generatedQuizSet;
+	// this is a nested String arraylist because some questions could have
+	// multiple answers
+	private ArrayList<ArrayList<String>> generatedQuizSetAnswers;
 
 	private Random rand = new Random();
 
@@ -58,6 +61,7 @@ public class QuizEngine {
 
 		// clear the current quiz if there is one
 		generatedQuizSet = new ArrayList<Question>();
+		generatedQuizSetAnswers = new ArrayList<ArrayList<String>>();
 
 		ArrayList<Integer> qSequence = getRandQuesSeq(questionSet.size());
 		
