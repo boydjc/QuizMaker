@@ -179,21 +179,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 	private JPanel quizChoicePanel = new JPanel();
 	private JScrollPane quizChoiceScrollPane = new JScrollPane(quizChoicePanel);
 
-	private ButtonGroup quizButtonGroup = new ButtonGroup();
-	private JRadioButton radioChoiceButtonOne = new JRadioButton("Choice One");
-	private JRadioButton radioChoiceButtonTwo = new JRadioButton("Choice Two");
-	private JRadioButton radioChoiceButtonThree = new JRadioButton("Choice Three");
-	private JRadioButton radioChoiceButtonFour = new JRadioButton("Choice Four");
-	private JRadioButton radioChoiceButtonFive = new JRadioButton("Choice Five");
-	private JRadioButton radioChoiceButtonSix = new JRadioButton("Choice Six");
-	private JRadioButton radioChoiceButtonSeven = new JRadioButton("Choice Seven");
-	private JRadioButton radioChoiceButtonEight = new JRadioButton("Choice Eight");
-	private JRadioButton radioChoiceButtonNine = new JRadioButton("Choice Nine");
-	private JRadioButton radioChoiceButtonTen = new JRadioButton("Choice Ten");
-	private JRadioButton radioChoiceButtonEleven = new JRadioButton("Choice Eleven");
-	private JRadioButton radioChoiceButtonTwelve = new JRadioButton("Choice Twelve");
-
 	private JPanel quizPrevNextButtonPanel = new JPanel();
+	private JButton quizExitButton = new JButton("Exit");
 	private JButton quizPrevButton = new JButton("Previous");
 	private JButton quizNextButton = new JButton("Next");
 
@@ -486,37 +473,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizQuestionText.setBackground(new Color(0, 0, 0, 0));
 		quizQuestionText.setOpaque(false);
 
-		// add buttons to button group
-
-		quizButtonGroup.add(radioChoiceButtonOne);
-		quizButtonGroup.add(radioChoiceButtonTwo);
-		quizButtonGroup.add(radioChoiceButtonThree);
-		quizButtonGroup.add(radioChoiceButtonFour);
-		quizButtonGroup.add(radioChoiceButtonFive);
-		quizButtonGroup.add(radioChoiceButtonSix);
-		quizButtonGroup.add(radioChoiceButtonSeven);
-		quizButtonGroup.add(radioChoiceButtonEight);
-		quizButtonGroup.add(radioChoiceButtonNine);
-		quizButtonGroup.add(radioChoiceButtonTen);
-		quizButtonGroup.add(radioChoiceButtonEleven);
-		quizButtonGroup.add(radioChoiceButtonTwelve);
-
-		// adding radio buttons to panel
-
-		quizChoicePanel.add(radioChoiceButtonOne);
-		quizChoicePanel.add(radioChoiceButtonTwo);
-		quizChoicePanel.add(radioChoiceButtonThree);
-		quizChoicePanel.add(radioChoiceButtonFour);
-		quizChoicePanel.add(radioChoiceButtonFive);
-		quizChoicePanel.add(radioChoiceButtonSix);
-		quizChoicePanel.add(radioChoiceButtonSeven);
-		quizChoicePanel.add(radioChoiceButtonEight);
-		quizChoicePanel.add(radioChoiceButtonNine);
-		quizChoicePanel.add(radioChoiceButtonTen);
-		quizChoicePanel.add(radioChoiceButtonEleven);
-		quizChoicePanel.add(radioChoiceButtonTwelve);
-
-		quizPrevNextButtonPanel.add(Box.createRigidArea(new Dimension(300, 0)));
+		quizExitButton.addActionListener(this);
+		quizPrevNextButtonPanel.add(quizExitButton);
+		quizPrevNextButtonPanel.add(Box.createRigidArea(new Dimension(200, 0)));
 		quizPrevButton.addActionListener(this);
 		quizPrevNextButtonPanel.add(quizPrevButton);
 		quizPrevNextButtonPanel.add(Box.createRigidArea(new Dimension(20, 0)));
@@ -1053,7 +1012,14 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 				if(source instanceof JButton) {
 					
-					if(((JButton) source).getText().equals("Previous")) {
+					if(((JButton) source).getText().equals("Exit")) {
+
+						CardLayout cl = (CardLayout) containerPanel.getLayout();
+						currentlyShownPanel = "main";
+						cl.show(containerPanel, currentlyShownPanel);
+						setTitle("QuizMaker");
+		
+					}else if(((JButton) source).getText().equals("Previous")) {
 
 						System.out.println("Quiz Screen Previous Button Pressed.");
 
@@ -1371,10 +1337,14 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		// rows. Of course if we have an odd number of choices then we will not use both 
 		// column slots for the last row
 
+		System.out.println("Question Type: " + questionType);
+
 		if(questionType == 3) {
 			quizChoicePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		}else {
 			int layoutRows = (int) Math.ceil(quesChoices.size() / 2);
+
+			System.out.println("Layout Rows: " + layoutRows);
 			quizChoicePanel.setLayout(new GridLayout(layoutRows, 2));
 		}
 		
