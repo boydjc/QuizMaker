@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class QuizGui extends JFrame implements ActionListener, MouseListener {
+public class QuizGui extends JFrame implements ActionListener, MouseListener, DocumentListener {
 
 	private String savedQSetPath = "./data/";
 
@@ -552,6 +553,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		setSize(550, 475);
 	}
 
+	// action listeners
+
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 
@@ -1035,30 +1038,36 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 					setTitle(savedQSets.get(selectedSet).getName() + "(Editing)");
 				}
 			}else if(currentlyShownPanel.equals("quiz")) {
-				
-				if(((JButton) source).getText().equals("Previous")) {
 
-					System.out.println("Quiz Screen Previous Button Pressed.");
+				if(source instanceof JButton) {
+					
+					if(((JButton) source).getText().equals("Previous")) {
 
-					if(qEng.getCurQuesNum() > 0) {
-						qEng.decrementCurQuesNum();
-						configureQuizComponents();
-					}
+						System.out.println("Quiz Screen Previous Button Pressed.");
 
-				}else if(((JButton) source).getText().equals("Next")) {
+						if(qEng.getCurQuesNum() > 0) {
+							qEng.decrementCurQuesNum();
+							configureQuizComponents();
+						}
+
+					}else if(((JButton) source).getText().equals("Next")) {
 			
-					System.out.println("Quiz Screen Next Button Pressed.");
+						System.out.println("Quiz Screen Next Button Pressed.");
 
-					if(qEng.getCurQuesNum() < qEng.getQuizSet().size()-1) {
-						qEng.incrementCurQuesNum();
-						configureQuizComponents();
+						if(qEng.getCurQuesNum() < qEng.getQuizSet().size()-1) {
+							qEng.incrementCurQuesNum();
+							configureQuizComponents();
+						}
+
 					}
-
+				}else if(source instanceof JTextField) {
+					System.out.println(((JTextField) source).getText());
 				}
-				
 			}
 		}
 	}
+
+	// mouse listner functions
 
 	public void mousePressed(MouseEvent e) {
 		// not used
@@ -1110,6 +1119,19 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				}
 			}
 		}	
+	}
+
+	// document listener functions
+	public void insertUpdate(DocumentEvent e) {
+		System.out.println("Insert Update Fired!");
+	}
+
+	public void removeUpdate(DocumentEvent e) {
+		System.out.println("Remove Update Fired!");
+	}
+
+	public void changedUpdate(DocumentEvent e) {
+		System.out.println("Changed Update Fired!");
 	}
 
 	private void setQSetLabels() {
@@ -1297,7 +1319,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 		// column slots for the last row
 
 		if(questionType == 3) {
-			quizChoicePanel.setLayout(new FlowLayout());
+			quizChoicePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		}else {
 			int layoutRows = (int) Math.ceil(quesChoices.size() / 2);
 			quizChoicePanel.setLayout(new GridLayout(layoutRows, 2));
@@ -1336,9 +1358,12 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener {
 				quizChoiceScrollPane.validate();
 				break;
 			case 3:
+				
 				// add JTextFields
 				for(int i=0; i<quesChoices.size(); i++) {
-					quizChoicePanel.add(new JTextField(20));
+					JTextField choiceTextField = new JTextField(20);
+					choiceTextField.getDocument().addDocumentListener(this);
+					quizChoicePanel.add(choiceTextField);
 				}
 
 				quizChoicePanel.validate();
