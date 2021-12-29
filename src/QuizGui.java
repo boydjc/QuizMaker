@@ -39,6 +39,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 	// used to control what action is taken when a button is being pressed on the shown panel
 	private String currentlyShownPanel = "main"; 
 
+	// this holds the components dynamcially created for each quiz
+	// we hold them in here so that they will retain their values 
+	// (e.g. checked, clicked, words typed) after being removed and readded to the quiz choice panel
+	private ArrayList<ArrayList<Component>> quizChoiceComponents; 
+
 	// START MAIN PANEL COMPONENTS
 
 	private JPanel mainPanel = new JPanel();
@@ -1279,6 +1284,46 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 			editPanelTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 15));
 			editPanelTablePane.setViewportView(editPanelTable);
 			editPanelTablePane.repaint();
+		}
+	}
+
+
+	// takes the selected quiz set and iterated through the choices,
+	// creating components for the choices based on the question type
+	// and storing them inside the ArrayList
+	private void createQuizComponents() {
+		ArrayList<Question> selSetQuestions = savedQSets.get(selectedSet).getAllQuestions();
+
+		for(Question ques : selSetQuestions) {
+
+			ArrayList<Component> compList = new ArrayList<Component>();
+
+			int quesType = ques.getQType();
+
+			ArrayList<String> questionChoices = ques.getChoices();
+
+			if(quesType == 1) {
+				for(String choice : questionChoices) {
+					// type 1 is JRadioButtons
+					JRadioButton radioChoice = new JRadioButton(choice);
+					// add the component to the component ArrayList
+					compList.add(radioChoice);
+				}
+			}else if(quesType == 2) {
+				for(String choice : questionChoices) {
+					// type 2 is JCheckBoxes
+					JCheckBox checkBoxChoice = new JCheckBox(choice);
+					compList.add(checkBoxChoice);
+				}
+			}else if(quesType == 3) {
+				for(String choice : questionChoices) {
+					// type 3 is JTextFields
+					JTextField textFieldChoice = new JTextField(20);
+					compList.add(textFieldChoice);
+				}
+			}	
+			// add the ArrayList of components to the global ArrayList to retrieve later
+			quizChoiceComponents.add(compList);
 		}
 	}
 
