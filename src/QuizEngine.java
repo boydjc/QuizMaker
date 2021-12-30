@@ -16,6 +16,9 @@ public class QuizEngine {
 
 	private int genQuizCurQuesNum = 0;
 
+	// the random sequence of question numbers generated for each quiz
+	private ArrayList<Integer> qSequence;
+
 	QuizEngine() {
 	}
 
@@ -31,6 +34,10 @@ public class QuizEngine {
 		return this.generatedQuizSet;
 	}
 
+	public ArrayList<Integer> getQuestionSequence() {
+		return this.qSequence;
+	}
+
 	// prints all of the questions, mostly for testing purposes
 	public void displayQuiz() {
 		for(int i=0; i<generatedQuizSet.size(); i++) {
@@ -40,7 +47,7 @@ public class QuizEngine {
 	
 	// returns a question from the generated quiz
 	public Question getQuestion(int qIndex) {
-		return generatedQuizSet.get(qIndex);
+		return generatedQuizSet.get(qSequence.get(qIndex));
 	}
 
 	public void incrementCurQuesNum() {
@@ -63,7 +70,7 @@ public class QuizEngine {
 		generatedQuizSet = new ArrayList<Question>();
 		generatedQuizSetAnswers = new ArrayList<ArrayList<String>>();
 
-		ArrayList<Integer> qSequence = getRandQuesSeq(questionSet.size());
+		qSequence = getRandQuesSeq(questionSet.size());
 		
 		for(int i=0; i<questionSet.size(); i++) {
 			generatedQuizSet.add(questionSet.get(qSequence.get(i)));

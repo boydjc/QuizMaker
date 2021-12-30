@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Question implements java.io.Serializable {
+	private int qId;
 	private int qType;
 	private String quesText;
 	private ArrayList<String> choices = new ArrayList<String>();
@@ -10,7 +11,8 @@ public class Question implements java.io.Serializable {
 
 	}
 
-	Question(int qTypeIn, String quesTxtIn, ArrayList<String> choicesIn, ArrayList<String> ansIn) {	
+	Question(int qIdIn, int qTypeIn, String quesTxtIn, ArrayList<String> choicesIn, ArrayList<String> ansIn) {	
+		this.qId = qIdIn;
 		this.qType = qTypeIn;
 		this.quesText = quesTxtIn;
 		this.choices = choicesIn;
@@ -23,6 +25,10 @@ public class Question implements java.io.Serializable {
 
 	public int getQType() {
 		return this.qType;
+	}
+
+	public int getQId() {
+		return this.qId;
 	}
 
 	public void setQuesText(String quesTxtIn) {
