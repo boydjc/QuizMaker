@@ -963,8 +963,14 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 					if(addQuestion) {
 
+						// the ID for the new question will be the number question that it is in the set
+
+						int newQuesId = (savedQSets.get(selectedSet).getAllQuestions().size())+1;
+
+						System.out.println("New Question ID: " + newQuesId);
+
 						// make a new question
-						Question newQuestion = new Question(qType, questionText, questionChoices, questionAnswers);
+						Question newQuestion = new Question(newQuesId, qType, questionText, questionChoices, questionAnswers);
 
 						if(editingQuestion) {
 							// if we are editing then just overwrite the question
@@ -1265,14 +1271,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 	// creating components for the choices based on the question type
 	// and storing them inside the ArrayList
 	private void createQuizComponents() {
-		ArrayList<Question> selSetQuestions = savedQSets.get(selectedSet).getAllQuestions();
 
 		quizChoiceComponents = new ArrayList<ArrayList<Component>>();
 		quizButtonGroups = new ArrayList<ButtonGroup>();
 
-		for(Question ques : selSetQuestions) {
-
+		for(int i=0; i<qEng.getQuestionSet().size(); i++) {
 			ArrayList<Component> compList = new ArrayList<Component>();
+	
+			ArrayList<Integer> qSequence = qEng.getQuestionSequence();
+	
+			Question ques = qEng.getQuestion(qSequence.get(i));
 
 			int quesType = ques.getQType();
 
@@ -1312,9 +1320,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		// 2. The question text (quizQuestionText)
 		// 3. The question choice (quizChoicePanel)
 
+		ArrayList<Integer> qSequence = qEng.getQuestionSequence();
+
 		// get the current question from the generated quiz
 
-		Question curQuestion = qEng.getQuestion(qEng.getCurQuesNum());
+		Question curQuestion = qEng.getQuestion(qSequence.get(qEng.getCurQuesNum()));
 
 		// set question number label
 		quizQuestionLabel.setText("Question " + (qEng.getCurQuesNum()+1));
