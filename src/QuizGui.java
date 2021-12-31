@@ -1062,6 +1062,34 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							quizNextButton.setText("Grade Quiz");
 						}
 
+					}else if(((JButton) source).getText().equals("Grade Quiz")){
+							
+						ArrayList<ArrayList<String>> allUserAnswers = new ArrayList<ArrayList<String>>();
+
+						// go through each component and extract the selected answers
+						for(ArrayList<Component> choiceComponents : quizChoiceComponents) {
+
+							ArrayList<String> questionUserAnswers = new ArrayList<String>();
+
+							for(Component comp : choiceComponents) {
+								if(comp instanceof JRadioButton) {
+									if(((JRadioButton) comp).isSelected()) {
+										questionUserAnswers.add(((JRadioButton) comp).getText());
+									}
+								}else if(comp instanceof JCheckBox) {
+									if(((JCheckBox) comp).isSelected()) {
+										questionUserAnswers.add(((JCheckBox) comp).getText());
+									}
+								}else if(comp instanceof JTextField) {
+									questionUserAnswers.add(((JTextField) comp).getText());
+								}
+							}
+
+							allUserAnswers.add(questionUserAnswers);
+						}
+
+						qEng.gradeQuiz(allUserAnswers);
+
 					}
 				}else if(source instanceof JTextField) {
 					System.out.println(((JTextField) source).getText());
