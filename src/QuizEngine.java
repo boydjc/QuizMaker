@@ -97,4 +97,47 @@ public class QuizEngine {
 		}
 		return qSequence;
 	}
+
+	// takes the choices that the user selected as input,
+	// compares them with the actual answers and then returns a numerical grade
+	public void gradeQuiz(ArrayList<ArrayList<String>> allUserAnswersIn) {
+
+		int userScore = 0;
+
+		ArrayList<ArrayList<String>> allUserAnswers = allUserAnswersIn;
+		
+		for(int i=0; i<generatedQuizSet.size(); i++) {
+
+			// get the question
+
+			Question ques = generatedQuizSet.get(i);
+
+			// User Answers
+			ArrayList<String> questionUserAnswer = allUserAnswers.get(i);
+
+			// Actual Answers
+			ArrayList<String> questionActualAnswers = generatedQuizSet.get(i).getAnswers();
+
+			for(String userAnswer : questionUserAnswer) {
+				// the method that we use to check for correct answers will
+				// differ based on the question type
+				if(ques.getQType() == 1) {
+					// Checking JRadioButtons and there will be one answer
+					if(userAnswer.equals(questionActualAnswers.get(0))) {
+						System.out.println("CORRECT ANSWER FOUND");
+						System.out.println("User Answer: ");
+						System.out.println(userAnswer);
+						System.out.println("Actual Answer: ");
+						System.out.println(questionActualAnswers.get(0));
+					}
+				}else if(ques.getQType() == 2) {
+					// Checking JCheckBoxes and there will be more than one answer
+				}else if(ques.getQType() == 3) {
+					// Checking JTextField and there could be one or more answers
+				}
+			}
+
+		}
+
+	}
 }
