@@ -535,6 +535,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					if(selectedSet != -1) {
 						System.out.println("Start button clicked.");
 
+						// since we are starting at the beginning of the quiz, there
+						// is no reason for the "previous" button to be enabled
+
+						quizPrevButton.setEnabled(false);
+
 						qEng.setQuestionSet(savedQSets.get(selectedSet).getAllQuestions());
 
 						qEng.generateQuiz();
@@ -1032,6 +1037,13 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						if(qEng.getCurQuesNum() > 0) {
 							qEng.decrementCurQuesNum();
 							configureQuizComponents();
+							if(quizNextButton.getText().equals("Grade Quiz")) {
+								quizNextButton.setText("Next");
+							}
+						}
+
+						if(qEng.getCurQuesNum() == 0) {
+							quizPrevButton.setEnabled(false);
 						}
 
 					}else if(((JButton) source).getText().equals("Next")) {
@@ -1041,6 +1053,13 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						if(qEng.getCurQuesNum() < qEng.getQuizSet().size()-1) {
 							qEng.incrementCurQuesNum();
 							configureQuizComponents();
+							if(!(quizPrevButton.isEnabled())) {
+								quizPrevButton.setEnabled(true);
+							}
+						}
+
+						if(qEng.getCurQuesNum() == qEng.getQuizSet().size()-1) {
+							quizNextButton.setText("Grade Quiz");
 						}
 
 					}
