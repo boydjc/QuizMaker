@@ -361,8 +361,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		newQuestionQTypeLabel.setFont(detailLabelFont);
 		newQuestionQTypeLabelPanel.add(newQuestionQTypeLabel);
 
+		multiChoiceOneAns.setName("Multiple Choice");
+		multiChoiceOneAns.addActionListener(this);
 		qTypeButtonGroup.add(multiChoiceOneAns);
+
+		multiChoiceMultiAns.setName("Many Answers");
+		multiChoiceMultiAns.addActionListener(this);
 		qTypeButtonGroup.add(multiChoiceMultiAns);
+
+		fillInBlank.setName("Fill in the blank");
+		fillInBlank.addActionListener(this);
 		qTypeButtonGroup.add(fillInBlank);
 
 		multiChoiceOneAns.setSelected(true);
@@ -808,8 +816,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					if(((JButton) source).getName().equals("Choice Add")) {
 						
 						// adding a new choice text field if there is at least one already existing
-						System.out.println("Choice Add Button Pressed");
-
 						Component[] newQuesQChoicePanComponents = newQuestionQChoicePanel.getComponents();
 
 						newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -821,8 +827,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						}
 
 					}else if(((JButton) source).getName().equals("Answer Add")) {
-
-						System.out.println("Answer Add Button Pressed");
 
 						Component[] newQuesQAnsPanComponents = newQuestionQAnsPanel.getComponents();
 
@@ -1089,6 +1093,41 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					}
 				}else if(source instanceof JTextField) {
 					System.out.println(((JTextField) source).getText());
+				}
+			}
+
+		}else if(source instanceof JRadioButton) {
+			System.out.println("JRadioButton Event");
+			if(((JRadioButton) source).getName().equals("Multiple Choice")) {
+				System.out.println("Multiple Choice selected");
+				// if it is multiple choice then we should only have one answer
+				// so limit the amount of answer fields the user has and disable
+				// the add and remove answer buttons
+
+				newQuestionQAnsPanel.removeAll();
+				newQuestionQAnsPanel.add(newQuestionQAns);
+
+				newQuestionQAnsAddButton.setEnabled(false);
+				newQuestionQAnsRemButton.setEnabled(false);
+
+			}else if(((JRadioButton) source).getName().equals("Many Answers")) {
+				
+				newQuestionQAnsAddButton.setEnabled(true);
+
+				if(newQuestionQAnsPanel.getComponents().length > 1) {
+					newQuestionQAnsRemButton.setEnabled(true);
+				}else{
+					newQuestionQAnsRemButton.setEnabled(false);
+				}
+			
+
+			}else if(((JRadioButton) source).getName().equals("Fill in the blank")) {
+				newQuestionQAnsAddButton.setEnabled(true);
+				
+				if(newQuestionQAnsPanel.getComponents().length > 1) {
+					newQuestionQAnsRemButton.setEnabled(true);
+				}else{
+					newQuestionQAnsRemButton.setEnabled(false);
 				}
 			}
 		}
