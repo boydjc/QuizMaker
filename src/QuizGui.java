@@ -533,8 +533,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				if(((JButton) source).getText().equals("Start")) {
 
 					if(selectedSet != -1) {
-						System.out.println("Start button clicked.");
-
 						// since we are starting at the beginning of the quiz, there
 						// is no reason for the "previous" button to be enabled
 
@@ -1032,8 +1030,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		
 					}else if(((JButton) source).getText().equals("Previous")) {
 
-						System.out.println("Quiz Screen Previous Button Pressed.");
-
 						if(qEng.getCurQuesNum() > 0) {
 							qEng.decrementCurQuesNum();
 							configureQuizComponents();
@@ -1047,8 +1043,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						}
 
 					}else if(((JButton) source).getText().equals("Next")) {
-			
-						System.out.println("Quiz Screen Next Button Pressed.");
 
 						if(qEng.getCurQuesNum() < qEng.getQuizSet().size()-1) {
 							qEng.incrementCurQuesNum();
@@ -1088,7 +1082,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							allUserAnswers.add(questionUserAnswers);
 						}
 
-						qEng.gradeQuiz(allUserAnswers);
+						float userScore = qEng.gradeQuiz(allUserAnswers);
+
+						System.out.println("Grading Complete. User Score: " + userScore);
 
 					}
 				}else if(source instanceof JTextField) {
@@ -1325,9 +1321,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		for(int i=0; i<qEng.getQuestionSet().size(); i++) {
 			ArrayList<Component> compList = new ArrayList<Component>();
 	
-			ArrayList<Integer> qSequence = qEng.getQuestionSequence();
-	
-			Question ques = qEng.getQuestion(qSequence.get(i));
+			Question ques = qEng.getQuestion(i);
 
 			int quesType = ques.getQType();
 
@@ -1371,7 +1365,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 		// get the current question from the generated quiz
 
-		Question curQuestion = qEng.getQuestion(qSequence.get(qEng.getCurQuesNum()));
+		Question curQuestion = qEng.getQuestion(qEng.getCurQuesNum());
 
 		// set question number label
 		quizQuestionLabel.setText("Question " + (qEng.getCurQuesNum()+1));
@@ -1393,15 +1387,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		// the tradional layout is a x/2 layout where x is an even number of
 		// rows. Of course if we have an odd number of choices then we will not use both 
 		// column slots for the last row
-
-		System.out.println("Question Type: " + questionType);
-
 		if(questionType == 3) {
 			quizChoicePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		}else {
 			int layoutRows = (int) Math.ceil(quesChoices.size() / 2);
-
-			System.out.println("Layout Rows: " + layoutRows);
 			quizChoicePanel.setLayout(new GridLayout(layoutRows, 2));
 		}
 		
