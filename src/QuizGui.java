@@ -186,6 +186,33 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 	// END QUIZ PANEL COMPONENTS
 
+	// START QUIZ RESULT COMPONENTS
+		
+	private JPanel quizResultPanel = new JPanel();
+
+	private JPanel quizResultQuizLabelPanel = new JPanel();
+	private JLabel quizResultQuizLabel = new JLabel("Test Quiz");
+
+	private JPanel quizResultLabelPanel = new JPanel();
+	private JLabel quizResultLabel = new JLabel("Quiz Results");
+
+	private JPanel quizResultScoreLabelPanel = new JPanel();
+	private JLabel quizResultScoreLabel = new JLabel("Score: ");
+
+	private JPanel quizResultAveScoreLabelPanel = new JPanel();
+	private JLabel quizResultAveScoreLabel = new JLabel("Average Score: ");
+
+	private JPanel quizResultMissedQuestionLabelPanel = new JPanel();
+	private JLabel quizResultMissedQuestionLabel = new JLabel("Missed Questions");
+	private JPanel quizResultMissedQuestionPanel = new JPanel();
+	private JScrollPane quizResultMissedQuestionScrollPane = new JScrollPane(quizResultMissedQuestionPanel);
+
+	private JPanel quizResultButtonPanel = new JPanel();
+	private JButton restartButton = new JButton("Restart");
+	private JButton mainMenuButton = new JButton("Main Menu");
+	
+	// END QUIZ RESULT COMPONENTS
+
 	QuizGui() {
 
 		// JFrame configuration
@@ -507,6 +534,41 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 		// END QUIZ PANEL CONFIGURATION
 
+		// START QUIZ RESULT PANEL CONFIGURATION
+
+		// set layouts
+		quizResultPanel.setLayout(new BoxLayout(quizResultPanel, BoxLayout.PAGE_AXIS));
+		quizResultQuizLabelPanel.setLayout(new BoxLayout(quizResultQuizLabelPanel, BoxLayout.LINE_AXIS));
+		quizResultLabelPanel.setLayout(new BoxLayout(quizResultLabelPanel, BoxLayout.LINE_AXIS));
+		quizResultScoreLabelPanel.setLayout(new BoxLayout(quizResultScoreLabelPanel, BoxLayout.LINE_AXIS));
+		quizResultAveScoreLabelPanel.setLayout(new BoxLayout(quizResultAveScoreLabelPanel, BoxLayout.LINE_AXIS));
+		quizResultMissedQuestionLabelPanel.setLayout(new BoxLayout(quizResultMissedQuestionLabelPanel, BoxLayout.LINE_AXIS));
+		quizResultMissedQuestionPanel.setLayout(new BoxLayout(quizResultMissedQuestionPanel, BoxLayout.PAGE_AXIS));
+		quizResultButtonPanel.setLayout(new BoxLayout(quizResultButtonPanel, BoxLayout.LINE_AXIS));
+
+		quizResultQuizLabelPanel.add(quizResultQuizLabel);
+		quizResultLabelPanel.add(quizResultLabel);
+		quizResultScoreLabelPanel.add(quizResultScoreLabel);
+		quizResultAveScoreLabelPanel.add(quizResultAveScoreLabel);
+		quizResultMissedQuestionLabelPanel.add(quizResultMissedQuestionLabel);
+
+		restartButton.addActionListener(this);
+		quizResultButtonPanel.add(restartButton);
+		mainMenuButton.addActionListener(this);
+		quizResultButtonPanel.add(mainMenuButton);
+		
+		quizResultPanel.add(quizResultQuizLabelPanel);
+		quizResultPanel.add(quizResultLabelPanel);
+		quizResultPanel.add(quizResultScoreLabelPanel);
+		quizResultPanel.add(quizResultAveScoreLabelPanel);
+		quizResultPanel.add(quizResultMissedQuestionLabelPanel);
+		quizResultPanel.add(quizResultMissedQuestionScrollPane);
+		quizResultPanel.add(quizResultButtonPanel);
+		
+		
+
+		// END QUIZ RESULT PANEL CONFIGURATION
+
 		mainPanel.setPreferredSize(new Dimension(500, 400));
 		mainPanel.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(mainPanel, "main");
@@ -522,6 +584,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizPanel.setPreferredSize(new Dimension(500, 400));
 		quizPanel.setMaximumSize(new Dimension(500, 400));
 		containerPanel.add(quizPanel, "quiz");
+
+		quizResultPanel.setPreferredSize(new Dimension(500, 400));
+		quizResultPanel.setMaximumSize(new Dimension(500, 400));
+		containerPanel.add(quizResultPanel, "results");
 		
 		add(containerPanel);
 
@@ -1088,14 +1154,48 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 						float userScore = qEng.gradeQuiz(allUserAnswers);
 
-						System.out.println("Grading Complete. User Score: " + userScore);
+						quizResultScoreLabel.setText("Score: " + userScore);
+
+						CardLayout cl = (CardLayout) containerPanel.getLayout();
+
+						currentlyShownPanel = "results";
+
+						cl.show(containerPanel, currentlyShownPanel);
+
+						setTitle(savedQSets.get(selectedSet).getName() + " Results");
 
 					}
 				}else if(source instanceof JTextField) {
 					System.out.println(((JTextField) source).getText());
 				}
-			}
+			}else if(currentlyShownPanel.equals("results")) {
+				if(((JButton) source).getText().equals("Restart")) {
+					quizPrevButton.setEnabled(false);
 
+					qEng.setQuestionSet(savedQSets.get(selectedSet).getAllQuestions());
+
+					qEng.generateQuiz();
+
+					// create the components to add and remove
+					createQuizComponents();
+						
+					configureQuizComponents();
+
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+
+					// switch to the quiz panel
+					currentlyShownPanel = "quiz";
+
+					cl.show(containerPanel, currentlyShownPanel);
+
+					setTitle(savedQSets.get(selectedSet).getName() + " Quiz");
+				}else if(((JButton) source).getText().equals("Main Menu")) {
+					CardLayout cl = (CardLayout) containerPanel.getLayout();
+					currentlyShownPanel = "main";
+					cl.show(containerPanel, currentlyShownPanel);
+					setTitle("QuizMaker");
+				}
+			}
 		}else if(source instanceof JRadioButton) {
 			System.out.println("JRadioButton Event");
 			if(((JRadioButton) source).getName().equals("Multiple Choice")) {
