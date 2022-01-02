@@ -198,8 +198,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 	private JPanel quizResultScoreLabelPanel = new JPanel();
 	private JLabel quizResultScoreLabel = new JLabel("Score: ");
-
-	private JPanel quizResultAveScoreLabelPanel = new JPanel();
 	private JLabel quizResultAveScoreLabel = new JLabel("Average Score: ");
 
 	private JPanel quizResultMissedQuestionLabelPanel = new JPanel();
@@ -541,28 +539,42 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizResultQuizLabelPanel.setLayout(new BoxLayout(quizResultQuizLabelPanel, BoxLayout.LINE_AXIS));
 		quizResultLabelPanel.setLayout(new BoxLayout(quizResultLabelPanel, BoxLayout.LINE_AXIS));
 		quizResultScoreLabelPanel.setLayout(new BoxLayout(quizResultScoreLabelPanel, BoxLayout.LINE_AXIS));
-		quizResultAveScoreLabelPanel.setLayout(new BoxLayout(quizResultAveScoreLabelPanel, BoxLayout.LINE_AXIS));
 		quizResultMissedQuestionLabelPanel.setLayout(new BoxLayout(quizResultMissedQuestionLabelPanel, BoxLayout.LINE_AXIS));
 		quizResultMissedQuestionPanel.setLayout(new BoxLayout(quizResultMissedQuestionPanel, BoxLayout.PAGE_AXIS));
 		quizResultButtonPanel.setLayout(new BoxLayout(quizResultButtonPanel, BoxLayout.LINE_AXIS));
 
+		quizResultQuizLabel.setFont(new Font("Serif", Font.BOLD, 21));
 		quizResultQuizLabelPanel.add(quizResultQuizLabel);
+
+		quizResultLabel.setFont(new Font("Serif", Font.BOLD, 18));
 		quizResultLabelPanel.add(quizResultLabel);
+		quizResultLabelPanel.add(Box.createRigidArea(new Dimension(400, 0)));
+		quizResultScoreLabel.setFont(new Font("Serif", Font.PLAIN, 16));
 		quizResultScoreLabelPanel.add(quizResultScoreLabel);
-		quizResultAveScoreLabelPanel.add(quizResultAveScoreLabel);
+		quizResultScoreLabelPanel.add(Box.createRigidArea(new Dimension(40, 0)));
+		quizResultAveScoreLabel.setFont(new Font("Serif", Font.PLAIN, 16));
+		quizResultScoreLabelPanel.add(quizResultAveScoreLabel);
+
+		quizResultMissedQuestionLabel.setFont(new Font("Serif", Font.BOLD, 18));
 		quizResultMissedQuestionLabelPanel.add(quizResultMissedQuestionLabel);
+		quizResultMissedQuestionLabelPanel.add(Box.createRigidArea(new Dimension(400, 0)));
 
 		restartButton.addActionListener(this);
 		quizResultButtonPanel.add(restartButton);
+		quizResultButtonPanel.add(Box.createRigidArea(new Dimension(50, 0)));
 		mainMenuButton.addActionListener(this);
 		quizResultButtonPanel.add(mainMenuButton);
 		
 		quizResultPanel.add(quizResultQuizLabelPanel);
+		quizResultPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		quizResultPanel.add(quizResultLabelPanel);
+		quizResultPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		quizResultPanel.add(quizResultScoreLabelPanel);
-		quizResultPanel.add(quizResultAveScoreLabelPanel);
+		quizResultPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		quizResultPanel.add(quizResultMissedQuestionLabelPanel);
+		quizResultPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		quizResultPanel.add(quizResultMissedQuestionScrollPane);
+		quizResultPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		quizResultPanel.add(quizResultButtonPanel);
 		
 		
@@ -1191,6 +1203,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 					setTitle(savedQSets.get(selectedSet).getName() + " Quiz");
 				}else if(((JButton) source).getText().equals("Main Menu")) {
+
+					quizNextButton.setText("Next");
+
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 					currentlyShownPanel = "main";
 					cl.show(containerPanel, currentlyShownPanel);
