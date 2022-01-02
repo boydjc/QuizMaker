@@ -1171,6 +1171,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 			}else if(currentlyShownPanel.equals("results")) {
 				if(((JButton) source).getText().equals("Restart")) {
 					quizPrevButton.setEnabled(false);
+					quizNextButton.setText("Next");
 
 					qEng.setQuestionSet(savedQSets.get(selectedSet).getAllQuestions());
 
