@@ -1,0 +1,13 @@
+<project name="QuizMaker" default="compile" basedir=".">
+	<description>
+		QuizMaker will take a saved set of questions and answers and generate randomized tests for the user to study
+	</description>
+	
+	<!-- set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="out" location="out"/>
+
+	<target name="compile">
+		<javac srcdir="${src}" destdir="${out}"/>
+	</target>
+</project>
