@@ -173,6 +173,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 	private JPanel quizQuestionPanel = new JPanel();
 	private JLabel quizQuestionLabel = new JLabel("Question 1");
+	private JScrollPane quizQuestionScrollPane = new JScrollPane(quizQuestionPanel);
 	private JLabel quizQuestionText = new JLabel();
 
 	private JPanel quizChoicePanel = new JPanel();
@@ -495,6 +496,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizQuestionLabel.setFont(new Font("Serif", Font.BOLD, 17));
 		quizQuestionLabelPanel.add(quizQuestionLabel);
 		quizQuestionLabelPanel.add(Box.createRigidArea(new Dimension(400, 0)));
+		quizQuestionText.setFont(new Font("Serif", Font.BOLD, 15));
 		quizQuestionPanel.add(quizQuestionText);
 
 		quizExitButton.addActionListener(this);
@@ -509,10 +511,12 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizPanel.add(quizLabelPanel);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		quizPanel.add(quizQuestionLabelPanel);
-		quizPanel.add(Box.createVerticalGlue());
-		quizQuestionPanel.setPreferredSize(new Dimension(500, 500));
-		quizQuestionPanel.setMaximumSize(new Dimension(500, 500));
-		quizPanel.add(quizQuestionPanel);
+		quizQuestionPanel.setPreferredSize(new Dimension(450, 100));
+		quizQuestionPanel.setMaximumSize(new Dimension(450, 30));
+		quizQuestionScrollPane.setPreferredSize(new Dimension(500, 500));
+		quizQuestionScrollPane.setMaximumSize(new Dimension(500, 500));
+		quizQuestionScrollPane.setBorder(BorderFactory.createEmptyBorder());
+		quizPanel.add(quizQuestionScrollPane);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		quizChoiceScrollPane.setPreferredSize(new Dimension(500, 500));
 		quizChoiceScrollPane.setMaximumSize(new Dimension(500, 500));
