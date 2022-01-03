@@ -105,7 +105,6 @@ public class QuizEngine {
 		for(int i=0; i<generatedQuizSet.size(); i++) {
 
 			// get the question
-
 			Question ques = generatedQuizSet.get(i);
 
 			System.out.println(ques.getQuesText());
@@ -119,23 +118,17 @@ public class QuizEngine {
 			ArrayList<String> questionActualAnswers = generatedQuizSet.get(i).getAnswers();
 
 			for(String userAnswer : questionUserAnswer) {
-
-				System.out.println("User Answer: " + userAnswer);
-				System.out.println("Actual Answer: ");
-
 				for(String actualAnswer : questionActualAnswers) {
 					System.out.println(actualAnswer);
 				}
 
 				if(questionActualAnswers.contains(userAnswer)) {
-					userScore += (1 / questionActualAnswers.size());
-					System.out.println(userScore);
+					userScore += ((float) 1 / (float) questionActualAnswers.size());
 				}
-
-			System.out.println("--------------------------------");
 			}
-
 		}
+
+		userScore *= generatedQuizSet.size();
 
 		return userScore;
 
