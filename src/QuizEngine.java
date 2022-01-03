@@ -12,6 +12,9 @@ public class QuizEngine {
 	// set of questions that the user has gotten incorrect
 	private ArrayList<Question> incorrectQuestionSet;
 
+	// the answers that the user had that were incorrect
+	private ArrayList<ArrayList<String>> incorrectUserAnswers;
+
 	private Random rand = new Random();
 
 	private int genQuizCurQuesNum = 0;
@@ -28,6 +31,10 @@ public class QuizEngine {
 
 	public ArrayList<Question> getIncorrectQuestionSet() {
 		return this.incorrectQuestionSet;
+	}
+
+	public ArrayList<ArrayList<String>> getIncorrectUserAnswers() {
+		return this.incorrectUserAnswers;
 	}
 
 	public ArrayList<Question> getQuestionSet() {
@@ -73,8 +80,9 @@ public class QuizEngine {
 		// clear the current quiz if there is one
 		generatedQuizSet = new ArrayList<Question>();
 
-		// also clear the incorrect question set
+		// also clear the incorrect question set and incorrect answers
 		incorrectQuestionSet = new ArrayList<Question>();
+		incorrectUserAnswers = new ArrayList<ArrayList<String>>();
 
 		qSequence = getRandQuesSeq(questionSet.size());
 		
@@ -117,8 +125,6 @@ public class QuizEngine {
 			// get the question
 			Question ques = generatedQuizSet.get(i);
 
-			System.out.println(ques.getQuesText());
-
 			int questionType = ques.getQType();
 
 			// User Answers
@@ -127,18 +133,20 @@ public class QuizEngine {
 			// Actual Answers
 			ArrayList<String> questionActualAnswers = generatedQuizSet.get(i).getAnswers();
 
-			for(String userAnswer : questionUserAnswer) {
-				for(String actualAnswer : questionActualAnswers) {
-					System.out.println(actualAnswer);
-				}
+			ArrayList<String> incorrectAnswer = new ArrayList<String>();
 
+			for(String userAnswer : questionUserAnswer) {
 				if(questionActualAnswers.contains(userAnswer)) {
 					userScore += ((float) 1 / (float) questionActualAnswers.size());
 				}else {
 					// if the answer is not correct, add the question to the incorrect question set
 					incorrectQuestionSet.add(ques);
+					incorrectAnswer.add(userAnswer);
 				}
 			}
+
+			incorrectUserAnswers.add(incorrectAnswer);
+		
 		}
 
 		userScore *= generatedQuizSet.size();
