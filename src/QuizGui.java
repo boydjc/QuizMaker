@@ -518,6 +518,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizQuestionScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		quizPanel.add(quizQuestionScrollPane);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		quizChoicePanel.setPreferredSize(new Dimension(450, 100));
+		quizChoicePanel.setMaximumSize(new Dimension(450, 100));
 		quizChoiceScrollPane.setPreferredSize(new Dimension(500, 500));
 		quizChoiceScrollPane.setMaximumSize(new Dimension(500, 500));
 		quizPanel.add(quizChoiceScrollPane);
@@ -1565,7 +1567,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				ButtonGroup quizButtonGroup = new ButtonGroup();
 				for(String choice : questionChoices) {
 					// type 1 is JRadioButtons
-					JRadioButton radioChoice = new JRadioButton(choice);
+					JRadioButton radioChoice = new JRadioButton("<html>" + choice + "</html>");
 					// add the component to the component ArrayList and button group
 					compList.add(radioChoice);
 					quizButtonGroup.add(radioChoice);
@@ -1573,7 +1575,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 			}else if(quesType == 2) {
 				for(String choice : questionChoices) {
 					// type 2 is JCheckBoxes
-					JCheckBox checkBoxChoice = new JCheckBox(choice);
+					JCheckBox checkBoxChoice = new JCheckBox("<html>" + choice + "</html>");
 					compList.add(checkBoxChoice);
 				}
 			}else if(quesType == 3) {
