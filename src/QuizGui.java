@@ -1008,7 +1008,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						addQuestion = true;
 					}
 
-					// get question choices
+					// get question choices and check for empty fields
 
 					ArrayList<String> questionChoices = new ArrayList<String>();
 
@@ -1027,7 +1027,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						}
 					}
 
-					// get question answers
+					// get question answers and check for empty fields
 
 					ArrayList<String> questionAnswers = new ArrayList<String>();
 
@@ -1042,6 +1042,32 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							}else {
 								questionAnswers.add(((JTextField) comp).getText());
 								addQuestion = true;
+							}
+						}
+					}
+
+					// go through the answers and make sure that they match up with the choices
+					// what is trying to be prevented here is making sure that the user doesn't get 
+					// the wrong answer for something like a '.' in the choice when it is not in the answer
+
+					for(Component ansComp : newQuestionQAnsComps) {
+
+						// get the choice string values
+						ArrayList<String> choiceString = new ArrayList<String>();
+
+						for(Component choiceComp : newQuestionQChoiceComps) {
+							if(choiceComp instanceof JTextField) {
+								choiceString.add(((JTextField) choiceComp).getText());
+							}
+						}
+						
+						if(ansComp instanceof JTextField) {
+							if(choiceString.contains(((JTextField) ansComp).getText())) {
+								addQuestion = true;
+							}else {
+								addQuestion = false;
+								JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
+															  "ERROR", JOptionPane.ERROR_MESSAGE);		 
 							}
 						}
 					}
