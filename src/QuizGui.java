@@ -522,6 +522,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizChoicePanel.setMaximumSize(new Dimension(450, 100));
 		quizChoiceScrollPane.setPreferredSize(new Dimension(500, 500));
 		quizChoiceScrollPane.setMaximumSize(new Dimension(500, 500));
+		quizChoiceScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		quizPanel.add(quizChoiceScrollPane);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		quizPanel.add(quizPrevNextButtonPanel);
