@@ -173,8 +173,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 	private JPanel quizQuestionPanel = new JPanel();
 	private JLabel quizQuestionLabel = new JLabel("Question 1");
-	private JTextArea quizQuestionText = new JTextArea(10, 10);
-	private JScrollPane quizQuestionPane = new JScrollPane(quizQuestionText);
+	private JLabel quizQuestionText = new JLabel();
 
 	private JPanel quizChoicePanel = new JPanel();
 	private JScrollPane quizChoiceScrollPane = new JScrollPane(quizChoicePanel);
@@ -484,7 +483,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizPanel.setLayout(new BoxLayout(quizPanel, BoxLayout.PAGE_AXIS));
 		quizLabelPanel.setLayout(new BoxLayout(quizLabelPanel, BoxLayout.LINE_AXIS));
 		quizQuestionLabelPanel.setLayout(new BoxLayout(quizQuestionLabelPanel, BoxLayout.LINE_AXIS));
-		quizQuestionPanel.setLayout(new BoxLayout(quizQuestionPanel, BoxLayout.PAGE_AXIS));
+		quizQuestionPanel.setLayout(new BoxLayout(quizQuestionPanel, BoxLayout.LINE_AXIS));
 		quizChoicePanel.setLayout(new GridLayout(6, 2));
 		((GridLayout) quizChoicePanel.getLayout()).setVgap(10);
 		quizPrevNextButtonPanel.setLayout(new BoxLayout(quizPrevNextButtonPanel, BoxLayout.LINE_AXIS));
@@ -496,15 +495,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizQuestionLabel.setFont(new Font("Serif", Font.BOLD, 17));
 		quizQuestionLabelPanel.add(quizQuestionLabel);
 		quizQuestionLabelPanel.add(Box.createRigidArea(new Dimension(400, 0)));
-		quizQuestionPane.setPreferredSize(new Dimension(500, 500));
-		quizQuestionPane.setMaximumSize(new Dimension(500, 500));
-		quizQuestionPanel.add(quizQuestionPane);
-
-		quizQuestionText.setLineWrap(true);
-		quizQuestionText.setWrapStyleWord(true);
-		quizQuestionText.setEditable(false);
-		quizQuestionText.setBackground(new Color(0, 0, 0, 0));
-		quizQuestionText.setOpaque(false);
+		quizQuestionPanel.add(quizQuestionText);
 
 		quizExitButton.addActionListener(this);
 		quizPrevNextButtonPanel.add(quizExitButton);
@@ -518,7 +509,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizPanel.add(quizLabelPanel);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		quizPanel.add(quizQuestionLabelPanel);
-		quizPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		quizPanel.add(Box.createVerticalGlue());
 		quizQuestionPanel.setPreferredSize(new Dimension(500, 500));
 		quizQuestionPanel.setMaximumSize(new Dimension(500, 500));
 		quizPanel.add(quizQuestionPanel);
@@ -1610,7 +1601,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizQuestionLabel.setText("Question " + (qEng.getCurQuesNum()+1));
 
 		// set the question text
-		quizQuestionText.setText(curQuestion.getQuesText());
+		quizQuestionText.setText("<html>" + curQuestion.getQuesText() + "</html>");
 
 		// remove all of the components in the quizChoicePanel
 		quizChoicePanel.removeAll();
