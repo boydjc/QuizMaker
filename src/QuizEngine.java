@@ -9,6 +9,9 @@ public class QuizEngine {
 	// set of questions used for the current quiz
 	private ArrayList<Question> generatedQuizSet;
 
+	// set of questions that the user has gotten incorrect
+	private ArrayList<Question> incorrectQuestionSet;
+
 	private Random rand = new Random();
 
 	private int genQuizCurQuesNum = 0;
@@ -21,6 +24,10 @@ public class QuizEngine {
 
 	public void setQuestionSet(ArrayList<Question> qSetIn) {
 		this.questionSet = qSetIn;
+	}
+
+	public ArrayList<Question> getIncorrectQuestionSet() {
+		return this.incorrectQuestionSet;
 	}
 
 	public ArrayList<Question> getQuestionSet() {
@@ -65,6 +72,9 @@ public class QuizEngine {
 
 		// clear the current quiz if there is one
 		generatedQuizSet = new ArrayList<Question>();
+
+		// also clear the incorrect question set
+		incorrectQuestionSet = new ArrayList<Question>();
 
 		qSequence = getRandQuesSeq(questionSet.size());
 		
@@ -124,6 +134,9 @@ public class QuizEngine {
 
 				if(questionActualAnswers.contains(userAnswer)) {
 					userScore += ((float) 1 / (float) questionActualAnswers.size());
+				}else {
+					// if the answer is not correct, add the question to the incorrect question set
+					incorrectQuestionSet.add(ques);
 				}
 			}
 		}
