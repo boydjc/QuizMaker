@@ -1212,8 +1212,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							missedLabelPanel.add(missedLabel);
 						
 							JPanel missedTextPanel = new JPanel(); // holds question text
-							JTextArea missedText = new JTextArea(10, 10);
-							missedText.setText(incorrectQuestions.get(i).getQuesText());
+							JLabel missedText = new JLabel();
+							missedText.setText("<html>" + incorrectQuestions.get(i).getQuesText() + "</html>");
 							missedTextPanel.add(missedText);
 
 							JPanel missedUserLabelPanel = new JPanel(); // holds incorrect answer label
@@ -1221,39 +1221,52 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							missedUserLabelPanel.add(missedUserLabel);
 							
 							JPanel missedUserPanel = new JPanel(); // hold incorrect answer
-							for(int h=0; h<incorrectUserAnswers.get(i).size(); h++) {
-								JLabel missedUser = new JLabel(incorrectUserAnswers.get(i).get(h));
+							
+							ArrayList<String> userAnswer = incorrectUserAnswers.get(i);
+							System.out.println("User Answer Size: " + userAnswer.size());
+				
+							for(int h=0; h<userAnswer.size(); h++) {
+								JLabel missedUser = new JLabel("<html>" + userAnswer.get(h) + "</html>");
 								missedUserPanel.add(missedUser);
 							}
-
+							
 							JPanel missedCorrectLabelPanel = new JPanel(); // holds correct answer label
 							JLabel missedCorrectLabel = new JLabel("Correct Answer");
 							missedCorrectLabelPanel.add(missedCorrectLabel);
 
 							JPanel missedCorrectPanel = new JPanel(); // holds correct answer
-							for(int h=0; h<incorrectQuestions.get(i).getAnswers().size(); h++) {
-								JLabel missedCorrect = new JLabel(incorrectQuestions.get(i).getAnswers().get(h));
-								missedCorrectPanel.add(missedCorrect);
-							}
 
-							
+							for(int h=0; h<incorrectQuestions.get(i).getAnswers().size(); h++) {
+								JLabel missedCorrect = new JLabel("<html>" + incorrectQuestions.get(i).getAnswers().get(h) + "</html>");
+								missedCorrectPanel.add(missedCorrect);
+							}							
 							
 							// set layouts
 							missedPanel.setLayout(new BoxLayout(missedPanel, BoxLayout.PAGE_AXIS));
 							missedLabelPanel.setLayout(new BoxLayout(missedLabelPanel, BoxLayout.LINE_AXIS));
-							missedTextPanel.setLayout(new BoxLayout(missedTextPanel, BoxLayout.LINE_AXIS));
+							missedTextPanel.setLayout(new BoxLayout(missedTextPanel, BoxLayout.PAGE_AXIS));
 							missedUserLabelPanel.setLayout(new BoxLayout(missedUserLabelPanel, BoxLayout.LINE_AXIS));
 							missedUserPanel.setLayout(new BoxLayout(missedUserPanel, BoxLayout.LINE_AXIS));
 							missedCorrectLabelPanel.setLayout(new BoxLayout(missedCorrectLabelPanel, BoxLayout.LINE_AXIS));
 							missedCorrectPanel.setLayout(new BoxLayout(missedCorrectPanel, BoxLayout.LINE_AXIS));
 
 							missedPanel.add(missedLabelPanel);
+							missedTextPanel.setPreferredSize(new Dimension(400, 100));
+							missedTextPanel.setMaximumSize(new Dimension(400, 100));
 							missedPanel.add(missedTextPanel);
+							missedPanel.add(Box.createRigidArea(new Dimension(300, 0)));
+
 							missedPanel.add(missedUserLabelPanel);
+							missedUserPanel.setPreferredSize(new Dimension(450, 100));
+							missedUserPanel.setMaximumSize(new Dimension(450, 100));
 							missedPanel.add(missedUserPanel);
 							missedPanel.add(missedCorrectLabelPanel);
+							missedCorrectPanel.setPreferredSize(new Dimension(450, 100));
+							missedCorrectPanel.setMaximumSize(new Dimension(450, 100));
 							missedPanel.add(missedCorrectPanel);
 
+							missedPanel.setPreferredSize(new Dimension(425, 300));
+							missedPanel.setMaximumSize(new Dimension(425, 300));
 							quizResultMissedQuestionPanel.add(missedPanel);	
 						}
 
