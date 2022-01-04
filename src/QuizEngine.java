@@ -22,7 +22,11 @@ public class QuizEngine {
 	// the random sequence of question numbers generated for each quiz
 	private ArrayList<Integer> qSequence;
 
-	QuizEngine() {
+	QuizEngine() { 
+		generatedQuizSet = new ArrayList<Question>();
+		incorrectQuestionSet = new ArrayList<Question>();
+		incorrectUserAnswers = new ArrayList<ArrayList<String>>();
+		qSequence = new ArrayList<Integer>();
 	}
 
 	public void setQuestionSet(ArrayList<Question> qSetIn) {
@@ -34,6 +38,9 @@ public class QuizEngine {
 	}
 
 	public ArrayList<ArrayList<String>> getIncorrectUserAnswers() {
+		for(int i=0; i<this.incorrectUserAnswers.size(); i++) {
+			System.out.println(incorrectUserAnswers.get(i).toString());
+		}
 		return this.incorrectUserAnswers;
 	}
 
@@ -80,10 +87,6 @@ public class QuizEngine {
 		// clear the current quiz if there is one
 		generatedQuizSet = new ArrayList<Question>();
 
-		// also clear the incorrect question set and incorrect answers
-		incorrectQuestionSet = new ArrayList<Question>();
-		incorrectUserAnswers = new ArrayList<ArrayList<String>>();
-
 		qSequence = getRandQuesSeq(questionSet.size());
 		
 		for(int i=0; i<questionSet.size(); i++) {
@@ -119,6 +122,10 @@ public class QuizEngine {
 		float userScore = 0;
 
 		ArrayList<ArrayList<String>> allUserAnswers = allUserAnswersIn;
+
+		// clear the incorrect question set and incorrect answers
+		incorrectQuestionSet = new ArrayList<Question>();
+		incorrectUserAnswers = new ArrayList<ArrayList<String>>();
 		
 		for(int i=0; i<generatedQuizSet.size(); i++) {
 
@@ -136,6 +143,13 @@ public class QuizEngine {
 			ArrayList<String> incorrectAnswer = new ArrayList<String>();
 
 			for(String userAnswer : questionUserAnswer) {
+
+				// the userAnswer will still contain the <html> wrapping tags from the label
+				// these need to be removed before we can check the answer
+
+				userAnswer = userAnswer.replace("<html>", "");
+				userAnswer = userAnswer.replace("</html>", "");
+
 				if(questionActualAnswers.contains(userAnswer)) {
 					userScore += ((float) 1 / (float) questionActualAnswers.size());
 				}else {
@@ -144,8 +158,10 @@ public class QuizEngine {
 					incorrectAnswer.add(userAnswer);
 				}
 			}
-
-			incorrectUserAnswers.add(incorrectAnswer);
+			
+			if(incorrectAnswer.size() > 0) {
+				incorrectUserAnswers.add(incorrectAnswer);
+			}
 		
 		}
 
