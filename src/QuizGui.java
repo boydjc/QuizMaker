@@ -1209,35 +1209,40 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							JPanel missedPanel = new JPanel();
 							JPanel missedLabelPanel = new JPanel(); // hold question number
 							JLabel missedLabel = new JLabel("Question " + incorrectQuestions.get(i).getQId());
+							missedLabel.setFont(new Font("Serif", Font.BOLD, 17));
 							missedLabelPanel.add(missedLabel);
 						
 							JPanel missedTextPanel = new JPanel(); // holds question text
 							JLabel missedText = new JLabel();
 							missedText.setText("<html>" + incorrectQuestions.get(i).getQuesText() + "</html>");
+							missedText.setFont(new Font("Serif", Font.PLAIN, 14));
 							missedTextPanel.add(missedText);
 
 							JPanel missedUserLabelPanel = new JPanel(); // holds incorrect answer label
 							JLabel missedUserLabel = new JLabel("Your Answer");
+							missedUserLabel.setFont(new Font("Serif", Font.BOLD, 17));
 							missedUserLabelPanel.add(missedUserLabel);
 							
 							JPanel missedUserPanel = new JPanel(); // hold incorrect answer
 							
 							ArrayList<String> userAnswer = incorrectUserAnswers.get(i);
-							System.out.println("User Answer Size: " + userAnswer.size());
 				
 							for(int h=0; h<userAnswer.size(); h++) {
 								JLabel missedUser = new JLabel("<html>" + userAnswer.get(h) + "</html>");
+								missedUser.setFont(new Font("Serif", Font.PLAIN, 14));
 								missedUserPanel.add(missedUser);
 							}
 							
 							JPanel missedCorrectLabelPanel = new JPanel(); // holds correct answer label
 							JLabel missedCorrectLabel = new JLabel("Correct Answer");
+							missedCorrectLabel.setFont(new Font("Serif", Font.BOLD, 17));
 							missedCorrectLabelPanel.add(missedCorrectLabel);
 
 							JPanel missedCorrectPanel = new JPanel(); // holds correct answer
 
 							for(int h=0; h<incorrectQuestions.get(i).getAnswers().size(); h++) {
 								JLabel missedCorrect = new JLabel("<html>" + incorrectQuestions.get(i).getAnswers().get(h) + "</html>");
+								missedCorrect.setFont(new Font("Serif", Font.PLAIN, 14));
 								missedCorrectPanel.add(missedCorrect);
 							}							
 							
@@ -1251,8 +1256,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							missedCorrectPanel.setLayout(new BoxLayout(missedCorrectPanel, BoxLayout.LINE_AXIS));
 
 							missedPanel.add(missedLabelPanel);
-							missedTextPanel.setPreferredSize(new Dimension(450, 100));
-							missedTextPanel.setMaximumSize(new Dimension(450, 100));
+							missedTextPanel.setPreferredSize(new Dimension(450, 150));
+							missedTextPanel.setMaximumSize(new Dimension(450, 150));
 							missedPanel.add(missedTextPanel);
 							missedPanel.add(Box.createRigidArea(new Dimension(300, 0)));
 
@@ -1267,7 +1272,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 							missedPanel.setPreferredSize(new Dimension(425, 300));
 							missedPanel.setMaximumSize(new Dimension(425, 300));
-							quizResultMissedQuestionPanel.add(missedPanel);	
+							quizResultMissedQuestionPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+							quizResultMissedQuestionPanel.add(missedPanel);
+							quizResultMissedQuestionPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
 						}
 
 
