@@ -1244,15 +1244,15 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							// set layouts
 							missedPanel.setLayout(new BoxLayout(missedPanel, BoxLayout.PAGE_AXIS));
 							missedLabelPanel.setLayout(new BoxLayout(missedLabelPanel, BoxLayout.LINE_AXIS));
-							missedTextPanel.setLayout(new BoxLayout(missedTextPanel, BoxLayout.PAGE_AXIS));
+							missedTextPanel.setLayout(new BoxLayout(missedTextPanel, BoxLayout.LINE_AXIS));
 							missedUserLabelPanel.setLayout(new BoxLayout(missedUserLabelPanel, BoxLayout.LINE_AXIS));
 							missedUserPanel.setLayout(new BoxLayout(missedUserPanel, BoxLayout.LINE_AXIS));
 							missedCorrectLabelPanel.setLayout(new BoxLayout(missedCorrectLabelPanel, BoxLayout.LINE_AXIS));
 							missedCorrectPanel.setLayout(new BoxLayout(missedCorrectPanel, BoxLayout.LINE_AXIS));
 
 							missedPanel.add(missedLabelPanel);
-							missedTextPanel.setPreferredSize(new Dimension(400, 100));
-							missedTextPanel.setMaximumSize(new Dimension(400, 100));
+							missedTextPanel.setPreferredSize(new Dimension(450, 100));
+							missedTextPanel.setMaximumSize(new Dimension(450, 100));
 							missedPanel.add(missedTextPanel);
 							missedPanel.add(Box.createRigidArea(new Dimension(300, 0)));
 
