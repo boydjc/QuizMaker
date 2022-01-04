@@ -1191,7 +1191,20 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 						float userScore = qEng.gradeQuiz(allUserAnswers);
 
+						// send this score to the selected quiz set
+						savedQSets.get(selectedSet).addGrade(userScore);
+					
+						// save the set
+						saveQuizSet(savedQSets.get(selectedSet));
+						loadAllQuizSets();
+						createTable("edit");
+						createTable("set");
+						setQSetLabels();
+
+
 						quizResultScoreLabel.setText("Score: " + userScore);
+
+						quizResultAveScoreLabel.setText("Average Score: " + savedQSets.get(selectedSet).getAveGrade());
 
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 

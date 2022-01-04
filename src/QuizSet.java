@@ -9,8 +9,8 @@ public class QuizSet implements java.io.Serializable {
 
 	private ArrayList<Question> qSet = new ArrayList<Question>();	
 
-	private int lastGrade = 0;
-	private ArrayList<Integer> allGrades = new ArrayList<Integer>();
+	private float lastGrade = 0;
+	private ArrayList<Float> allGrades = new ArrayList<Float>();
 
 	QuizSet(String nameIn, String createDateIn) {
 		this.name = nameIn;
@@ -71,20 +71,17 @@ public class QuizSet implements java.io.Serializable {
 		return this.qSet.get(qIndex);
 	}
 
-	public int getLastGrade() {
+	public float getLastGrade() {
 		return this.lastGrade;
 	}
 
-	public void setLastGrade(int g) {
+	public void addGrade(float g) {
+		allGrades.add(g);
 		this.lastGrade = g;
 	}
 
-	public void addGrade() {
-		allGrades.add(this.lastGrade);
-	}
-
-	public int getAveGrade() {
-		int aveGrade = 0;
+	public float getAveGrade() {
+		float aveGrade = 0;
 
 		if(allGrades.size() > 0 ) {
 			for(int i=0; i<this.allGrades.size(); i++) {
