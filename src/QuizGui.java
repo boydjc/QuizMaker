@@ -440,6 +440,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		newQuestionQAnsButtonPanel.add(Box.createRigidArea(new Dimension(300, 0)));
 		newQuestionQAnsAddButton.setName("Answer Add");
 		newQuestionQAnsAddButton.addActionListener(this);
+		newQuestionQAnsAddButton.setEnabled(false);
 		newQuestionQAnsButtonPanel.add(newQuestionQAnsAddButton);
 		newQuestionQAnsButtonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		newQuestionQAnsRemButton.setName("Answer Remove");
@@ -1049,24 +1050,29 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					// what is trying to be prevented here is making sure that the user doesn't get 
 					// the wrong answer for something like a '.' in the choice when it is not in the answer
 
-					for(Component ansComp : newQuestionQAnsComps) {
+					// we don't care about doing this for 'fill in the blank' (type 3) questions
 
-						// get the choice string values
-						ArrayList<String> choiceString = new ArrayList<String>();
+					if(!(qType == 3)) {
 
-						for(Component choiceComp : newQuestionQChoiceComps) {
-							if(choiceComp instanceof JTextField) {
-								choiceString.add(((JTextField) choiceComp).getText());
+						for(Component ansComp : newQuestionQAnsComps) {
+
+							// get the choice string values
+							ArrayList<String> choiceString = new ArrayList<String>();
+
+							for(Component choiceComp : newQuestionQChoiceComps) {
+								if(choiceComp instanceof JTextField) {
+									choiceString.add(((JTextField) choiceComp).getText());
+								}
 							}
-						}
 						
-						if(ansComp instanceof JTextField) {
-							if(choiceString.contains(((JTextField) ansComp).getText())) {
-								addQuestion = true;
-							}else {
-								addQuestion = false;
-								JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
-															  "ERROR", JOptionPane.ERROR_MESSAGE);		 
+							if(ansComp instanceof JTextField) {
+								if(choiceString.contains(((JTextField) ansComp).getText())) {
+									addQuestion = true;
+								}else {
+									addQuestion = false;
+									JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
+																  "ERROR", JOptionPane.ERROR_MESSAGE);		 
+								}
 							}
 						}
 					}
@@ -1336,10 +1342,21 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		}else if(source instanceof JRadioButton) {
 			System.out.println("JRadioButton Event");
 			if(((JRadioButton) source).getName().equals("Multiple Choice")) {
-				System.out.println("Multiple Choice selected");
 				// if it is multiple choice then we should only have one answer
 				// so limit the amount of answer fields the user has and disable
 				// the add and remove answer buttons
+
+				Component[] newQuestionChoiceComps = newQuestionQChoicePanel.getComponents();
+
+				if(newQuestionChoiceComps.length == 0) {
+					// make sure that there is at least one choice component
+					newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+					newQuestionQChoicePanel.add(new JTextField(20));
+					newQuestionPane.validate();
+
+					newQuestionQChoiceAddButton.setEnabled(true);
+				}
+
 
 				newQuestionQAnsPanel.removeAll();
 				newQuestionQAnsPanel.add(newQuestionQAns);
@@ -1348,6 +1365,17 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				newQuestionQAnsRemButton.setEnabled(false);
 
 			}else if(((JRadioButton) source).getName().equals("Many Answers")) {
+
+				Component[] newQuestionChoiceComps = newQuestionQChoicePanel.getComponents();
+
+				if(newQuestionChoiceComps.length == 0) {
+					// make sure that there is at least one choice component
+					newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+					newQuestionQChoicePanel.add(new JTextField(20));
+					newQuestionPane.validate();
+
+					newQuestionQChoiceAddButton.setEnabled(true);
+				}
 				
 				newQuestionQAnsAddButton.setEnabled(true);
 
@@ -1360,6 +1388,15 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 			}else if(((JRadioButton) source).getName().equals("Fill in the blank")) {
 				newQuestionQAnsAddButton.setEnabled(true);
+
+				// remove all of the choice components since we should just have 
+				// the text fields for the answers showing
+				newQuestionQChoicePanel.removeAll();
+				newQuestionPane.validate();
+
+				// disable the choice add and remove button
+				newQuestionQChoiceAddButton.setEnabled(false);
+				newQuestionQChoiceRemButton.setEnabled(false);
 				
 				if(newQuestionQAnsPanel.getComponents().length > 1) {
 					newQuestionQAnsRemButton.setEnabled(true);
