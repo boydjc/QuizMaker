@@ -628,6 +628,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 						qEng.generateQuiz();
 
+						quizLabel.setText(savedQSets.get(selectedSet).getName());
+
 						// create the components to add and remove
 						createQuizComponents();
 						
