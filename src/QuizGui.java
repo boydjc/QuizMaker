@@ -1050,32 +1050,28 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					// what is trying to be prevented here is making sure that the user doesn't get 
 					// the wrong answer for something like a '.' in the choice when it is not in the answer
 
-					// we don't care about doing this for 'fill in the blank' (type 3) questions
+					for(Component ansComp : newQuestionQAnsComps) {
 
-					if(!(qType == 3)) {
+						// get the choice string values
+						ArrayList<String> choiceString = new ArrayList<String>();
 
-						for(Component ansComp : newQuestionQAnsComps) {
-
-							// get the choice string values
-							ArrayList<String> choiceString = new ArrayList<String>();
-
-							for(Component choiceComp : newQuestionQChoiceComps) {
-								if(choiceComp instanceof JTextField) {
-									choiceString.add(((JTextField) choiceComp).getText());
-								}
+						for(Component choiceComp : newQuestionQChoiceComps) {
+							if(choiceComp instanceof JTextField) {
+								choiceString.add(((JTextField) choiceComp).getText());
 							}
+						}
 						
-							if(ansComp instanceof JTextField) {
-								if(choiceString.contains(((JTextField) ansComp).getText())) {
-									addQuestion = true;
-								}else {
-									addQuestion = false;
-									JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
-																  "ERROR", JOptionPane.ERROR_MESSAGE);		 
-								}
+						if(ansComp instanceof JTextField) {
+							if(choiceString.contains(((JTextField) ansComp).getText())) {
+								addQuestion = true;
+							}else {
+								addQuestion = false;
+								JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
+															  "ERROR", JOptionPane.ERROR_MESSAGE);		 
 							}
 						}
 					}
+					
 
 					if(addQuestion) {
 
@@ -1348,16 +1344,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 				Component[] newQuestionChoiceComps = newQuestionQChoicePanel.getComponents();
 
-				if(newQuestionChoiceComps.length == 0) {
-					// make sure that there is at least one choice component
-					newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-					newQuestionQChoicePanel.add(new JTextField(20));
-					newQuestionPane.validate();
-
-					newQuestionQChoiceAddButton.setEnabled(true);
-				}
-
-
 				newQuestionQAnsPanel.removeAll();
 				newQuestionQAnsPanel.add(newQuestionQAns);
 
@@ -1365,21 +1351,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				newQuestionQAnsRemButton.setEnabled(false);
 
 			}else if(((JRadioButton) source).getName().equals("Many Answers")) {
-
-				Component[] newQuestionChoiceComps = newQuestionQChoicePanel.getComponents();
-
-				if(newQuestionChoiceComps.length == 0) {
-					// make sure that there is at least one choice component
-					newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-					newQuestionQChoicePanel.add(new JTextField(20));
-					newQuestionPane.validate();
-
-					newQuestionQChoiceAddButton.setEnabled(true);
-				}
 				
 				newQuestionQAnsAddButton.setEnabled(true);
 
-				if(newQuestionQAnsPanel.getComponents().length > 1) {
+				if(newQuestionQAnsPanel.getComponents().length > 2) {
 					newQuestionQAnsRemButton.setEnabled(true);
 				}else{
 					newQuestionQAnsRemButton.setEnabled(false);
@@ -1387,18 +1362,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 			
 
 			}else if(((JRadioButton) source).getName().equals("Fill in the blank")) {
+
 				newQuestionQAnsAddButton.setEnabled(true);
-
-				// remove all of the choice components since we should just have 
-				// the text fields for the answers showing
-				newQuestionQChoicePanel.removeAll();
-				newQuestionPane.validate();
-
-				// disable the choice add and remove button
-				newQuestionQChoiceAddButton.setEnabled(false);
-				newQuestionQChoiceRemButton.setEnabled(false);
-				
-				if(newQuestionQAnsPanel.getComponents().length > 1) {
+					
+				if(newQuestionQAnsPanel.getComponents().length > 2) {
 					newQuestionQAnsRemButton.setEnabled(true);
 				}else{
 					newQuestionQAnsRemButton.setEnabled(false);
