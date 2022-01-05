@@ -1074,8 +1074,14 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					if(addQuestion) {
 
 						// the ID for the new question will be the number question that it is in the set
-
-						int newQuesId = (savedQSets.get(selectedSet).getAllQuestions().size())+1;
+						
+						int newQuesId;
+						
+						if(editingQuestion) {
+							newQuesId = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQId();
+						}else {
+							newQuesId = (savedQSets.get(selectedSet).getAllQuestions().size())+1;
+						}
 
 						System.out.println("New Question ID: " + newQuesId);
 
