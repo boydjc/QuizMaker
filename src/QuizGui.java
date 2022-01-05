@@ -618,7 +618,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 				if(((JButton) source).getText().equals("Start")) {
 
-					if(selectedSet != -1) {
+					if(selectedSet != -1 && savedQSets.get(selectedSet).getAllQuestions().size() != 0) {
 						// since we are starting at the beginning of the quiz, there
 						// is no reason for the "previous" button to be enabled
 
@@ -641,9 +641,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						cl.show(containerPanel, currentlyShownPanel);
 
 						setTitle(savedQSets.get(selectedSet).getName() + " Quiz");
-					}else {
+					}else if(selectedSet == -1) {
 						JOptionPane.showMessageDialog(this, "You must select a quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
-					}	
+					}else if(savedQSets.get(selectedSet).getAllQuestions().size() == 0) {
+						JOptionPane.showMessageDialog(this, "You selected an empty quiz set.", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
 
 				}else if(((JButton) source).getText().equals("Edit")) {
 
