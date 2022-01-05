@@ -753,118 +753,122 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					setTitle(savedQSets.get(selectedSet).getName() + " New Question");
 
 				}else if(((JButton) source).getText().equals("Edit")) {
+					
+					if(selectedQuestion != -1) {
+						editingQuestion = true;
 
-					editingQuestion = true;
+						System.out.println("Edit Panel Edit Button Pressed");
 
-					System.out.println("Edit Panel Edit Button Pressed");
+						int qType = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQType();
 
-					int qType = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQType();
+						Component[] radioComps = newQuestionQTypeSelPanel.getComponents();
 
-					Component[] radioComps = newQuestionQTypeSelPanel.getComponents();
-
-					switch(qType) {
-						case 1:
-							((JRadioButton) radioComps[0]).setSelected(true);
-							break;
-						case 2:
-							((JRadioButton) radioComps[3]).setSelected(true);
-							break;
-						case 3:
-							((JRadioButton) radioComps[6]).setSelected(true);
-							break;
-						default:
-							break;
-					}
-
-					newQuestionQText.setText(savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQuesText());
-
-					// get the number of choice fields currently on the edit panel
-					// we do this because there is a chance the user added a question with multiple 
-					// choices and then later goes back to edit it
-					Component[] choiceFields = newQuestionQChoicePanel.getComponents();
-
-					// the actual number of question choices we have for the selected question
-					ArrayList<String> quesChoice = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getChoices();
-
-					// remove the components what we have right now
-					while(choiceFields.length != 0) {
-						if(choiceFields.length == 0) {
-							break;
-						}else {
-							newQuestionQChoicePanel.remove(choiceFields[choiceFields.length-1]);
-							choiceFields = newQuestionQChoicePanel.getComponents();
+						switch(qType) {
+							case 1:
+								((JRadioButton) radioComps[0]).setSelected(true);
+								break;
+							case 2:
+								((JRadioButton) radioComps[3]).setSelected(true);
+								break;
+							case 3:
+								((JRadioButton) radioComps[6]).setSelected(true);
+								break;
+							default:
+								break;
 						}
-					}
 
-					// now that we have a clean empty panel, add the correct number of choice textfields
-					for(int i=0; i<quesChoice.size(); i++) {
-						newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
-						newQuestionQChoicePanel.add(new JTextField(20));
-						newQuestionPane.validate();
-					}
+						newQuestionQText.setText(savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQuesText());
 
-					// add the text from the question choice to the correct component
-					choiceFields = newQuestionQChoicePanel.getComponents();
+						// get the number of choice fields currently on the edit panel
+						// we do this because there is a chance the user added a question with multiple 
+						// choices and then later goes back to edit it
+						Component[] choiceFields = newQuestionQChoicePanel.getComponents();
 
-					int quesChoiceCount = 0;
-					for(int i=0; i<choiceFields.length; i++) {
-						if(choiceFields[i] instanceof JTextField) {
-							((JTextField) choiceFields[i]).setText(quesChoice.get((quesChoiceCount)));
-							quesChoiceCount++;
+						// the actual number of question choices we have for the selected question
+						ArrayList<String> quesChoice = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getChoices();
+
+						// remove the components what we have right now
+						while(choiceFields.length != 0) {
+							if(choiceFields.length == 0) {
+								break;
+							}else {
+								newQuestionQChoicePanel.remove(choiceFields[choiceFields.length-1]);
+								choiceFields = newQuestionQChoicePanel.getComponents();
+							}
 						}
-					}
 
-					// if we have more than one choice then make sure the remove button is enabled
-					if(quesChoice.size() > 1) {
-						newQuestionQChoiceRemButton.setEnabled(true);
-					}
-
-
-					// get the number of answer fields currently on the edit panel
-					// we do this because there is a chance the user added a question with multiple 
-					// answer and then later goes back to edit it
-					Component[] answerFields = newQuestionQAnsPanel.getComponents();
-
-					// the actual number of question answer we have for the selected question
-					ArrayList<String> quesAnswer = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getAnswers();
-
-					// remove the components what we have right now
-					while(answerFields.length != 0) {
-						if(answerFields.length == 0) {
-							break;
-						}else {
-							newQuestionQAnsPanel.remove(answerFields[answerFields.length-1]);
-							answerFields = newQuestionQAnsPanel.getComponents();
+						// now that we have a clean empty panel, add the correct number of choice textfields
+						for(int i=0; i<quesChoice.size(); i++) {
+							newQuestionQChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+							newQuestionQChoicePanel.add(new JTextField(20));
+							newQuestionPane.validate();
 						}
-					}
 
-					// now that we have a clean empty panel, add the correct number of answer textfields
-					for(int i=0; i<quesAnswer.size(); i++) {
-						newQuestionQAnsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-						newQuestionQAnsPanel.add(new JTextField(20));
-						newQuestionPane.validate();
-					}
+						// add the text from the question choice to the correct component
+						choiceFields = newQuestionQChoicePanel.getComponents();
 
-					answerFields = newQuestionQAnsPanel.getComponents();
-
-					int quesAnsCount = 0;
-					for(int i=0; i<answerFields.length; i++) {
-						if(answerFields[i] instanceof JTextField) {
-							((JTextField) answerFields[i]).setText(quesAnswer.get((quesAnsCount)));
-							quesAnsCount++;
+						int quesChoiceCount = 0;
+						for(int i=0; i<choiceFields.length; i++) {
+							if(choiceFields[i] instanceof JTextField) {
+								((JTextField) choiceFields[i]).setText(quesChoice.get((quesChoiceCount)));
+								quesChoiceCount++;
+							}
 						}
-					}
 
-					// if we have more than one answer then make sure the remove button is enabled
-					if(quesAnswer.size() > 1) {
-						newQuestionQAnsRemButton.setEnabled(true);
-					}
+						// if we have more than one choice then make sure the remove button is enabled
+						if(quesChoice.size() > 1) {
+							newQuestionQChoiceRemButton.setEnabled(true);
+						}
+
+
+						// get the number of answer fields currently on the edit panel
+						// we do this because there is a chance the user added a question with multiple 
+						// answer and then later goes back to edit it
+						Component[] answerFields = newQuestionQAnsPanel.getComponents();
+
+						// the actual number of question answer we have for the selected question
+						ArrayList<String> quesAnswer = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getAnswers();
+
+						// remove the components what we have right now
+						while(answerFields.length != 0) {
+							if(answerFields.length == 0) {
+								break;
+							}else {
+								newQuestionQAnsPanel.remove(answerFields[answerFields.length-1]);
+								answerFields = newQuestionQAnsPanel.getComponents();
+							}
+						}
+
+						// now that we have a clean empty panel, add the correct number of answer textfields
+						for(int i=0; i<quesAnswer.size(); i++) {
+							newQuestionQAnsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+							newQuestionQAnsPanel.add(new JTextField(20));
+							newQuestionPane.validate();
+						}
+
+						answerFields = newQuestionQAnsPanel.getComponents();
+
+						int quesAnsCount = 0;
+						for(int i=0; i<answerFields.length; i++) {
+							if(answerFields[i] instanceof JTextField) {
+								((JTextField) answerFields[i]).setText(quesAnswer.get((quesAnsCount)));
+								quesAnsCount++;
+							}
+						}
+
+						// if we have more than one answer then make sure the remove button is enabled
+						if(quesAnswer.size() > 1) {
+							newQuestionQAnsRemButton.setEnabled(true);
+						}
 										
-					CardLayout cl = (CardLayout) containerPanel.getLayout();
-					currentlyShownPanel = "newQuestion";
-					cl.show(containerPanel, currentlyShownPanel);
-					setTitle(savedQSets.get(selectedSet).getName() + "Edit Question");
+						CardLayout cl = (CardLayout) containerPanel.getLayout();
+						currentlyShownPanel = "newQuestion";
+						cl.show(containerPanel, currentlyShownPanel);
+						setTitle(savedQSets.get(selectedSet).getName() + "Edit Question");
 
+					}else {
+						JOptionPane.showMessageDialog(this, "You do not have a question selected", "ERROR", JOptionPane.ERROR_MESSAGE);
+					}
 				}else if(((JButton) source).getText().equals("Delete")) {
 					
 					System.out.println("Edit Panel Delete Button Pressed");
