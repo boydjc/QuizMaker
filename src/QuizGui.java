@@ -12,8 +12,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.text.DecimalFormat;
 
 public class QuizGui extends JFrame implements ActionListener, MouseListener, DocumentListener {
+
+	private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
 	private String savedQSetPath = "./data/";
 
@@ -1226,9 +1229,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						setQSetLabels();
 
 
-						quizResultScoreLabel.setText("Score: " + userScore);
+						quizResultScoreLabel.setText("Score: " + decimalFormat.format(userScore));
 
-						quizResultAveScoreLabel.setText("Average Score: " + savedQSets.get(selectedSet).getAveGrade());
+						quizResultAveScoreLabel.setText("Average Score: " + decimalFormat.format(savedQSets.get(selectedSet).getAveGrade()));
 
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 
@@ -1463,8 +1466,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		qBankNameLabel.setText("Name:    " + savedQSets.get(selectedSet).getName());
 		qBankCreatedLabel.setText("Created:    " + savedQSets.get(selectedSet).getCreatedDate());
 		qBankQNumLabel.setText("Number of Questions:    " + String.valueOf(savedQSets.get(selectedSet).getQNum()));
-		qBankLastGradeLabel.setText("Last Grade:    " + String.valueOf(savedQSets.get(selectedSet).getLastGrade()));
-		qBankAveGradeLabel.setText("Average Grade:    " + String.valueOf(savedQSets.get(selectedSet).getAveGrade()));
+		qBankLastGradeLabel.setText("Last Grade:    " + decimalFormat.format(savedQSets.get(selectedSet).getLastGrade()));
+		qBankAveGradeLabel.setText("Average Grade:    " + decimalFormat.format(savedQSets.get(selectedSet).getAveGrade()));
 
 	}
 
