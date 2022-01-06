@@ -675,7 +675,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				}else if(((JButton) source).getText().equals("Edit")) {
 
 					if(selectedSet != -1) {
-						System.out.println("Edit button clicked");
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 
 						// switch to the edit panel
@@ -749,8 +748,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 			}else if(currentlyShownPanel.equals("edit")) {
 				if(((JButton) source).getText().equals("Add")) {
 
-					System.out.println("Edit Panel Add Button Pressed");
-
 					// clear any text that might be in the new question components from 
 					// a previously added question
 
@@ -781,8 +778,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					
 					if(selectedQuestion != -1) {
 						editingQuestion = true;
-
-						System.out.println("Edit Panel Edit Button Pressed");
 
 						int qType = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getQType();
 
@@ -894,9 +889,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					}else {
 						JOptionPane.showMessageDialog(this, "You do not have a question selected", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
-				}else if(((JButton) source).getText().equals("Delete")) {
-					
-					System.out.println("Edit Panel Delete Button Pressed");
+				}else if(((JButton) source).getText().equals("Delete")) {	
 
 					if(selectedQuestion != -1) {
 						savedQSets.get(selectedSet).remQuestion(selectedQuestion);
@@ -953,8 +946,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				}else if(((JButton) source).getText().equals("Remove")) {
 
 					if(((JButton) source).getName().equals("Choice Remove")) {
-
-						System.out.println("Choice Remove Button Pressed");
 						
 						Component[] newQuesQChoicePanComponents = newQuestionQChoicePanel.getComponents();
 
@@ -975,8 +966,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 					}else if(((JButton) source).getName().equals("Answer Remove")) {
 
-						System.out.println("Answer Remove Button Pressed");
-
 						Component[] newQuesQAnsPanComponents = newQuestionQAnsPanel.getComponents();
 
 						// make sure we have at least 1 choice avaiable
@@ -996,8 +985,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					}
 
 				}else if(((JButton) source).getText().equals("Save")) {
-				
-					System.out.println("Add Question Save Button Pressed");
+			
 
 					// only add the question if this is true once we are done checking everything
 					boolean addQuestion = false;
@@ -1115,8 +1103,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						}else {
 							newQuesId = (savedQSets.get(selectedSet).getAllQuestions().size())+1;
 						}
-
-						System.out.println("New Question ID: " + newQuesId);
 
 						// make a new question
 						Question newQuestion = new Question(newQuesId, qType, questionText, questionChoices, questionAnswers);
@@ -1331,8 +1317,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 
 					}
-				}else if(source instanceof JTextField) {
-					System.out.println(((JTextField) source).getText());
 				}
 			}else if(currentlyShownPanel.equals("results")) {
 				if(((JButton) source).getText().equals("Restart")) {
@@ -1367,7 +1351,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				}
 			}
 		}else if(source instanceof JRadioButton) {
-			System.out.println("JRadioButton Event");
 			if(((JRadioButton) source).getName().equals("Multiple Choice")) {
 				// if it is multiple choice then we should only have one answer
 				// so limit the amount of answer fields the user has and disable
