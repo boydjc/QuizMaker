@@ -165,7 +165,7 @@ public class QuizEngine {
 		
 		}
 
-		userScore *= generatedQuizSet.size();
+		userScore = (userScore / generatedQuizSet.size()) * 100;
 
 		return userScore;
 
