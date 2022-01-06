@@ -249,7 +249,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		// qSelectDetailPanel and subpanels
 
 		// qSelectPanel
-		qBankTablePane.setPreferredSize(new Dimension(200, 125));
+		qBankTablePane.setPreferredSize(new Dimension(300, 175));
+		qBankTablePane.setMaximumSize(new Dimension(300, 175));
 		qSelectSubPanelOne.add(qBankTablePane);
 		qSelectPanel.add(qSelectSubPanelOne);
 
@@ -275,6 +276,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		// qDetailPanel
 		// add a little bit of spacing between each of the labels	
 		
+
+		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		qBankNameLabel.setFont(detailLabelFont);
 		qDetailPanel.add(qBankNameLabel);
 		qDetailPanel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -294,12 +297,15 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		qBankAveGradeLabel.setFont(detailLabelFont);
 		qDetailPanel.add(qBankAveGradeLabel);
 		qDetailPanel.add(Box.createVerticalGlue());
-	
+		
+		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(25, 0)));
 		qSelectDetailPanel.add(qSelectPanel);
 		// spacing between the question bank panel and the details panel
 		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(50, 0)));
+		qSelectDetailPanel.add(new JSeparator(SwingConstants.VERTICAL));
+		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(50, 0)));
 		qSelectDetailPanel.add(qDetailPanel);
-		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(100, 0)));
+		qSelectDetailPanel.add(Box.createRigidArea(new Dimension(150, 0)));
 
 
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -310,6 +316,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 		previewScrollPane.setPreferredSize(new Dimension(175, 150));
 		previewPanel.add(previewScrollPane);
+
+		mainPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
 
 		mainPanel.add(previewPanel);
 
@@ -581,29 +589,29 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 		// END QUIZ RESULT PANEL CONFIGURATION
 
-		mainPanel.setPreferredSize(new Dimension(500, 400));
-		mainPanel.setMaximumSize(new Dimension(500, 400));
+		mainPanel.setPreferredSize(new Dimension(600, 500));
+		mainPanel.setMaximumSize(new Dimension(600, 500));
 		containerPanel.add(mainPanel, "main");
 
-		editPanel.setPreferredSize(new Dimension(500, 400));
-		editPanel.setMaximumSize(new Dimension(500, 400));
+		editPanel.setPreferredSize(new Dimension(600, 500));
+		editPanel.setMaximumSize(new Dimension(600, 500));
 		containerPanel.add(editPanel, "edit");
 
-		newQuestionPane.setPreferredSize(new Dimension(500, 400));
-		newQuestionPane.setMaximumSize(new Dimension(500, 400));
+		newQuestionPane.setPreferredSize(new Dimension(600, 500));
+		newQuestionPane.setMaximumSize(new Dimension(600, 500));
 		containerPanel.add(newQuestionPane, "newQuestion");
 
-		quizPanel.setPreferredSize(new Dimension(500, 400));
-		quizPanel.setMaximumSize(new Dimension(500, 400));
+		quizPanel.setPreferredSize(new Dimension(600, 500));
+		quizPanel.setMaximumSize(new Dimension(600, 500));
 		containerPanel.add(quizPanel, "quiz");
 
-		quizResultPanel.setPreferredSize(new Dimension(500, 400));
-		quizResultPanel.setMaximumSize(new Dimension(500, 400));
+		quizResultPanel.setPreferredSize(new Dimension(600, 500));
+		quizResultPanel.setMaximumSize(new Dimension(600, 500));
 		containerPanel.add(quizResultPanel, "results");
 		
 		add(containerPanel);
 
-		setSize(550, 475);
+		setSize(650, 575);
 	}
 
 	// action listeners
