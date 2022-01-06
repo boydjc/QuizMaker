@@ -38,9 +38,6 @@ public class QuizEngine {
 	}
 
 	public ArrayList<ArrayList<String>> getIncorrectUserAnswers() {
-		for(int i=0; i<this.incorrectUserAnswers.size(); i++) {
-			System.out.println(incorrectUserAnswers.get(i).toString());
-		}
 		return this.incorrectUserAnswers;
 	}
 
@@ -94,7 +91,6 @@ public class QuizEngine {
 		}
 
 		genQuizCurQuesNum = 0;
-		System.out.println("Quiz Generated Successfully");
 	}
 
 	// generates a random array of numbers 1 - x
