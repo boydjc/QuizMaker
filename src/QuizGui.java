@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.UIManager.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -218,6 +219,17 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 
 		// JFrame configuration
 		super("QuizMaker");
+
+		// set the look and feel
+		try {
+			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+				}
+			}
+		}catch (Exception ex) {
+			// go with default
+		}
 
 		// settings for the JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
