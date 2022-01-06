@@ -1263,14 +1263,16 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 							
 							JPanel missedUserPanel = new JPanel(); // hold incorrect answer
 							
-							ArrayList<String> userAnswer = incorrectUserAnswers.get(i);
+							if(i < incorrectUserAnswers.size()) {
+								ArrayList<String> userAnswer = incorrectUserAnswers.get(i);
 				
-							for(int h=0; h<userAnswer.size(); h++) {
-								JLabel missedUser = new JLabel("<html>" + userAnswer.get(h) + "</html>");
-								missedUser.setFont(new Font("Serif", Font.PLAIN, 14));
-								missedUserPanel.add(missedUser);
+								for(int h=0; h<userAnswer.size(); h++) {
+									JLabel missedUser = new JLabel("<html>" + userAnswer.get(h) + "</html>");
+									missedUser.setFont(new Font("Serif", Font.PLAIN, 14));
+									missedUserPanel.add(missedUser);
+								}
 							}
-							
+
 							JPanel missedCorrectLabelPanel = new JPanel(); // holds correct answer label
 							JLabel missedCorrectLabel = new JLabel("Correct Answer");
 							missedCorrectLabel.setFont(new Font("Serif", Font.BOLD, 17));
