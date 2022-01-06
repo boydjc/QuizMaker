@@ -1,5 +1,14 @@
 # QuizMaker
 Java Program for turning questions and answers into a randomized quiz. 
+
+## To Run
+- Clone Repository
+- Switch to /out directory
+- Run "java Main"
+
+Give a star if you find useful ⭐ <br>
+Watch for future updates 👀
+
 <br><br>
 <p align="center">
   <img src="https://raw.githubusercontent.com/boydjc/QuizMaker/main/HomeScreenshot.png">
