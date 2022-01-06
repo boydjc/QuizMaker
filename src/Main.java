@@ -1,9 +1,7 @@
 import java.io.File;
 
 public class Main {
-	public static void main(String[] args) {
-		
-		System.out.println("Running...");
+	public static void main(String[] args) {	
 
 		// check that the data directory exists, if not then create it
 		File file = new File("." + File.separator + "data");
