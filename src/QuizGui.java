@@ -546,7 +546,6 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		quizChoicePanel.setMaximumSize(new Dimension(450, 100));
 		quizChoiceScrollPane.setPreferredSize(new Dimension(500, 500));
 		quizChoiceScrollPane.setMaximumSize(new Dimension(500, 500));
-		quizChoiceScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		quizPanel.add(quizChoiceScrollPane);
 		quizPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 		quizPanel.add(quizPrevNextButtonPanel);
@@ -1068,25 +1067,27 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					// go through the answers and make sure that they match up with the choices
 					// what is trying to be prevented here is making sure that the user doesn't get 
 					// the wrong answer for something like a '.' in the choice when it is not in the answer
+					
+					if(!(qType == 3)) {
+						for(Component ansComp : newQuestionQAnsComps) {
 
-					for(Component ansComp : newQuestionQAnsComps) {
+							// get the choice string values
+							ArrayList<String> choiceString = new ArrayList<String>();
 
-						// get the choice string values
-						ArrayList<String> choiceString = new ArrayList<String>();
-
-						for(Component choiceComp : newQuestionQChoiceComps) {
-							if(choiceComp instanceof JTextField) {
-								choiceString.add(((JTextField) choiceComp).getText());
+							for(Component choiceComp : newQuestionQChoiceComps) {
+								if(choiceComp instanceof JTextField) {
+									choiceString.add(((JTextField) choiceComp).getText());
+								}
 							}
-						}
 						
-						if(ansComp instanceof JTextField) {
-							if(choiceString.contains(((JTextField) ansComp).getText())) {
-								addQuestion = true;
-							}else {
-								addQuestion = false;
-								JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
-															  "ERROR", JOptionPane.ERROR_MESSAGE);		 
+							if(ansComp instanceof JTextField) {
+								if(choiceString.contains(((JTextField) ansComp).getText())) {
+									addQuestion = true;
+								}else {
+									addQuestion = false;
+									JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
+																  "ERROR", JOptionPane.ERROR_MESSAGE);		 
+								}
 							}
 						}
 					}
@@ -1242,6 +1243,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						// get the answer that the user got incorrect
 						ArrayList<Question> incorrectQuestions = qEng.getIncorrectQuestionSet();
 						ArrayList<ArrayList<String>> incorrectUserAnswers = qEng.getIncorrectUserAnswers();
+
+						quizResultMissedQuestionPanel.removeAll();
+						quizResultMissedQuestionPanel.revalidate();
+						quizResultMissedQuestionPanel.repaint();
 
 						for(int i=0; i<incorrectQuestions.size(); i++) {
 							JPanel missedPanel = new JPanel();
@@ -1641,8 +1646,13 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 			}else if(quesType == 3) {
 				for(String choice : questionChoices) {
 					// type 3 is JTextFields
-					JTextField textFieldChoice = new JTextField(20);
-					compList.add(textFieldChoice);
+					JLabel choiceLabel = new JLabel("<html>" + choice + "</html>");
+					JTextField textFieldChoice = new JTextField(10);
+					JPanel textFieldChoicePanel = new JPanel();
+					textFieldChoicePanel.setLayout(new BoxLayout(textFieldChoicePanel, BoxLayout.LINE_AXIS));
+					textFieldChoicePanel.add(textFieldChoice);
+					compList.add(choiceLabel);
+					compList.add(textFieldChoicePanel);
 				}
 			}	
 			// add the ArrayList of components to the global ArrayList to retrieve later
@@ -1684,11 +1694,13 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		// rows. Of course if we have an odd number of choices then we will not use both 
 		// column slots for the last row
 		if(questionType == 3) {
-			quizChoicePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+			quizChoicePanel.setLayout(new BoxLayout(quizChoicePanel, BoxLayout.PAGE_AXIS));
 		}else {
 			int layoutRows = (int) Math.ceil(quesChoices.size() / 2);
 			quizChoicePanel.setLayout(new GridLayout(layoutRows, 2));
 		}
+
+		quizChoiceScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		
 		quizChoicePanel.validate();
 		quizChoiceScrollPane.validate();
@@ -1705,9 +1717,29 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				comp = (JCheckBox) comp;
 			}else if(comp instanceof JTextField) {
 				comp = (JTextField) comp;
+			}else if(comp instanceof JLabel) {
+				comp = (JLabel) comp;
+			}
+			
+			if((questionType == 3) && (comp instanceof JLabel || comp instanceof JTextField)) {
+				quizChoicePanel.add(Box.createRigidArea(new Dimension(0, 5)));
 			}
 
 			quizChoicePanel.add(comp);
+		}
+
+		// we don't want the scroll pane to be too large for multiple choice
+		// but it might have to be lengthy if there are multiple fill in the blank 
+		// so set the height of the panel here depending on the number of components we have
+		// and question type
+		if(questionType == 3) {	
+			Component[] choiceComps = quizChoicePanel.getComponents();
+
+			quizChoicePanel.setPreferredSize(new Dimension(450, (18*choiceComps.length)));
+			quizChoicePanel.setMaximumSize(new Dimension(450, (18*choiceComps.length)));
+		}else{
+			quizChoicePanel.setPreferredSize(new Dimension(450, 100));
+			quizChoicePanel.setMaximumSize(new Dimension(450, 100));
 		}
 
 		quizChoicePanel.validate();
