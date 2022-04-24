@@ -883,7 +883,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 						currentlyShownPanel = "newQuestion";
 						cl.show(containerPanel, currentlyShownPanel);
-						setTitle(savedQSets.get(selectedSet).getName() + "Edit Question");
+						setTitle(savedQSets.get(selectedSet).getName() + " Edit Question");
 
 					}else {
 						JOptionPane.showMessageDialog(this, "You do not have a question selected", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -1155,7 +1155,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 				if(source instanceof JButton) {
 					
 					if(((JButton) source).getText().equals("Exit")) {
-
+						
+						if(quizNextButton.getText().equals("Grade Quiz")) {
+							quizNextButton.setText("Next");
+						}
 						CardLayout cl = (CardLayout) containerPanel.getLayout();
 						currentlyShownPanel = "main";
 						cl.show(containerPanel, currentlyShownPanel);
@@ -1491,8 +1494,10 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+
+		System.out.println("Currently shown panel: " + currentlyShownPanel);
 		
-		if(currentlyShownPanel.equals("Edit")) {
+		if(currentlyShownPanel.equals("edit")) {
 			JOptionPane.showMessageDialog(this, "Quiz Set Saved Successfully", "Success", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
