@@ -57,7 +57,8 @@ public class QuizSet implements java.io.Serializable {
 
 	public void saveQuestion(Question qIn) {
 		for(int i=0; i<qSet.size(); i++) {
-			if(qIn.getQuesText().equals(qSet.get(i).getQuesText())) {
+			if(qIn.getQId() == qSet.get(i).getQId()) {
+				System.out.println("FOUND QUESTION!");
 				qSet.set(i, qIn);
 			}
 		}
