@@ -1148,6 +1148,8 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					
 				}else if(((JButton) source).getText().equals("Exit")) {
 
+					editingQuestion = false;
+
 					CardLayout cl = (CardLayout) containerPanel.getLayout();
 
 					currentlyShownPanel = "edit";
