@@ -806,7 +806,7 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						// the actual number of question choices we have for the selected question
 						ArrayList<String> quesChoice = savedQSets.get(selectedSet).getQuestion(selectedQuestion).getChoices();
 
-						// remove the components what we have right now
+						// remove the components that we have right now
 						while(choiceFields.length != 0) {
 							if(choiceFields.length == 0) {
 								break;
@@ -987,8 +987,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 			
 
 					// only add the question if this is true once we are done checking everything
-					boolean addQuestion = false;
-
+					boolean blankQuestion = false;
+					boolean blankChoice = false;
+					boolean blankAnswer = false;
+					boolean choiceMatch = false;
+					
 					// get all of the values to make a new question
 
 					// get which radio button is selected
@@ -1021,9 +1024,9 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 					if(questionText.trim().length() == 0) {
 						JOptionPane.showMessageDialog(this, "Question text must contain at least one alphaneumeric character.", "ERROR", JOptionPane.ERROR_MESSAGE);
 						questionText = null;
-						addQuestion = false;
+						blankQuestion = true;
 					}else {
-						addQuestion = true;
+						blankQuestion = false;
 					}
 
 					// get question choices and check for empty fields
@@ -1037,10 +1040,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						if(comp instanceof JTextField) {
 							if(((JTextField) comp).getText().trim().length() == 0) {
 								JOptionPane.showMessageDialog(this, "One of your choices is blank or has no alphaneumeric characters", "ERROR", JOptionPane.ERROR_MESSAGE);	
-								addQuestion = false;
+								blankChoice = true;
+								break;
 							}else {
 								questionChoices.add(((JTextField) comp).getText());
-								addQuestion = true;
+								blankChoice = false;
 							}
 						}
 					}
@@ -1056,10 +1060,11 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						if(comp instanceof JTextField) {
 							if(((JTextField) comp).getText().trim().length() == 0) {
 								JOptionPane.showMessageDialog(this, "One of your answers is blank or has no alphaneumeric characters", "ERROR", JOptionPane.ERROR_MESSAGE);	
-								addQuestion = false;
+								blankAnswer = true;
+								break;
 							}else {
 								questionAnswers.add(((JTextField) comp).getText());
-								addQuestion = true;
+								blankAnswer = false;
 							}
 						}
 					}
@@ -1082,18 +1087,19 @@ public class QuizGui extends JFrame implements ActionListener, MouseListener, Do
 						
 							if(ansComp instanceof JTextField) {
 								if(choiceString.contains(((JTextField) ansComp).getText())) {
-									addQuestion = true;
+									choiceMatch = true;
 								}else {
-									addQuestion = false;
+									choiceMatch = false;
 									JOptionPane.showMessageDialog(this, "One of your answers does not match one of your choices. Choices and answers are case sensitive.",
 																  "ERROR", JOptionPane.ERROR_MESSAGE);		 
+									break;
 								}
 							}
 						}
 					}
 					
 
-					if(addQuestion) {
+					if(!(blankQuestion) && !(blankChoice) && !(blankAnswer) && choiceMatch) {
 
 						// the ID for the new question will be the number question that it is in the set
 						
